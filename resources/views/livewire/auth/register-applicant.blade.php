@@ -1,52 +1,157 @@
-<div class="min-h-[calc(100vh-10rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-6 bg-white p-8 sm:p-10 rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50">
-        
-        <div class="text-center">
-            <span class="inline-block px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-bold rounded-full mb-2 uppercase tracking-wide">Gen Z & Fresh Graduate</span>
-            <h2 class="text-2xl font-extrabold text-slate-900">Daftar Pencari Kerja</h2>
-            <p class="mt-1 text-sm text-slate-600">Temukan pekerjaan lokal impian dengan cepat</p>
+<div class="min-h-screen bg-slate-50 flex flex-col">
+    {{-- Progress Bar --}}
+    <div class="bg-white border-b border-slate-100 px-4 py-3">
+        <div class="max-w-sm mx-auto">
+            <div class="flex items-center gap-2 mb-2">
+                <div class="flex-1 h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                    <div class="h-full bg-blue-600 rounded-full transition-all duration-500" style="width: {{ $step === 1 ? '50%' : '100%' }}"></div>
+                </div>
+                <span class="text-xs font-bold text-slate-500">{{ $step }}/2</span>
+            </div>
+            <p class="text-xs text-slate-400">{{ $step === 1 ? 'Data diri Anda' : 'Profil kerja Anda' }}</p>
+        </div>
+    </div>
+
+    <div class="flex-grow px-4 py-6 max-w-sm mx-auto w-full">
+        <div class="mb-6">
+            <h1 class="text-2xl font-extrabold text-slate-800">
+                {!! $step === 1 ? "<i class='bx bx-hand'></i> Halo! Siapa Anda?" : "<i class='bx bx-briefcase'></i> Profil Kerja Anda" !!}
+            </h1>
+            <p class="text-slate-500 text-sm mt-1">
+                {{ $step === 1 ? 'Isi data diri untuk membuat akun Near Job.' : 'Informasi ini membantu pemberi kerja mengenal Anda.' }}
+            </p>
         </div>
 
-        <form wire:submit="register" class="space-y-4">
+        @if($step === 1)
+        {{-- ===== STEP 1: Identitas ===== --}}
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-5 space-y-4">
+            
             <div>
-                <label for="name" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Nama Lengkap</label>
-                <input type="text" wire:model="name" id="name" 
-                       class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 text-sm"
-                       placeholder="Contoh: Budi Pratama">
-                @error('name') <span class="text-xs text-red-600 mt-1 block">{{ $message }}</span> @enderror
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Nama Lengkap <span class="text-red-500">*</span></label>
+                <input type="text" wire:model="name" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="Nama sesuai KTP">
+                @error('name') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div>
-                <label for="email" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Email</label>
-                <input type="email" wire:model="email" id="email" 
-                       class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 text-sm"
-                       placeholder="budi@gmail.com">
-                @error('email') <span class="text-xs text-red-600 mt-1 block">{{ $message }}</span> @enderror
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                    NIK (Nomor Induk Kependudukan) <span class="text-red-500">*</span>
+                </label>
+                <input type="text" wire:model="nik" maxlength="16" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white font-mono" placeholder="16 digit NIK Anda">
+                @error('nik') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                @if($nikError) <p class="text-xs text-red-500 mt-1">{{ $nikError }}</p> @endif
+                <p class="text-xs text-slate-400 mt-1">NIK digunakan hanya sebagai pengidentifikasi akun unik. Tidak ditampilkan secara publik.</p>
             </div>
 
             <div>
-                <label for="password" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Password</label>
-                <input type="password" wire:model="password" id="password" 
-                       class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 text-sm"
-                       placeholder="Minimal 8 karakter">
-                @error('password') <span class="text-xs text-red-600 mt-1 block">{{ $message }}</span> @enderror
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Nomor WhatsApp <span class="text-red-500">*</span></label>
+                <input type="tel" wire:model="whatsapp" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="08xxxxxxxxxx">
+                @error('whatsapp') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div>
-                <label for="password_confirmation" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Konfirmasi Password</label>
-                <input type="password" wire:model="password_confirmation" id="password_confirmation" 
-                       class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 text-sm"
-                       placeholder="Ulangi password">
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Tanggal Lahir <span class="text-red-500">*</span></label>
+                <input type="date" wire:model="date_of_birth" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white">
+                @error('date_of_birth') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                @if($ageError) <div class="mt-2 bg-red-50 border border-red-100 rounded-xl p-3 text-xs text-red-600 font-medium">{{ $ageError }}</div> @endif
             </div>
 
-            <button type="submit" 
-                    class="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-200 transition-all text-sm mt-4">
-                Daftar & Isi Profil →
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Email <span class="text-red-500">*</span></label>
+                <input type="email" wire:model="email" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="email@contoh.com">
+                @error('email') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Kata Sandi <span class="text-red-500">*</span></label>
+                <input type="password" wire:model="password" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="Minimal 6 karakter">
+                @error('password') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div class="bg-slate-50 rounded-xl p-3 text-xs text-slate-500 leading-relaxed">
+                <i class='bx bx-lock-alt'></i> <strong>Privasi:</strong> Data pribadi Anda dikumpulkan semata-mata untuk mengoperasikan layanan Near Job. NIK Anda tidak akan pernah ditampilkan kepada pemberi kerja.
+            </div>
+
+            <button type="button" wire:click="nextStep"
+                class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm shadow-lg shadow-blue-600/20">
+                Lanjut →
             </button>
-        </form>
-
-        <div class="text-center pt-4 border-t border-slate-100 text-xs text-slate-500">
-            Sudah punya akun? <a href="{{ route('login') }}" class="font-bold text-indigo-600 hover:underline">Masuk disini</a>
         </div>
+
+        @else
+        {{-- ===== STEP 2: Profil Kerja ===== --}}
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-5 space-y-4">
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Kota Domisili <span class="text-red-500">*</span></label>
+                <select wire:model="city" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white">
+                    <option value="">-- Pilih Kota --</option>
+                    @foreach($cities as $c)
+                        <option value="{{ $c->name }}">{{ $c->name }} ({{ $c->province }})</option>
+                    @endforeach
+                </select>
+                @error('city') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Pendidikan Terakhir <span class="text-red-500">*</span></label>
+                <select wire:model="education_level" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white">
+                    @foreach($educationLevels as $k => $v)
+                        <option value="{{ $k }}">{{ $v }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Nama Sekolah / Universitas <span class="text-red-500">*</span></label>
+                <input type="text" wire:model="education_institution" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="SMAN 1 Banyuwangi">
+                @error('education_institution') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Jurusan (opsional)</label>
+                <input type="text" wire:model="field_of_study" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="Teknik Informatika, Tata Boga, dll.">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Keahlian / Skills</label>
+                <div class="flex gap-2 mb-2">
+                    <input type="text" wire:model="newSkill" wire:keydown.enter.prevent="addSkill"
+                        class="flex-grow px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white"
+                        placeholder="Memasak, kasir, MS Excel...">
+                    <button type="button" wire:click="addSkill" class="px-4 py-2.5 bg-blue-600 text-white font-bold text-sm rounded-xl hover:bg-blue-700 shrink-0">+</button>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    @foreach($skills as $i => $sk)
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-semibold rounded-lg border border-blue-100">
+                            {{ $sk }}<button type="button" wire:click="removeSkill({{ $i }})" class="hover:text-red-500 font-bold">×</button>
+                        </span>
+                    @endforeach
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Pengalaman Kerja (opsional)</label>
+                <textarea wire:model="work_experience" rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white resize-none" placeholder="Pernah bekerja sebagai apa, di mana, berapa lama..."></textarea>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Ekspektasi Gaji (opsional)</label>
+                <input type="text" wire:model="salary_expectation" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="Rp2.500.000 – Rp3.000.000">
+            </div>
+
+            <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3 text-xs text-emerald-700">
+                <i class='bx bx-gift'></i> Akun baru mendapatkan <strong>3 kesempatan melamar gratis!</strong>
+            </div>
+
+            <div class="flex gap-3">
+                <button type="button" wire:click="$set('step', 1)" class="flex-1 py-3 border border-slate-200 text-slate-600 font-bold rounded-xl text-sm hover:bg-slate-50">← Kembali</button>
+                <button type="button" wire:click="register" class="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm shadow-lg shadow-blue-600/20">Daftar Sekarang</button>
+            </div>
+        </div>
+        @endif
+
+        <p class="text-center text-xs text-slate-400 mt-4">
+            Sudah punya akun? <a href="{{ route('login') }}" class="text-blue-600 font-semibold">Masuk di sini</a>
+        </p>
     </div>
 </div>

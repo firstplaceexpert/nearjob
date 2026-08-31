@@ -1,72 +1,60 @@
-<div class="max-w-7xl mx-auto px-4 py-8 space-y-8">
-    
-    <!-- Welcome Header -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
-        <div>
-            <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest">Dashboard Perusahaan</span>
-            <h1 class="text-3xl font-extrabold text-slate-900 mt-1">{{ $company->company_name }}</h1>
-            <p class="text-slate-500 text-sm mt-1">📍 {{ $company->address }}, {{ $company->city }} • ✉️ Email kontak: {{ $company->contact_email }}</p>
+<div class="p-4 bg-slate-50 min-h-full pb-8">
+    <div class="max-w-xl mx-auto">
+        <h1 class="text-2xl font-extrabold text-slate-800 mb-2">Dashboard</h1>
+        <p class="text-slate-500 text-sm mb-6">Selamat datang kembali, <strong>{{ $company->owner_name }}</strong> dari {{ $company->company_name }}.</p>
+
+        {{-- Stats --}}
+        <div class="grid grid-cols-2 gap-3 mb-6">
+            <div class="bg-blue-600 rounded-3xl p-5 text-white shadow-lg shadow-blue-600/20 relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 text-6xl opacity-10"><i class='bx bx-briefcase'></i></div>
+                <p class="text-xs font-bold text-blue-200 uppercase tracking-widest mb-1">Total Lowongan</p>
+                <p class="text-4xl font-black">{{ $totalJobs }}</p>
+            </div>
+            <div class="bg-emerald-500 rounded-3xl p-5 text-white shadow-lg shadow-emerald-500/20 relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 text-6xl opacity-10"><i class='bx bx-group'></i></div>
+                <p class="text-xs font-bold text-emerald-200 uppercase tracking-widest mb-1">Total Pelamar</p>
+                <p class="text-4xl font-black">{{ $totalApplicants }}</p>
+            </div>
         </div>
 
-        <a href="{{ route('company.jobs.create') }}" class="px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-lg shadow-indigo-200 transition-all text-sm flex items-center justify-center gap-2">
-            <span>+ Pasang Lowongan Baru</span>
-        </a>
-    </div>
-
-    <!-- Overview Stats Cards -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Lowongan</span>
-            <div class="text-3xl font-black text-slate-900 mt-2">{{ $stats['total_jobs'] }}</div>
+        {{-- Action Buttons --}}
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-4 mb-6 flex gap-3">
+            <a href="{{ route('company.jobs.create') }}" class="flex-1 py-3 bg-blue-50 text-blue-700 font-extrabold rounded-xl text-center text-sm hover:bg-blue-100 transition-colors">
+                + Pasang Lowongan
+            </a>
+            <a href="{{ route('company.jobs') }}" class="flex-1 py-3 border border-slate-200 text-slate-700 font-bold rounded-xl text-center text-sm hover:bg-slate-50 transition-colors">
+                Semua Lowongan
+            </a>
         </div>
 
-        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-            <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Lowongan Aktif</span>
-            <div class="text-3xl font-black text-emerald-600 mt-2">{{ $stats['active_jobs'] }}</div>
-        </div>
-
-        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-            <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Total CV Masuk</span>
-            <div class="text-3xl font-black text-indigo-600 mt-2">{{ $stats['total_applications'] }}</div>
-        </div>
-
-        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-            <span class="text-xs font-bold text-amber-600 uppercase tracking-wider">CV Belum Dilihat</span>
-            <div class="text-3xl font-black text-amber-600 mt-2">{{ $stats['unviewed_applications'] }}</div>
-        </div>
-    </div>
-
-    <!-- Recent Applications Section -->
-    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
-        <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-slate-900">CV Terbaru Masuk via Swipe</h2>
-            <a href="{{ route('company.jobs') }}" class="text-indigo-600 font-semibold text-xs hover:underline">Kelola Lowongan →</a>
-        </div>
-
-        @if($recentApplications->isEmpty())
-            <div class="text-center py-10 text-slate-500 space-y-2">
-                <div class="text-3xl">📥</div>
-                <p class="font-medium text-sm">Belum ada CV pelamar yang masuk.</p>
-                <p class="text-xs text-slate-400">Pastikan Anda telah memasang lowongan aktif untuk menarik kandidat lokal.</p>
+        {{-- Recent Jobs --}}
+        <h2 class="text-lg font-extrabold text-slate-800 mb-4 border-b border-slate-100 pb-2">Lowongan Terbaru</h2>
+        
+        @if($recentJobs->isEmpty())
+            <div class="text-center py-10 bg-white rounded-2xl border border-slate-100 border-dashed">
+                <p class="text-sm text-slate-500">Anda belum memiliki lowongan.</p>
             </div>
         @else
-            <div class="divide-y divide-slate-100">
-                @foreach($recentApplications as $app)
-                    <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-700 font-bold flex items-center justify-center text-lg shrink-0">
-                                {{ strtoupper(substr($app->user->name, 0, 1)) }}
-                            </div>
+            <div class="space-y-3">
+                @foreach($recentJobs as $job)
+                    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
+                        <div class="flex justify-between items-start mb-3">
                             <div>
-                                <h4 class="font-bold text-slate-900 text-base">{{ $app->user->name }}</h4>
-                                <p class="text-xs text-slate-500">
-                                    Melamar posisi <span class="font-semibold text-slate-700">{{ $app->jobListing->position }}</span> • {{ $app->created_at->diffForHumans() }}
-                                </p>
+                                <h3 class="font-extrabold text-slate-800">{{ $job->position }}</h3>
+                                <p class="text-xs text-slate-500">{{ $job->created_at->diffForHumans() }}</p>
                             </div>
+                            <span class="px-2 py-1 bg-{{ $job->status === 'active' ? 'emerald' : ($job->status === 'filled' ? 'blue' : 'slate') }}-100 text-{{ $job->status === 'active' ? 'emerald' : ($job->status === 'filled' ? 'blue' : 'slate') }}-700 text-[10px] font-bold rounded uppercase tracking-wider">
+                                {{ $job->status === 'active' ? 'Aktif' : ($job->status === 'filled' ? 'Terisi' : 'Ditutup') }}
+                            </span>
                         </div>
-
-                        <a href="{{ route('company.jobs.applicants', $app->jobListing->id) }}" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition-colors text-center">
-                            Lihat Detail Pelamar
+                        
+                        <div class="flex items-center gap-4 text-xs font-semibold text-slate-600 mb-4">
+                            <span class="flex items-center gap-1"><i class='bx bx-group'></i> {{ $job->applications_count }} Pelamar</span>
+                            <span class="flex items-center gap-1"><i class='bx bx-map'></i> {{ $job->city }}</span>
+                        </div>
+                        
+                        <a href="{{ route('company.jobs.applicants', $job->id) }}" class="block w-full py-2.5 bg-slate-50 text-slate-700 hover:text-blue-600 font-bold rounded-xl text-center text-xs border border-slate-200 hover:border-blue-200 transition-colors">
+                            Kelola Pelamar →
                         </a>
                     </div>
                 @endforeach

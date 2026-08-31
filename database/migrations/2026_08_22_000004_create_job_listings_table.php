@@ -17,12 +17,12 @@ return new class extends Migration
             $table->string('city');
             $table->decimal('latitude', 10, 7)->nullable();
             $table->decimal('longitude', 10, 7)->nullable();
-            $table->enum('work_type', ['full_time', 'part_time', 'internship']);
+            $table->enum('work_type', ['full_time', 'part_time', 'harian', 'kontrak', 'internship']);
             $table->string('job_category');
             $table->json('required_skills')->nullable();
             $table->enum('min_education', ['sma', 'd3', 's1', 's2', 's3'])->default('sma');
             $table->unsignedInteger('radius_km')->default(25);
-            $table->enum('status', ['active', 'filled'])->default('active');
+            $table->enum('status', ['active', 'filled', 'closed'])->default('active');
             $table->timestamps();
 
             $table->index(['status', 'city']);

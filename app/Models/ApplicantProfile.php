@@ -3,70 +3,58 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ApplicantProfile extends Model
 {
     protected $fillable = [
-        'user_id',
-        'photo',
-        'education_level',
-        'education_institution',
-        'field_of_study',
-        'work_experience',
-        'skills',
-        'contact_email',
-        'city',
-        'latitude',
-        'longitude',
-        'is_active',
+        'user_id', 'photo', 'whatsapp',
+        'education_level', 'education_institution', 'field_of_study',
+        'work_experience', 'skills', 'salary_expectation',
+        'contact_email', 'city', 'latitude', 'longitude',
+        'is_active', 'application_credits', 'cv_generated', 'cv_data',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'skills' => 'array',
-            'is_active' => 'boolean',
-            'latitude' => 'decimal:7',
-            'longitude' => 'decimal:7',
-        ];
-    }
+    protected $casts = [
+        'skills'   => 'array',
+        'cv_data'  => 'array',
+        'is_active' => 'boolean',
+        'cv_generated' => 'boolean',
+    ];
 
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
     public function isComplete(): bool
     {
-        return $this->education_level
-            && $this->education_institution
-            && $this->contact_email
-            && $this->city
-            && $this->latitude
-            && $this->longitude;
+        return !empty($this->education_level)
+            && !empty($this->education_institution)
+            && !empty($this->city);
+    }
+
+    public function hasCredits(): bool
+    {
+        return $this->application_credits > 0;
+    }
+
+    public function deductCredit(): bool
+    {
+        if ($this->application_credits <= 0) return false;
+        $this->decrement('application_credits');
+        return true;
     }
 
     public static function educationLevels(): array
     {
         return [
-            'sma' => 'SMA/SMK/Sederajat',
-            'd3' => 'Diploma (D3)',
-            's1' => 'Sarjana (S1)',
-            's2' => 'Magister (S2)',
-            's3' => 'Doktor (S3)',
+            'sd'  => 'SD',
+            'smp' => 'SMP',
+            'sma' => 'SMA / SMK',
+            'd3'  => 'D3 (Diploma)',
+            's1'  => 'S1 (Sarjana)',
+            's2'  => 'S2 (Magister)',
+            's3'  => 'S3 (Doktor)',
         ];
-    }
-
-    public static function educationRank(string $level): int
-    {
-        return match ($level) {
-            'sma' => 1,
-            'd3' => 2,
-            's1' => 3,
-            's2' => 4,
-            's3' => 5,
-            default => 0,
-        };
     }
 }

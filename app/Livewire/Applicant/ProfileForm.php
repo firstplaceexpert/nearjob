@@ -4,137 +4,98 @@ namespace App\Livewire\Applicant;
 
 use App\Models\ApplicantProfile;
 use App\Models\City;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
 #[Layout('components.layouts.app')]
 class ProfileForm extends Component
 {
-    use WithFileUploads;
+    public ApplicantProfile $profile;
 
-    public $photo;
-    public ?string $existing_photo = null;
-
-    #[Rule('nullable|string')]
-    public ?string $education_level = null;
-
-    #[Rule('nullable|string|max:255')]
-    public ?string $education_institution = null;
-
-    #[Rule('nullable|string|max:255')]
-    public ?string $field_of_study = null;
-
-    #[Rule('nullable|string')]
-    public ?string $work_experience = null;
-
+    // Form fields
+    public string $name = '';
+    public string $whatsapp = '';
+    public string $email = '';
+    public string $city = '';
+    public string $education_level = '';
+    public string $education_institution = '';
+    public string $field_of_study = '';
+    public string $work_experience = '';
+    public string $salary_expectation = '';
+    
     public array $skills = [];
     public string $newSkill = '';
 
-    #[Rule('required|email')]
-    public string $contact_email = '';
-
-    #[Rule('required|string')]
-    public string $city = '';
-
-    public bool $is_active = true;
-
-    public function mount(): void
+    public function mount()
     {
-        $profile = auth()->user()->applicantProfile;
+        $user = Auth::user();
+        $this->profile = $user->applicantProfile ?? new ApplicantProfile();
 
-        if ($profile) {
-            $this->existing_photo = $profile->photo;
-            $this->education_level = $profile->education_level;
-            $this->education_institution = $profile->education_institution;
-            $this->field_of_study = $profile->field_of_study;
-            $this->work_experience = $profile->work_experience;
-            $this->skills = $profile->skills ?? [];
-            $this->contact_email = $profile->contact_email ?? auth()->user()->email;
-            $this->city = $profile->city ?? '';
-            $this->is_active = $profile->is_active;
-        } else {
-            $this->contact_email = auth()->user()->email;
-        }
+        $this->name = $user->name;
+        $this->email = $user->email;
+        $this->whatsapp = $this->profile->whatsapp ?? $user->whatsapp ?? '';
+        $this->city = $this->profile->city ?? '';
+        $this->education_level = $this->profile->education_level ?? 'sma';
+        $this->education_institution = $this->profile->education_institution ?? '';
+        $this->field_of_study = $this->profile->field_of_study ?? '';
+        $this->work_experience = $this->profile->work_experience ?? '';
+        $this->salary_expectation = $this->profile->salary_expectation ?? '';
+        $this->skills = $this->profile->skills ?? [];
     }
 
     public function addSkill(): void
     {
-        $skill = trim($this->newSkill);
-        if ($skill && !in_array($skill, $this->skills)) {
-            $this->skills[] = $skill;
+        $s = trim($this->newSkill);
+        if ($s && !in_array($s, $this->skills)) {
+            $this->skills[] = $s;
         }
         $this->newSkill = '';
     }
 
-    public function removeSkill(int $index): void
+    public function removeSkill(int $i): void
     {
-        unset($this->skills[$index]);
+        unset($this->skills[$i]);
         $this->skills = array_values($this->skills);
-    }
-
-    public function toggleActive(): void
-    {
-        $this->is_active = !$this->is_active;
-        $profile = auth()->user()->applicantProfile;
-        if ($profile) {
-            $profile->update(['is_active' => $this->is_active]);
-        }
-
-        $this->dispatch('notify', message: $this->is_active
-            ? 'Profil diaktifkan kembali!'
-            : 'Profil dinonaktifkan. Anda tidak akan muncul di pencarian.');
     }
 
     public function save(): void
     {
         $this->validate([
-            'photo' => 'nullable|image|max:2048',
-            'education_level' => 'required|in:sma,d3,s1,s2,s3',
-            'education_institution' => 'required|string|max:255',
-            'contact_email' => 'required|email',
+            'name' => 'required|string|max:255',
+            'whatsapp' => 'required|string',
             'city' => 'required|string',
+            'education_level' => 'required|string',
+            'education_institution' => 'required|string|max:255',
         ]);
 
-        $profile = auth()->user()->applicantProfile ?? new ApplicantProfile(['user_id' => auth()->id()]);
+        $user = Auth::user();
+        $user->update([
+            'name' => $this->name,
+            'whatsapp' => $this->whatsapp,
+        ]);
 
-        // Handle photo upload
-        if ($this->photo) {
-            if ($profile->photo) {
-                Storage::disk('public')->delete($profile->photo);
-            }
-            $profile->photo = $this->photo->store('photos', 'public');
-            $this->existing_photo = $profile->photo;
-        }
-
-        // Resolve city coordinates
-        $cityModel = City::findByName($this->city);
-
-        $profile->fill([
+        $this->profile->update([
+            'whatsapp' => $this->whatsapp,
+            'city' => $this->city,
             'education_level' => $this->education_level,
             'education_institution' => $this->education_institution,
             'field_of_study' => $this->field_of_study,
             'work_experience' => $this->work_experience,
+            'salary_expectation' => $this->salary_expectation,
             'skills' => $this->skills,
-            'contact_email' => $this->contact_email,
-            'city' => $this->city,
-            'latitude' => $cityModel?->latitude,
-            'longitude' => $cityModel?->longitude,
-            'is_active' => $this->is_active,
         ]);
 
-        $profile->save();
-
-        $this->dispatch('notify', message: 'Profil berhasil disimpan!');
+        $this->dispatch('notify', 'Profil berhasil disimpan!');
     }
 
     public function render()
     {
         return view('livewire.applicant.profile-form', [
-            'educationLevels' => ApplicantProfile::educationLevels(),
             'cities' => City::orderBy('name')->get(),
-        ])->title('Profil Saya — NearJob');
+            'educationLevels' => ApplicantProfile::educationLevels(),
+            'credits' => $this->profile->application_credits ?? 0,
+            'cv_generated' => $this->profile->cv_generated ?? false,
+        ])->title('Profil Pelamar — NEAR JOB');
     }
 }

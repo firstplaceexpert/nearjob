@@ -11,52 +11,28 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
+        'name', 'email', 'password', 'role',
+        'nik', 'whatsapp', 'date_of_birth',
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
+    protected $hidden = ['password', 'remember_token', 'nik'];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'date_of_birth'     => 'date',
+        'password'          => 'hashed',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    public function isApplicant(): bool { return $this->role === 'applicant'; }
+    public function isCompany(): bool   { return $this->role === 'company'; }
 
-    public function isApplicant(): bool
-    {
-        return $this->role === 'applicant';
-    }
+    public function applicantProfile() { return $this->hasOne(ApplicantProfile::class); }
+    public function company()          { return $this->hasOne(Company::class); }
+    public function applications()     { return $this->hasMany(Application::class); }
 
-    public function isCompany(): bool
+    public function getAgeAttribute(): int
     {
-        return $this->role === 'company';
-    }
-
-    public function applicantProfile()
-    {
-        return $this->hasOne(ApplicantProfile::class);
-    }
-
-    public function company()
-    {
-        return $this->hasOne(Company::class);
-    }
-
-    public function applications()
-    {
-        return $this->hasMany(Application::class);
-    }
-
-    public function swipeHistories()
-    {
-        return $this->hasMany(SwipeHistory::class);
+        if (!$this->date_of_birth) return 0;
+        return $this->date_of_birth->age;
     }
 }

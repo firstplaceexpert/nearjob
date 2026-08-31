@@ -3,35 +3,40 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Application extends Model
 {
     protected $fillable = [
-        'user_id',
-        'job_listing_id',
-        'status',
+        'user_id', 'job_listing_id', 'status', 'contact_method', 'application_date',
     ];
 
-    public function user(): BelongsTo
+    protected $casts = [
+        'application_date' => 'date',
+    ];
+
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function jobListing(): BelongsTo
+    public function jobListing()
     {
         return $this->belongsTo(JobListing::class);
     }
 
-    public function applicantProfile()
+    public static function statuses(): array
     {
-        return $this->hasOneThrough(
-            ApplicantProfile::class,
-            User::class,
-            'id',        // users.id
-            'user_id',   // applicant_profiles.user_id
-            'user_id',   // applications.user_id
-            'id'         // users.id
-        );
+        return [
+            'menunggu'    => 'Menunggu Respons',
+            'dihubungi'   => 'Sudah Dihubungi',
+            'interview'   => 'Interview',
+            'diterima'    => 'Diterima',
+            'tidak_lolos' => 'Tidak Lolos',
+        ];
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return self::statuses()[$this->status] ?? $this->status;
     }
 }

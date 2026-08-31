@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Applicant;
 
-use App\Models\Application;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -11,13 +11,10 @@ class ApplicationHistory extends Component
 {
     public function render()
     {
-        $applications = Application::where('user_id', auth()->id())
-            ->with('jobListing.company')
-            ->latest()
-            ->paginate(20);
+        $applications = Auth::user()->applications()->with(['jobListing.company'])->latest('application_date')->get();
 
         return view('livewire.applicant.application-history', [
             'applications' => $applications,
-        ])->title('Riwayat Lamaran — NearJob');
+        ])->title('Riwayat Lamaran — NEAR JOB');
     }
 }

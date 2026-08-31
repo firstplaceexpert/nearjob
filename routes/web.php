@@ -4,44 +4,57 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| NearJob Web Routes
+| NEAR JOB Web Routes
 |--------------------------------------------------------------------------
 */
 
-// Landing & Browse (public)
+// ========================
+// PUBLIC ROUTES
+// ========================
 Route::get('/', function () {
     return view('landing');
 })->name('home');
 
-Route::get('/browse', App\Livewire\Browse\JobBoard::class)->name('browse');
-
 // Auth routes (guest only)
 Route::middleware('guest')->group(function () {
-    Route::get('/login', App\Livewire\Auth\Login::class)->name('login');
-    Route::get('/register/applicant', App\Livewire\Auth\RegisterApplicant::class)->name('register.applicant');
-    Route::get('/register/company', App\Livewire\Auth\RegisterCompany::class)->name('register.company');
+    Route::get('/masuk', App\Livewire\Auth\Login::class)->name('login');
+    Route::get('/daftar/pelamar', App\Livewire\Auth\RegisterApplicant::class)->name('register.applicant');
+    Route::get('/daftar/pemberi-kerja', App\Livewire\Auth\RegisterCompany::class)->name('register.company');
 });
 
 // Logout
-Route::post('/logout', function () {
+Route::post('/keluar', function () {
     auth()->logout();
     request()->session()->invalidate();
     request()->session()->regenerateToken();
     return redirect()->route('home');
 })->middleware('auth')->name('logout');
 
-// Applicant routes
-Route::middleware(['auth', 'role:applicant'])->prefix('applicant')->name('applicant.')->group(function () {
-    Route::get('/profile', App\Livewire\Applicant\ProfileForm::class)->name('profile');
-    Route::get('/swipe', App\Livewire\Applicant\SwipeCards::class)->name('swipe');
-    Route::get('/applications', App\Livewire\Applicant\ApplicationHistory::class)->name('applications');
-});
+// ========================
+// APPLICANT ROUTES
+// ========================
+Route::middleware(['auth', 'role:applicant'])
+    ->prefix('pelamar')
+    ->name('applicant.')
+    ->group(function () {
+        Route::get('/beranda', App\Livewire\Applicant\JobMap::class)->name('map');
+        Route::get('/lowongan/{jobListing}', App\Livewire\Applicant\JobDetail::class)->name('job.detail');
+        Route::get('/lamaran', App\Livewire\Applicant\ApplicationHistory::class)->name('applications');
+        Route::get('/profil', App\Livewire\Applicant\ProfileForm::class)->name('profile');
+        Route::get('/cv-generator', App\Livewire\Applicant\CvGenerator::class)->name('cv.generator');
+    });
 
-// Company routes
-Route::middleware(['auth', 'role:company'])->prefix('company')->name('company.')->group(function () {
-    Route::get('/dashboard', App\Livewire\Company\Dashboard::class)->name('dashboard');
-    Route::get('/jobs', App\Livewire\Company\JobListings::class)->name('jobs');
-    Route::get('/jobs/create', App\Livewire\Company\JobListingForm::class)->name('jobs.create');
-    Route::get('/jobs/{jobListing}/edit', App\Livewire\Company\JobListingForm::class)->name('jobs.edit');
-    Route::get('/jobs/{jobListing}/applicants', App\Livewire\Company\ApplicantList::class)->name('jobs.applicants');
-});
+// ========================
+// EMPLOYER ROUTES
+// ========================
+Route::middleware(['auth', 'role:company'])
+    ->prefix('pemberi-kerja')
+    ->name('company.')
+    ->group(function () {
+        Route::get('/dashboard', App\Livewire\Company\Dashboard::class)->name('dashboard');
+        Route::get('/lowongan', App\Livewire\Company\JobListings::class)->name('jobs');
+        Route::get('/lowongan/buat', App\Livewire\Company\JobListingForm::class)->name('jobs.create');
+        Route::get('/lowongan/{jobListing}/edit', App\Livewire\Company\JobListingForm::class)->name('jobs.edit');
+        Route::get('/lowongan/{jobListing}/pelamar', App\Livewire\Company\ApplicantList::class)->name('jobs.applicants');
+        Route::get('/profil', App\Livewire\Company\CompanyProfile::class)->name('profile');
+    });

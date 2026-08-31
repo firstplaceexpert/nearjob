@@ -3,43 +3,34 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Company extends Model
 {
     protected $fillable = [
-        'user_id',
-        'company_name',
-        'address',
-        'city',
-        'latitude',
-        'longitude',
-        'contact_email',
-        'agreed_to_terms',
+        'user_id', 'owner_name', 'nik', 'whatsapp',
+        'company_name', 'business_field', 'nib',
+        'address', 'city', 'latitude', 'longitude',
+        'contact_email', 'contact_method', 'agreed_to_terms',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'agreed_to_terms' => 'boolean',
-            'latitude' => 'decimal:7',
-            'longitude' => 'decimal:7',
-        ];
-    }
+    protected $hidden = ['nik'];
 
-    public function user(): BelongsTo
+    protected $casts = [
+        'agreed_to_terms' => 'boolean',
+    ];
+
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function jobListings(): HasMany
+    public function jobListings()
     {
         return $this->hasMany(JobListing::class);
     }
 
-    public function activeJobListings(): HasMany
+    public function isVerified(): bool
     {
-        return $this->hasMany(JobListing::class)->where('status', 'active');
+        return !empty($this->owner_name) && !empty($this->company_name) && $this->agreed_to_terms;
     }
 }

@@ -4,68 +4,43 @@ namespace App\Livewire\Company;
 
 use App\Models\Application;
 use App\Models\JobListing;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('components.layouts.app')]
 class ApplicantList extends Component
 {
-    public JobListing $jobListing;
+    public JobListing $job;
 
-    public function mount(JobListing $jobListing): void
+    public function mount(JobListing $jobListing)
     {
-        // Verify ownership
-        if ($jobListing->company_id !== auth()->user()->company->id) {
+        if ($jobListing->company_id !== Auth::user()->company->id) {
             abort(403);
         }
-
-        $this->jobListing = $jobListing;
+        
+        $this->job = $jobListing;
     }
 
-    public function updateStatus(int $applicationId, string $status): void
+    public function updateStatus(int $applicationId, string $status)
     {
-        $application = Application::where('job_listing_id', $this->jobListing->id)
-            ->findOrFail($applicationId);
+        $app = Application::where('id', $applicationId)
+            ->where('job_listing_id', $this->job->id)
+            ->first();
 
-        $application->update(['status' => $status]);
-
-        $statusLabels = [
-            'viewed' => 'ditandai sudah dilihat',
-            'contacted' => 'ditandai sudah dikontak',
-        ];
-
-        $this->dispatch('notify', message: 'Lamaran ' . ($statusLabels[$status] ?? 'diperbarui') . '.');
-    }
-
-    public function markJobFilled(): void
-    {
-        $this->jobListing->update(['status' => 'filled']);
-        $this->dispatch('notify', message: 'Lowongan ditandai sudah terisi.');
+        if ($app) {
+            $app->update(['status' => $status]);
+            $this->dispatch('notify', 'Status pelamar berhasil diperbarui.');
+        }
     }
 
     public function render()
     {
-        $applications = $this->jobListing
-            ->applications()
-            ->with('user.applicantProfile')
-            ->latest()
-            ->paginate(20);
-
-        foreach ($applications as $app) {
-            $profile = $app->user?->applicantProfile;
-            if ($profile && $profile->latitude && $profile->longitude && $this->jobListing->latitude && $this->jobListing->longitude) {
-                $dist = \App\Services\MatchingService::haversineDistance(
-                    (float) $profile->latitude,
-                    (float) $profile->longitude,
-                    (float) $this->jobListing->latitude,
-                    (float) $this->jobListing->longitude
-                );
-                $app->distance_km = round($dist, 1);
-            }
-        }
+        $applications = $this->job->applications()->with(['user.applicantProfile'])->latest()->get();
 
         return view('livewire.company.applicant-list', [
             'applications' => $applications,
-        ])->title($this->jobListing->position . ' — Pelamar — NearJob');
+            'statuses' => Application::statuses(),
+        ])->title('Pelamar: ' . $this->job->position . ' — NEAR JOB');
     }
 }

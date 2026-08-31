@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('photo')->nullable();
-            $table->enum('education_level', ['sma', 'd3', 's1', 's2', 's3'])->nullable();
+            $table->enum('education_level', ['sd', 'smp', 'sma', 'd3', 's1', 's2', 's3'])->nullable();
             $table->string('education_institution')->nullable();
             $table->string('field_of_study')->nullable();
             $table->text('work_experience')->nullable();

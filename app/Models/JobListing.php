@@ -3,91 +3,79 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class JobListing extends Model
 {
     protected $fillable = [
-        'company_id',
-        'position',
-        'description',
-        'qualifications',
-        'city',
-        'latitude',
-        'longitude',
-        'work_type',
-        'job_category',
-        'required_skills',
-        'min_education',
-        'radius_km',
-        'status',
+        'company_id', 'position', 'description', 'qualifications',
+        'city', 'latitude', 'longitude',
+        'work_type', 'job_category', 'required_skills', 'min_education',
+        'salary_min', 'salary_max', 'work_duration', 'work_hours',
+        'contact_method', 'contact_whatsapp', 'contact_email',
+        'radius_km', 'status',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'required_skills' => 'array',
-            'latitude' => 'decimal:7',
-            'longitude' => 'decimal:7',
-            'radius_km' => 'integer',
-        ];
-    }
+    protected $casts = [
+        'required_skills' => 'array',
+        'salary_min'      => 'integer',
+        'salary_max'      => 'integer',
+    ];
 
-    public function company(): BelongsTo
+    public function company()
     {
         return $this->belongsTo(Company::class);
     }
 
-    public function applications(): HasMany
+    public function applications()
     {
         return $this->hasMany(Application::class);
     }
 
-    public function swipeHistories(): HasMany
+    public function getWorkTypeLabelAttribute(): string
     {
-        return $this->hasMany(SwipeHistory::class);
+        return match($this->work_type) {
+            'full_time'  => 'Full-time',
+            'part_time'  => 'Part-time',
+            'harian'     => 'Harian',
+            'kontrak'    => 'Kontrak',
+            'internship' => 'Magang',
+            default      => $this->work_type,
+        };
     }
 
-    public function scopeActive($query)
+    public function getSalaryRangeAttribute(): string
     {
-        return $query->where('status', 'active');
+        if (!$this->salary_min) return 'Negosiasi';
+        $min = 'Rp' . number_format($this->salary_min, 0, ',', '.');
+        if ($this->salary_max) {
+            $max = 'Rp' . number_format($this->salary_max, 0, ',', '.');
+            return "{$min}–{$max}/bulan";
+        }
+        return "{$min}/bulan";
     }
 
     public static function workTypes(): array
     {
         return [
-            'full_time' => 'Full Time',
-            'part_time' => 'Part Time',
-            'internship' => 'Magang',
+            'full_time' => 'Full-time',
+            'part_time' => 'Part-time',
+            'harian'    => 'Harian',
+            'kontrak'   => 'Kontrak',
         ];
     }
 
     public static function jobCategories(): array
     {
         return [
-            'teknologi' => 'Teknologi & IT',
-            'desain' => 'Desain & Kreatif',
-            'marketing' => 'Marketing & Sales',
-            'admin' => 'Administrasi & HR',
-            'keuangan' => 'Keuangan & Akuntansi',
-            'pendidikan' => 'Pendidikan',
-            'kesehatan' => 'Kesehatan',
-            'fnb' => 'Food & Beverage',
-            'retail' => 'Retail & E-Commerce',
-            'logistik' => 'Logistik & Operasional',
-            'media' => 'Media & Komunikasi',
-            'lainnya' => 'Lainnya',
+            'fnb'           => 'F&B (Makanan & Minuman)',
+            'retail'        => 'Retail',
+            'jasa'          => 'Jasa',
+            'produksi'      => 'Produksi',
+            'logistik'      => 'Logistik & Gudang',
+            'konstruksi'    => 'Konstruksi',
+            'administrasi'  => 'Administrasi',
+            'teknisi'       => 'Teknisi',
+            'lainnya'       => 'Lainnya',
         ];
-    }
-
-    public function getWorkTypeLabelAttribute(): string
-    {
-        return self::workTypes()[$this->work_type] ?? $this->work_type;
-    }
-
-    public function getCategoryLabelAttribute(): string
-    {
-        return self::jobCategories()[$this->job_category] ?? $this->job_category;
     }
 }

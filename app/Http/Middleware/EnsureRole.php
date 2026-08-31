@@ -15,7 +15,7 @@ class EnsureRole
                 // Redirect to the appropriate dashboard based on role
                 return $request->user()->isCompany()
                     ? redirect()->route('company.dashboard')
-                    : redirect()->route('applicant.swipe');
+                    : redirect()->route('applicant.map');
             }
 
             return redirect()->route('login');

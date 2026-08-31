@@ -33,7 +33,7 @@ class Login extends Component
             if ($user->isCompany()) {
                 $this->redirect(route('company.dashboard'), navigate: true);
             } else {
-                $this->redirect(route('applicant.swipe'), navigate: true);
+                $this->redirect(route('applicant.map'), navigate: true);
             }
 
             return;

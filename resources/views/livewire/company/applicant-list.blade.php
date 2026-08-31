@@ -1,120 +1,95 @@
-<div class="max-w-7xl mx-auto px-4 py-8 space-y-6">
-    
-    <!-- Job Header Info -->
-    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-            <a href="{{ route('company.jobs') }}" class="text-xs font-bold text-indigo-600 hover:underline inline-flex items-center gap-1 mb-2">
-                ← Kembali ke Daftar Lowongan
+<div class="p-4 bg-slate-50 min-h-full pb-8">
+    <div class="max-w-xl mx-auto">
+        <div class="flex items-center gap-3 mb-6">
+            <a href="{{ route('company.jobs') }}" class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-slate-500 hover:bg-slate-100 transition-colors border border-slate-200">
+                ←
             </a>
-            <h1 class="text-2xl font-extrabold text-slate-900">{{ $jobListing->position }}</h1>
-            <p class="text-slate-500 text-sm mt-1">
-                📍 {{ $jobListing->city }} • {{ $jobListing->work_type_label }} • Status: 
-                <span class="font-bold {{ $jobListing->status === 'active' ? 'text-emerald-600' : 'text-slate-500' }}">
-                    {{ $jobListing->status === 'active' ? 'Aktif di Swipe' : 'Sudah Terisi' }}
-                </span>
-            </p>
+            <div>
+                <h1 class="text-xl font-extrabold text-slate-800 leading-tight">Daftar Pelamar</h1>
+                <p class="text-slate-500 text-sm truncate max-w-[250px]">{{ $job->position }}</p>
+            </div>
         </div>
 
-        @if($jobListing->status === 'active')
-            <button type="button" wire:click="markJobFilled" 
-                    class="px-5 py-2.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-bold border border-emerald-200 rounded-xl text-xs transition-colors shrink-0">
-                ✓ Tandai Lowongan Sudah Terisi
-            </button>
-        @endif
-    </div>
-
-    <!-- Applicants CV List -->
-    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
-        <h2 class="text-lg font-bold text-slate-900">Daftar Pelamar (Swiped Right)</h2>
-
         @if($applications->isEmpty())
-            <div class="text-center py-12 text-slate-500 space-y-2">
-                <div class="text-3xl">📭</div>
-                <p class="font-semibold text-base">Belum Ada Pelamar</p>
-                <p class="text-xs text-slate-400">Belum ada pelamar yang swipe kanan pada posisi lowongan ini.</p>
+            <div class="text-center py-16 bg-white rounded-3xl border border-slate-100 shadow-sm mt-4">
+                <div class="text-5xl mb-4"><i class='bx bx-group'></i></div>
+                <h3 class="text-lg font-extrabold text-slate-700">Belum ada pelamar</h3>
+                <p class="text-sm text-slate-500 mt-2 max-w-[250px] mx-auto">Lowongan ini belum menerima lamaran. Tetap bersabar menunggu kandidat yang tepat.</p>
             </div>
         @else
-            <div class="space-y-6">
+            <div class="space-y-4">
                 @foreach($applications as $app)
                     @php
                         $profile = $app->user->applicantProfile;
                     @endphp
-                    <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all space-y-4">
-                        
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80">
-                            <div class="flex items-center gap-4">
-                                <div class="w-14 h-14 rounded-2xl bg-indigo-600 text-white font-black text-xl flex items-center justify-center shadow-md overflow-hidden shrink-0">
-                                    @if($profile?->photo)
-                                        <img src="{{ asset('storage/' . $profile->photo) }}" class="w-full h-full object-cover">
-                                    @else
-                                        {{ strtoupper(substr($app->user->name, 0, 1)) }}
-                                    @endif
-                                </div>
+                    <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-5 relative overflow-hidden">
+                        {{-- Top Section: Name & Contact --}}
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h3 class="font-extrabold text-lg text-slate-800">{{ $app->user->name }}</h3>
+                                <p class="text-xs text-slate-500 mb-2">Usia: {{ $app->user->age }} thn • Lulusan {{ strtoupper($profile->education_level ?? '-') }}</p>
+                            </div>
+                            
+                            {{-- Status Dropdown --}}
+                            <div class="relative w-36">
+                                <select wire:change="updateStatus({{ $app->id }}, $event.target.value)" 
+                                    class="w-full text-[10px] font-bold uppercase tracking-wider rounded-lg border-2 appearance-none px-2 py-1.5 focus:ring-0
+                                    {{ $app->status === 'menunggu' ? 'border-yellow-200 bg-yellow-50 text-yellow-700' : '' }}
+                                    {{ $app->status === 'dihubungi' ? 'border-blue-200 bg-blue-50 text-blue-700' : '' }}
+                                    {{ $app->status === 'interview' ? 'border-purple-200 bg-purple-50 text-purple-700' : '' }}
+                                    {{ $app->status === 'diterima' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : '' }}
+                                    {{ $app->status === 'tidak_lolos' ? 'border-red-200 bg-red-50 text-red-700' : '' }}">
+                                    @foreach($statuses as $val => $label)
+                                        <option value="{{ $val }}" {{ $app->status === $val ? 'selected' : '' }}>{{ $label }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
-                                <div>
-                                    <h3 class="text-lg font-bold text-slate-900">{{ $app->user->name }}</h3>
-                                    <p class="text-xs text-slate-500 flex flex-wrap items-center gap-1.5 mt-0.5">
-                                        <span>📍 {{ $profile?->city ?? '-' }}</span>
-                                        @if(isset($app->distance_km))
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
-                                                ⚡ ~{{ $app->distance_km }} km
-                                            </span>
-                                        @endif
-                                        <span>• 🎓 {{ \App\Models\ApplicantProfile::educationLevels()[$profile?->education_level ?? ''] ?? '-' }} ({{ $profile?->education_institution ?? '-' }})</span>
-                                    </p>
-                                    <p class="text-[11px] text-slate-400 mt-0.5">Dilamar pada {{ $app->created_at->format('d M Y, H:i') }}</p>
+                        {{-- Profil Info --}}
+                        <div class="grid grid-cols-2 gap-3 mb-4 p-3 bg-slate-50 rounded-xl">
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Pengalaman / Sekolah</p>
+                                <p class="text-xs font-semibold text-slate-700 truncate">{{ $profile->work_experience ?: $profile->education_institution }}</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Domisili</p>
+                                <p class="text-xs font-semibold text-slate-700 truncate">{{ $profile->city ?? '-' }}</p>
+                            </div>
+                            <div class="col-span-2">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Keahlian</p>
+                                <div class="flex flex-wrap gap-1 mt-1">
+                                    @forelse($profile->skills ?? [] as $skill)
+                                        <span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold">{{ $skill }}</span>
+                                    @empty
+                                        <span class="text-xs text-slate-400">-</span>
+                                    @endforelse
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Direct Email Contact CTA -->
-                            <div class="flex flex-wrap items-center gap-2">
-                                <a href="mailto:{{ $profile?->contact_email ?? $app->user->email }}?subject=Lamaran%20Kerja%20Posisi%20{{ urlencode($jobListing->position) }}%20di%20{{ urlencode($jobListing->company->company_name) }}" 
-                                   wire:click="updateStatus({{ $app->id }}, 'contacted')"
-                                   class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow-md shadow-indigo-200 transition-all flex items-center gap-1.5">
-                                    <span>✉️ Contact via Email</span>
+                        {{-- Contact Actions --}}
+                        <div class="flex gap-2 border-t border-slate-100 pt-4 mt-2">
+                            @if($app->contact_method === 'whatsapp')
+                                <a href="https://wa.me/{{ preg_replace('/^0/', '62', preg_replace('/[^0-9]/', '', $app->user->whatsapp)) }}" target="_blank"
+                                   class="flex-1 py-2 bg-green-50 hover:bg-green-100 text-green-700 font-bold rounded-xl text-center text-xs transition-colors border border-green-200">
+                                    <i class='bx bxl-whatsapp'></i> Hubungi WA
                                 </a>
-
-                                <button type="button" wire:click="updateStatus({{ $app->id }}, 'viewed')" class="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs">
-                                    Tandai Dilihat
+                            @else
+                                <a href="mailto:{{ $app->user->email }}" target="_blank"
+                                   class="flex-1 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold rounded-xl text-center text-xs transition-colors border border-blue-200">
+                                    <i class='bx bx-envelope'></i> Hubungi Email
+                                </a>
+                            @endif
+                            
+                            @if($profile->cv_generated)
+                                <button class="flex-1 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-center text-xs transition-colors border border-slate-200" onclick="alert('Demo: Unduh CV ATS (Fitur Premium Pelamar)')">
+                                    <i class='bx bx-file'></i> Lihat CV ATS
                                 </button>
-                            </div>
+                            @endif
                         </div>
-
-                        <!-- Full CV Details (Skills & Experience) -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-700">
-                            <div>
-                                <h4 class="font-bold text-slate-500 uppercase tracking-wider mb-1">Bidang Studi & Jurusan</h4>
-                                <p class="font-medium text-slate-900">{{ $profile?->field_of_study ?? '-' }}</p>
-                                
-                                <h4 class="font-bold text-slate-500 uppercase tracking-wider mt-3 mb-1">Email Kontak Direct</h4>
-                                <p class="font-medium text-slate-900 select-all">{{ $profile?->contact_email ?? $app->user->email }}</p>
-                            </div>
-
-                            <div>
-                                <h4 class="font-bold text-slate-500 uppercase tracking-wider mb-1">Skills & Keahlian</h4>
-                                <div class="flex flex-wrap gap-1">
-                                    @if(!empty($profile?->skills))
-                                        @foreach($profile->skills as $sk)
-                                            <span class="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 font-semibold border border-indigo-100">{{ $sk }}</span>
-                                        @endforeach
-                                    @else
-                                        <span class="text-slate-400">Tidak ada skill terdaftar</span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="md:col-span-2 pt-2 border-t border-slate-100">
-                                <h4 class="font-bold text-slate-500 uppercase tracking-wider mb-1">Pengalaman Kerja / Organisasi</h4>
-                                <p class="text-slate-600 leading-relaxed whitespace-pre-line">{{ $profile?->work_experience ?? 'Belum ada pengalaman tercantum' }}</p>
-                            </div>
-                        </div>
-
                     </div>
                 @endforeach
-            </div>
-
-            <div class="pt-4">
-                {{ $applications->links() }}
             </div>
         @endif
     </div>

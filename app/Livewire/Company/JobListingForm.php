@@ -4,118 +4,159 @@ namespace App\Livewire\Company;
 
 use App\Models\City;
 use App\Models\JobListing;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 #[Layout('components.layouts.app')]
 class JobListingForm extends Component
 {
-    public ?JobListing $jobListing = null;
-    public bool $isEditing = false;
+    public ?JobListing $job = null;
+    public bool $isEdit = false;
 
-    #[Rule('required|string|max:255')]
+    // Form fields
     public string $position = '';
-
-    #[Rule('required|string|min:20')]
-    public string $description = '';
-
-    #[Rule('required|string|min:10')]
-    public string $qualifications = '';
-
-    #[Rule('required|string')]
-    public string $city = '';
-
-    #[Rule('required|in:full_time,part_time,internship')]
-    public string $work_type = 'full_time';
-
-    #[Rule('required|string')]
     public string $job_category = 'lainnya';
-
+    public string $work_type = 'full_time';
+    public string $min_education = 'sma';
+    public string $city = '';
+    public string $salary_min = '';
+    public string $salary_max = '';
+    public string $work_duration = '';
+    public string $work_hours = '';
+    public string $description = '';
+    public string $qualifications = '';
+    
     public array $required_skills = [];
     public string $newSkill = '';
 
-    #[Rule('required|in:sma,d3,s1,s2,s3')]
-    public string $min_education = 'sma';
+    public string $contact_method = 'whatsapp';
+    public string $contact_whatsapp = '';
+    public string $contact_email = '';
+    public string $status = 'active';
 
-    #[Rule('required|integer|min:5|max:100')]
-    public int $radius_km = 25;
-
-    public function mount(?JobListing $jobListing = null): void
+    public function mount(?JobListing $jobListing = null)
     {
         if ($jobListing && $jobListing->exists) {
-            // Verify ownership
-            if ($jobListing->company_id !== auth()->user()->company->id) {
-                abort(403);
-            }
-
-            $this->jobListing = $jobListing;
-            $this->isEditing = true;
-            $this->position = $jobListing->position;
-            $this->description = $jobListing->description;
-            $this->qualifications = $jobListing->qualifications;
-            $this->city = $jobListing->city;
-            $this->work_type = $jobListing->work_type;
-            $this->job_category = $jobListing->job_category;
-            $this->required_skills = $jobListing->required_skills ?? [];
-            $this->min_education = $jobListing->min_education;
-            $this->radius_km = $jobListing->radius_km;
+            $this->authorizeJob($jobListing);
+            $this->job = $jobListing;
+            $this->isEdit = true;
+            $this->fillForm();
+        } else {
+            $company = Auth::user()->company;
+            $this->city = $company->city;
+            $this->contact_method = $company->contact_method;
+            $this->contact_whatsapp = $company->whatsapp;
+            $this->contact_email = $company->contact_email;
         }
+    }
+
+    protected function authorizeJob(JobListing $job)
+    {
+        if ($job->company_id !== Auth::user()->company->id) {
+            abort(403);
+        }
+    }
+
+    protected function fillForm()
+    {
+        $this->position = $this->job->position;
+        $this->job_category = $this->job->job_category;
+        $this->work_type = $this->job->work_type;
+        $this->min_education = $this->job->min_education;
+        $this->city = $this->job->city;
+        $this->salary_min = $this->job->salary_min ?? '';
+        $this->salary_max = $this->job->salary_max ?? '';
+        $this->work_duration = $this->job->work_duration ?? '';
+        $this->work_hours = $this->job->work_hours ?? '';
+        $this->description = $this->job->description;
+        $this->qualifications = $this->job->qualifications;
+        $this->required_skills = $this->job->required_skills ?? [];
+        $this->contact_method = $this->job->contact_method;
+        $this->contact_whatsapp = $this->job->contact_whatsapp ?? '';
+        $this->contact_email = $this->job->contact_email ?? '';
+        $this->status = $this->job->status;
     }
 
     public function addSkill(): void
     {
-        $skill = trim($this->newSkill);
-        if ($skill && !in_array($skill, $this->required_skills)) {
-            $this->required_skills[] = $skill;
+        $s = trim($this->newSkill);
+        if ($s && !in_array($s, $this->required_skills)) {
+            $this->required_skills[] = $s;
         }
         $this->newSkill = '';
     }
 
-    public function removeSkill(int $index): void
+    public function removeSkill(int $i): void
     {
-        unset($this->required_skills[$index]);
+        unset($this->required_skills[$i]);
         $this->required_skills = array_values($this->required_skills);
     }
 
-    public function save(): void
+    public function save()
     {
-        $this->validate();
-
-        $cityModel = City::findByName($this->city);
-        $company = auth()->user()->company;
+        $this->validate([
+            'position' => 'required|string|max:255',
+            'job_category' => 'required|string',
+            'work_type' => 'required|string',
+            'min_education' => 'required|string',
+            'city' => 'required|string',
+            'description' => 'required|string',
+            'qualifications' => 'required|string',
+            'contact_method' => 'required|in:whatsapp,email',
+            'status' => 'required|in:active,filled,closed',
+        ]);
 
         $data = [
-            'company_id' => $company->id,
             'position' => $this->position,
+            'job_category' => $this->job_category,
+            'work_type' => $this->work_type,
+            'min_education' => $this->min_education,
+            'city' => $this->city,
+            'salary_min' => $this->salary_min ?: null,
+            'salary_max' => $this->salary_max ?: null,
+            'work_duration' => $this->work_duration,
+            'work_hours' => $this->work_hours,
             'description' => $this->description,
             'qualifications' => $this->qualifications,
-            'city' => $this->city,
-            'latitude' => $cityModel?->latitude,
-            'longitude' => $cityModel?->longitude,
-            'work_type' => $this->work_type,
-            'job_category' => $this->job_category,
             'required_skills' => $this->required_skills,
-            'min_education' => $this->min_education,
-            'radius_km' => $this->radius_km,
+            'contact_method' => $this->contact_method,
+            'contact_whatsapp' => $this->contact_whatsapp,
+            'contact_email' => $this->contact_email,
+            'status' => $this->status,
         ];
 
-        if ($this->isEditing && $this->jobListing) {
-            $this->jobListing->update($data);
+        // Temukan koordinat kota secara sederhana
+        $cityModel = City::where('name', $this->city)->first();
+        if ($cityModel) {
+            $data['latitude'] = $cityModel->latitude;
+            $data['longitude'] = $cityModel->longitude;
         } else {
-            JobListing::create($data);
+            // Default ke Banyuwangi jika tidak ketemu
+            $data['latitude'] = -8.2192;
+            $data['longitude'] = 114.3692;
         }
 
-        $this->redirect(route('company.jobs'), navigate: true);
+        if ($this->isEdit) {
+            $this->job->update($data);
+            $msg = 'Lowongan berhasil diperbarui!';
+        } else {
+            $data['company_id'] = Auth::user()->company->id;
+            $this->job = JobListing::create($data);
+            $msg = 'Lowongan berhasil diposting!';
+        }
+
+        session()->flash('notify', $msg);
+        return $this->redirect(route('company.jobs'), navigate: true);
     }
 
     public function render()
     {
         return view('livewire.company.job-listing-form', [
             'cities' => City::orderBy('name')->get(),
+            'categories' => JobListing::jobCategories(),
             'workTypes' => JobListing::workTypes(),
-            'jobCategories' => JobListing::jobCategories(),
             'educationLevels' => \App\Models\ApplicantProfile::educationLevels(),
-        ])->title(($this->isEditing ? 'Edit' : 'Buat') . ' Lowongan — NearJob');
+        ])->title(($this->isEdit ? 'Edit' : 'Buat') . ' Lowongan — NEAR JOB');
     }
 }

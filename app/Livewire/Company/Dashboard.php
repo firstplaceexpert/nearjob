@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Company;
 
-use App\Models\Application;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -11,28 +11,17 @@ class Dashboard extends Component
 {
     public function render()
     {
-        $company = auth()->user()->company;
-        $jobIds = $company->jobListings()->pluck('id');
-
-        $stats = [
-            'total_jobs' => $company->jobListings()->count(),
-            'active_jobs' => $company->activeJobListings()->count(),
-            'total_applications' => Application::whereIn('job_listing_id', $jobIds)->count(),
-            'unviewed_applications' => Application::whereIn('job_listing_id', $jobIds)
-                ->where('status', 'applied')
-                ->count(),
-        ];
-
-        $recentApplications = Application::whereIn('job_listing_id', $jobIds)
-            ->with(['user.applicantProfile', 'jobListing'])
-            ->latest()
-            ->take(5)
-            ->get();
+        $company = Auth::user()->company;
+        $jobs = $company->jobListings()->withCount('applications')->latest()->take(3)->get();
+        
+        $totalJobs = $company->jobListings()->count();
+        $totalApplicants = $company->jobListings()->withCount('applications')->get()->sum('applications_count');
 
         return view('livewire.company.dashboard', [
-            'stats' => $stats,
-            'recentApplications' => $recentApplications,
             'company' => $company,
-        ])->title('Dashboard — NearJob');
+            'recentJobs' => $jobs,
+            'totalJobs' => $totalJobs,
+            'totalApplicants' => $totalApplicants,
+        ])->title('Dashboard Pemberi Kerja — NEAR JOB');
     }
 }
