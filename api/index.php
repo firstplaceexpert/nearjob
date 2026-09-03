@@ -1,8 +1,9 @@
 <?php
 
-/**
- * Vercel Serverless Entrypoint for Laravel
- */
+// Enable error reporting
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
 // 1. Ensure required storage directories exist in /tmp (the only writable directory in Vercel)
 $storageDirs = [
@@ -16,7 +17,7 @@ $storageDirs = [
 
 foreach ($storageDirs as $dir) {
     if (!is_dir($dir)) {
-        mkdir($dir, 0755, true);
+        @mkdir($dir, 0755, true);
     }
 }
 
@@ -46,9 +47,9 @@ if ($dbConnection === 'sqlite') {
     if (!file_exists($dbPath)) {
         $sourceDb = __DIR__ . '/../database/database.sqlite';
         if (file_exists($sourceDb)) {
-            copy($sourceDb, $dbPath);
+            @copy($sourceDb, $dbPath);
         } else {
-            touch($dbPath);
+            @touch($dbPath);
         }
     }
     putenv("DB_DATABASE={$dbPath}");
@@ -56,4 +57,14 @@ if ($dbConnection === 'sqlite') {
 }
 
 // 4. Forward to Laravel public entrypoint
-require __DIR__ . '/../public/index.php';
+try {
+    require __DIR__ . '/../public/index.php';
+} catch (\Throwable $e) {
+    http_response_code(500);
+    echo "<div style='font-family:sans-serif;padding:30px;max-width:800px;margin:auto;'>";
+    echo "<h2 style='color:#dc2626;'>Laravel Error on Vercel</h2>";
+    echo "<p><strong>Message:</strong> " . htmlspecialchars($e->getMessage()) . "</p>";
+    echo "<p><strong>File:</strong> " . htmlspecialchars($e->getFile()) . ":" . $e->getLine() . "</p>";
+    echo "<pre style='background:#f1f5f9;padding:15px;border-radius:8px;overflow:auto;font-size:12px;'>" . htmlspecialchars($e->getTraceAsString()) . "</pre>";
+    echo "</div>";
+}
