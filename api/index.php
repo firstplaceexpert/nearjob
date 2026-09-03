@@ -37,8 +37,18 @@ $_ENV['APP_PACKAGES_CACHE'] = '/tmp/packages.php';
 putenv('APP_ROUTES_CACHE=/tmp/routes.php');
 $_ENV['APP_ROUTES_CACHE'] = '/tmp/routes.php';
 
-putenv('APP_EVENTS_CACHE=/tmp/events.php');
-$_ENV['APP_EVENTS_CACHE'] = '/tmp/events.php';
+putenv('APP_MAINTENANCE_DRIVER=file');
+$_ENV['APP_MAINTENANCE_DRIVER'] = 'file';
+
+if (empty($_ENV['CACHE_STORE']) || empty(getenv('CACHE_STORE'))) {
+    putenv('CACHE_STORE=array');
+    $_ENV['CACHE_STORE'] = 'array';
+}
+
+if (empty($_ENV['SESSION_DRIVER']) || empty(getenv('SESSION_DRIVER'))) {
+    putenv('SESSION_DRIVER=cookie');
+    $_ENV['SESSION_DRIVER'] = 'cookie';
+}
 
 // 3. Handle SQLite database if no remote database is configured
 $dbConnection = getenv('DB_CONNECTION') ?: ($_ENV['DB_CONNECTION'] ?? 'sqlite');
