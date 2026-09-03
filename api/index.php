@@ -50,6 +50,11 @@ if (empty($_ENV['SESSION_DRIVER']) || empty(getenv('SESSION_DRIVER'))) {
     $_ENV['SESSION_DRIVER'] = 'cookie';
 }
 
+if (empty($_ENV['BCRYPT_ROUNDS']) || (int) getenv('BCRYPT_ROUNDS') < 4) {
+    putenv('BCRYPT_ROUNDS=12');
+    $_ENV['BCRYPT_ROUNDS'] = '12';
+}
+
 // 3. Handle SQLite database if no remote database is configured
 $rawConn = getenv('DB_CONNECTION') ?: ($_ENV['DB_CONNECTION'] ?? '');
 $dbConnection = !empty($rawConn) ? $rawConn : 'sqlite';
