@@ -58,9 +58,9 @@ $_ENV['DB_CONNECTION'] = $dbConnection;
 
 if ($dbConnection === 'sqlite') {
     $dbPath = '/tmp/database.sqlite';
-    if (!file_exists($dbPath)) {
-        $sourceDb = __DIR__ . '/../database/database.sqlite';
-        if (file_exists($sourceDb)) {
+    $sourceDb = __DIR__ . '/../database/database.sqlite';
+    if (!file_exists($dbPath) || filesize($dbPath) === 0) {
+        if (file_exists($sourceDb) && filesize($sourceDb) > 0) {
             @copy($sourceDb, $dbPath);
         } else {
             @touch($dbPath);
