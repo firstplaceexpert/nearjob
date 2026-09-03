@@ -60,9 +60,16 @@ if (empty($_ENV['BCRYPT_ROUNDS']) || (int) getenv('BCRYPT_ROUNDS') < 4) {
     $_ENV['BCRYPT_ROUNDS'] = '12';
 }
 
-// 3. Handle SQLite database if no remote database is configured
+// 3. Handle database connection (auto-detect Supabase/PostgreSQL if present, otherwise SQLite)
 $rawConn = getenv('DB_CONNECTION') ?: ($_ENV['DB_CONNECTION'] ?? '');
-$dbConnection = !empty($rawConn) ? $rawConn : 'sqlite';
+if (empty($rawConn)) {
+    if (!empty(getenv('POSTGRES_URL')) || !empty($_ENV['POSTGRES_URL']) || !empty(getenv('POSTGRES_HOST')) || !empty($_ENV['POSTGRES_HOST'])) {
+        $rawConn = 'pgsql';
+    } else {
+        $rawConn = 'sqlite';
+    }
+}
+$dbConnection = $rawConn;
 putenv("DB_CONNECTION={$dbConnection}");
 $_ENV['DB_CONNECTION'] = $dbConnection;
 
