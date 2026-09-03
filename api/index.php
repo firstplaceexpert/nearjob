@@ -46,9 +46,14 @@ if (empty($_ENV['CACHE_STORE']) || empty(getenv('CACHE_STORE'))) {
 }
 
 if (empty($_ENV['SESSION_DRIVER']) || empty(getenv('SESSION_DRIVER'))) {
-    putenv('SESSION_DRIVER=database');
-    $_ENV['SESSION_DRIVER'] = 'database';
+    putenv('SESSION_DRIVER=cookie');
+    $_ENV['SESSION_DRIVER'] = 'cookie';
 }
+
+putenv('SESSION_LIFETIME=120');
+$_ENV['SESSION_LIFETIME'] = '120';
+putenv('SESSION_COOKIE=nearjob_session');
+$_ENV['SESSION_COOKIE'] = 'nearjob_session';
 
 if (empty($_ENV['BCRYPT_ROUNDS']) || (int) getenv('BCRYPT_ROUNDS') < 4) {
     putenv('BCRYPT_ROUNDS=12');
