@@ -51,7 +51,11 @@ if (empty($_ENV['SESSION_DRIVER']) || empty(getenv('SESSION_DRIVER'))) {
 }
 
 // 3. Handle SQLite database if no remote database is configured
-$dbConnection = getenv('DB_CONNECTION') ?: ($_ENV['DB_CONNECTION'] ?? 'sqlite');
+$rawConn = getenv('DB_CONNECTION') ?: ($_ENV['DB_CONNECTION'] ?? '');
+$dbConnection = !empty($rawConn) ? $rawConn : 'sqlite';
+putenv("DB_CONNECTION={$dbConnection}");
+$_ENV['DB_CONNECTION'] = $dbConnection;
+
 if ($dbConnection === 'sqlite') {
     $dbPath = '/tmp/database.sqlite';
     if (!file_exists($dbPath)) {
