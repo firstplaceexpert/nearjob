@@ -110,11 +110,11 @@
                         <p class="text-xs text-slate-400 font-medium mt-1 leading-relaxed">Buat CV profesional otomatis dalam 1 kali klik.</p>
                     @endif
                 </div>
-                <a href="{{ route('applicant.cv.generator') }}"
+                <a href="https://cvatsplygrown.vercel.app" target="_blank" rel="noopener noreferrer"
                    class="inline-flex items-center justify-center gap-2 w-full text-center text-xs sm:text-sm font-extrabold px-4 py-3.5 rounded-xl mt-6 transition-all shadow-sm hover:opacity-95"
-                   style="{{ $cv_generated ? 'background: #eef2fb; color: #5680d8; border: 1px solid #c7d6f5;' : 'background: #5680d8; color: white;' }}">
+                   style="background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: white; text-decoration: none;">
                     <i class='bx bx-file-blank text-base'></i>
-                    {{ $cv_generated ? 'Lihat / Edit CV ATS' : 'Buat CV ATS — Rp14.999' }}
+                    Buat CV ATS di CV ATS PLYGROWN <i class='bx bx-link-external text-xs'></i>
                 </a>
             </div>
         </div>

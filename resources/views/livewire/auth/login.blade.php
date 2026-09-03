@@ -48,24 +48,5 @@
                 </a>
             </div>
         </div>
-
-        {{-- Demo Accounts --}}
-        <div class="mt-6 rounded-2xl p-5" style="background: #eef2fb; border: 1.5px solid #c7d6f5;">
-            <p class="text-xs font-black mb-3" style="color: #5680d8;">🎯 Akun Demo (password: password)</p>
-            <div class="space-y-3">
-                <div class="bg-white rounded-xl p-3.5 shadow-2xs" style="border: 1px solid #e8edf5;">
-                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Pelamar (3 kredit)</p>
-                    <p class="text-xs font-bold text-slate-800">budi@demo.com</p>
-                </div>
-                <div class="bg-white rounded-xl p-3.5 shadow-2xs" style="border: 1px solid #e8edf5;">
-                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Pelamar (0 kredit)</p>
-                    <p class="text-xs font-bold text-slate-800">sari@demo.com</p>
-                </div>
-                <div class="bg-white rounded-xl p-3.5 shadow-2xs" style="border: 1px solid #e8edf5;">
-                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Pemberi Kerja</p>
-                    <p class="text-xs font-bold text-slate-800">yanti@demo.com</p>
-                </div>
-            </div>
-        </div>
     </div>
 </div>

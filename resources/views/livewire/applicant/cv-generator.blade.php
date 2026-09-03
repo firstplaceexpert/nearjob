@@ -1,7 +1,33 @@
 <div class="pb-36 pt-16" style="background: #f0f4f9; min-height: 100vh;">
     <div class="max-w-xl mx-auto px-4 pt-5">
         <h1 class="text-2xl font-extrabold text-slate-800 mb-1">Generator CV ATS</h1>
-        <p class="text-slate-400 text-sm mb-5">Buat CV profesional yang ramah ATS dari profil Anda secara otomatis.</p>
+        <p class="text-slate-400 text-sm mb-4">Buat CV profesional yang ramah ATS dari profil Anda secara otomatis.</p>
+
+        {{-- Official CV ATS PLYGROWN Link Card --}}
+        <div class="rounded-2xl p-5 mb-6 text-white relative overflow-hidden shadow-md" style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%);">
+            <div class="flex items-start justify-between gap-4">
+                <div class="space-y-1.5">
+                    <span class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/20 text-blue-100">
+                        <i class='bx bx-check-shield'></i> Mitra Resmi
+                    </span>
+                    <h2 class="text-lg font-black text-white">CV ATS PLYGROWN</h2>
+                    <p class="text-xs text-blue-100 leading-relaxed max-w-sm">
+                        Optimasi & uji resume Anda agar 100% lolos sistem Applicant Tracking System (ATS) dengan AI Optimizer dan Skor ATS.
+                    </p>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-2xl shrink-0">
+                    <i class='bx bx-file-blank'></i>
+                </div>
+            </div>
+            <div class="mt-4 pt-4 border-t border-white/15">
+                <a href="https://cvatsplygrown.vercel.app" target="_blank" rel="noopener noreferrer"
+                   class="inline-flex items-center justify-center gap-2 w-full py-3 bg-white font-extrabold text-xs sm:text-sm rounded-xl text-blue-700 shadow-sm hover:bg-blue-50 transition-all text-center"
+                   style="text-decoration: none;">
+                    <span>Buka Pembuat CV di CV ATS PLYGROWN</span>
+                    <i class='bx bx-link-external'></i>
+                </a>
+            </div>
+        </div>
 
         @if(!$isPaid)
             {{-- Mock Payment Flow --}}
