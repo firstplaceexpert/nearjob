@@ -1,19 +1,19 @@
-<div class="min-h-screen bg-slate-50 flex flex-col">
+<div class="min-h-screen flex flex-col" style="background: #f0f4f9;">
     {{-- Progress Bar --}}
-    <div class="bg-white border-b border-slate-100 px-4 py-3">
+    <div class="bg-white px-4 py-3" style="border-bottom: 1px solid #e8edf5;">
         <div class="max-w-sm mx-auto">
             <div class="flex items-center gap-2 mb-2">
-                <div class="flex-1 h-1.5 rounded-full bg-slate-100 overflow-hidden">
-                    <div class="h-full bg-blue-600 rounded-full transition-all duration-500" style="width: {{ $step === 1 ? '50%' : '100%' }}"></div>
+                <div class="flex-1 h-1.5 rounded-full overflow-hidden" style="background: #e8edf5;">
+                    <div class="h-full rounded-full transition-all duration-500" style="width: {{ $step === 1 ? '50%' : '100%' }}; background: #5680d8;"></div>
                 </div>
-                <span class="text-xs font-bold text-slate-500">{{ $step }}/2</span>
+                <span class="text-xs font-bold" style="color: #5680d8;">{{ $step }}/2</span>
             </div>
             <p class="text-xs text-slate-400">{{ $step === 1 ? 'Data diri Anda' : 'Profil kerja Anda' }}</p>
         </div>
     </div>
 
-    <div class="flex-grow px-4 py-6 max-w-sm mx-auto w-full">
-        <div class="mb-6">
+    <div class="flex-grow px-4 py-8 max-w-md mx-auto w-full">
+        <div class="mb-6 text-center sm:text-left">
             <h1 class="text-2xl font-extrabold text-slate-800">
                 {!! $step === 1 ? "<i class='bx bx-hand'></i> Halo! Siapa Anda?" : "<i class='bx bx-briefcase'></i> Profil Kerja Anda" !!}
             </h1>
@@ -24,7 +24,7 @@
 
         @if($step === 1)
         {{-- ===== STEP 1: Identitas ===== --}}
-        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-5 space-y-4">
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-7 sm:p-8 space-y-5">
             
             <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">Nama Lengkap <span class="text-red-500">*</span></label>
@@ -72,14 +72,15 @@
             </div>
 
             <button type="button" wire:click="nextStep"
-                class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm shadow-lg shadow-blue-600/20">
+                class="w-full py-3.5 text-white font-bold rounded-xl text-sm transition-all"
+                style="background: #5680d8; box-shadow: 0 4px 15px rgba(86,128,216,.3);">
                 Lanjut →
             </button>
         </div>
 
         @else
         {{-- ===== STEP 2: Profil Kerja ===== --}}
-        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-5 space-y-4">
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-7 sm:p-8 space-y-5">
 
             <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">Kota Domisili <span class="text-red-500">*</span></label>
@@ -144,8 +145,8 @@
             </div>
 
             <div class="flex gap-3">
-                <button type="button" wire:click="$set('step', 1)" class="flex-1 py-3 border border-slate-200 text-slate-600 font-bold rounded-xl text-sm hover:bg-slate-50">← Kembali</button>
-                <button type="button" wire:click="register" class="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm shadow-lg shadow-blue-600/20">Daftar Sekarang</button>
+                <button type="button" wire:click="$set('step', 1)" class="flex-1 py-3 font-bold rounded-xl text-sm transition-all" style="border: 1.5px solid #e2e8f0; color: #64748b;">← Kembali</button>
+                <button type="button" wire:click="register" class="flex-1 py-3 text-white font-bold rounded-xl text-sm transition-all" style="background: #5680d8; box-shadow: 0 4px 15px rgba(86,128,216,.3);">Daftar Sekarang</button>
             </div>
         </div>
         @endif

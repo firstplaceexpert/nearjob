@@ -14,7 +14,8 @@ class JobMap extends Component
     public string $viewMode = 'map'; // 'map' atau 'list'
     public ?int $selectedJobId = null;
     
-    // Filters
+    // Search & Filters
+    public string $searchQuery = '';
     public string $filterCategory = '';
     public string $filterWorkType = '';
     public int $filterRadius = 25; // km
@@ -31,6 +32,16 @@ class JobMap extends Component
 
     public function closeJobDetails(): void
     {
+        $this->selectedJobId = null;
+    }
+
+    public function resetFilters(): void
+    {
+        $this->searchQuery = '';
+        $this->filterCategory = '';
+        $this->filterWorkType = '';
+        $this->filterRadius = 25;
+        $this->filterMinSalary = null;
         $this->selectedJobId = null;
     }
 
@@ -88,6 +99,18 @@ class JobMap extends Component
     public function getFilteredJobsProperty()
     {
         $query = JobListing::with('company')->where('status', 'active');
+
+        if ($this->searchQuery) {
+            $term = '%' . trim($this->searchQuery) . '%';
+            $query->where(function($sub) use ($term) {
+                $sub->where('position', 'like', $term)
+                    ->orWhere('description', 'like', $term)
+                    ->orWhereHas('company', function($c) use ($term) {
+                        $c->where('company_name', 'like', $term)
+                          ->orWhere('city', 'like', $term);
+                    });
+            });
+        }
 
         if ($this->filterCategory) {
             $query->where('job_category', $this->filterCategory);
@@ -147,14 +170,26 @@ class JobMap extends Component
 
     public function render()
     {
+        $jobsMapData = $this->filteredJobs->map(function ($j) {
+            return [
+                'id' => $j->id,
+                'position' => $j->position,
+                'latitude' => (float) $j->latitude,
+                'longitude' => (float) $j->longitude,
+                'quota' => (int) ($j->quota ?: 1),
+            ];
+        })->values()->all();
+
         return view('livewire.applicant.job-map', [
             'jobs' => $this->filteredJobs,
+            'jobsMapData' => json_encode($jobsMapData),
+            'jobsMapDataArray' => $jobsMapData,
             'selectedJob' => $this->selectedJob,
             'categories' => JobListing::jobCategories(),
             'workTypes' => JobListing::workTypes(),
             'userLat' => $this->userLat,
             'userLon' => $this->userLon,
-            'credits' => Auth::user()->applicantProfile?->application_credits ?? 0,
+            'credits' => Auth::user()?->applicantProfile?->application_credits ?? 0,
         ])->title('Peta Lowongan — NEAR JOB');
     }
 }

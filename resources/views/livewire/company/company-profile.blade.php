@@ -1,12 +1,11 @@
-<div class="p-4 bg-slate-50 min-h-full pb-8">
-    <div class="max-w-md mx-auto">
-        <h1 class="text-2xl font-extrabold text-slate-800 mb-2">Profil Usaha</h1>
-        <p class="text-slate-500 text-sm mb-6">Kelola informasi perusahaan dan data kontak Anda.</p>
+<div class="min-h-screen pb-36 pt-16" style="background: #f0f4f9;">
+    <div class="max-w-md mx-auto px-4 pt-5">
+        <h1 class="text-2xl font-extrabold text-slate-800 mb-1">Profil Usaha</h1>
+        <p class="text-slate-400 text-sm mb-5">Kelola informasi perusahaan dan data kontak Anda.</p>
 
-        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6">
-            <form wire:submit="save" class="space-y-4">
-                
-                <h3 class="text-sm font-extrabold text-blue-600 uppercase tracking-widest border-b border-slate-100 pb-2">Data Pemilik</h3>
+        <div class="bg-white rounded-2xl overflow-hidden" style="border: 1px solid #e8edf5; box-shadow: 0 2px 12px rgba(0,0,0,.04);">
+            <form wire:submit="save" class="space-y-4 p-5">
+                <h3 class="text-xs font-extrabold uppercase tracking-widest pb-2" style="color: #5680d8; border-bottom: 1px solid #e8edf5;">Data Pemilik</h3>
                 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Nama Pemilik Usaha</label>
@@ -18,7 +17,7 @@
                     <input type="tel" wire:model="whatsapp" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white">
                 </div>
 
-                <h3 class="text-sm font-extrabold text-blue-600 uppercase tracking-widest border-b border-slate-100 pb-2 mt-6">Data Usaha</h3>
+                <h3 class="text-xs font-extrabold uppercase tracking-widest pb-2 mt-6" style="color: #5680d8; border-bottom: 1px solid #e8edf5;">Data Usaha</h3>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Nama Usaha</label>
@@ -68,7 +67,7 @@
                 </div>
 
                 <div class="pt-4">
-                    <button type="submit" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm shadow-lg shadow-blue-600/20 transition-colors">
+                    <button type="submit" class="w-full py-3.5 text-white font-bold rounded-xl text-sm transition-all" style="background: #5680d8; box-shadow: 0 4px 15px rgba(86,128,216,.3);">
                         Simpan Perubahan
                     </button>
                 </div>

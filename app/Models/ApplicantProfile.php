@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ApplicantProfile extends Model
 {
     protected $fillable = [
-        'user_id', 'photo', 'whatsapp',
+        'user_id', 'photo', 'cover_picture', 'whatsapp',
         'education_level', 'education_institution', 'field_of_study',
         'work_experience', 'skills', 'salary_expectation',
         'contact_email', 'city', 'latitude', 'longitude',
@@ -20,6 +20,34 @@ class ApplicantProfile extends Model
         'is_active' => 'boolean',
         'cv_generated' => 'boolean',
     ];
+
+    public function getPhotoUrlAttribute(): string
+    {
+        if (!$this->photo) return '';
+        if (str_starts_with($this->photo, 'http://') || str_starts_with($this->photo, 'https://')) {
+            return $this->photo;
+        }
+        return asset('storage/' . $this->photo);
+    }
+
+    public function getCoverPictureUrlAttribute(): string
+    {
+        if (!$this->cover_picture) return '';
+        if (str_starts_with($this->cover_picture, 'http://') || str_starts_with($this->cover_picture, 'https://')) {
+            return $this->cover_picture;
+        }
+        return asset('storage/' . $this->cover_picture);
+    }
+
+    public function getProfilePictureAttribute(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setProfilePictureAttribute($value): void
+    {
+        $this->attributes['photo'] = $value;
+    }
 
     public function user()
     {

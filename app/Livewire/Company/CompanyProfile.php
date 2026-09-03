@@ -26,14 +26,14 @@ class CompanyProfile extends Component
     {
         $this->company = Auth::user()->company;
         
-        $this->owner_name = $this->company->owner_name;
-        $this->whatsapp = $this->company->whatsapp;
-        $this->company_name = $this->company->company_name;
-        $this->business_field = $this->company->business_field;
-        $this->nib = $this->company->nib;
-        $this->address = $this->company->address;
-        $this->city = $this->company->city;
-        $this->contact_method = $this->company->contact_method;
+        $this->owner_name = $this->company->owner_name ?? '';
+        $this->whatsapp = $this->company->whatsapp ?? '';
+        $this->company_name = $this->company->company_name ?? '';
+        $this->business_field = $this->company->business_field ?? '';
+        $this->nib = $this->company->nib ?? '';
+        $this->address = $this->company->address ?? '';
+        $this->city = $this->company->city ?? '';
+        $this->contact_method = $this->company->contact_method ?? 'whatsapp';
     }
 
     public function save()
@@ -63,7 +63,7 @@ class CompanyProfile extends Component
             'whatsapp' => $this->whatsapp,
         ]);
 
-        $this->dispatch('notify', 'Profil usaha berhasil diperbarui!');
+        $this->dispatch('notify', ['message' => 'Profil usaha berhasil diperbarui!', 'type' => 'success']);
     }
 
     public function render()

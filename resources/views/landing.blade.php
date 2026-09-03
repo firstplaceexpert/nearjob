@@ -7,209 +7,544 @@
     <title>NEAR JOB — Temukan Pekerjaan di Sekitar Anda</title>
     <meta name="description" content="Near Job membantu Anda menemukan peluang kerja di sekitar berdasarkan lokasi dan keahlian. Hubungi pemberi kerja langsung via WhatsApp atau Email.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
-        * { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .hero-bg { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 60%, #1d4ed8 100%); }
-        .map-mock { background: #e8f0f7; border-radius: 1.5rem; overflow: hidden; position: relative; }
-        .pin { position: absolute; background: #2563eb; color: white; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; box-shadow: 0 4px 12px rgba(37,99,235,.4); cursor: pointer; }
-        .pin::after { content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: #2563eb; border-bottom: none; }
+        :root {
+            --primary: #5680d8;
+            --primary-dark: #24427b;
+            --teal: #47bfae;
+            --section-pad: 112px;
+        }
+        * { font-family: 'Plus Jakarta Sans', sans-serif; box-sizing: border-box; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .hero-gradient { background: linear-gradient(160deg, var(--primary-dark) 0%, var(--primary) 60%, #6b93e8 100%); }
+
+        /* Phone mockup styling with generous padding */
+        .phone-frame {
+            width: 275px; height: 560px;
+            border-radius: 2.75rem; border: 6px solid #e8edf5;
+            box-shadow: 0 24px 60px rgba(37,67,155,.22);
+            overflow: hidden; position: relative;
+            background: #fff; flex-shrink: 0;
+        }
+        .phone-notch {
+            position: absolute; top: 0; left: 0; right: 0; width: 100%;
+            height: 24px; display: flex; justify-content: center; z-index: 30;
+        }
+        .phone-notch-inner { width: 120px; height: 24px; background: #e8edf5; border-radius: 0 0 14px 14px; }
+        .phone-statusbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 18px 4px; font-size: 9.5px; font-weight: 700; color: #475569;
+            position: relative; z-index: 20;
+        }
+        .filter-chip {
+            padding: 6px 14px; border-radius: 99px; font-size: 9.5px; font-weight: 700;
+            white-space: nowrap; display: inline-flex; align-items: center; gap: 4px;
+        }
+        .job-card-mini {
+            background: #fff; border-radius: 14px; padding: 12px 14px;
+            border: 1px solid #e8edf5; margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.03);
+        }
+        .apply-btn-mini {
+            padding: 6px 14px; background: var(--primary); color: #fff;
+            border-radius: 8px; font-size: 9.5px; font-weight: 800; border: none;
+            cursor: pointer;
+        }
+        .map-cluster {
+            border-radius: 50%; border: 2.5px solid #fff; color: #fff; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--primary); box-shadow: 0 4px 12px rgba(86,128,216,.45);
+        }
+        .bottom-nav-mini {
+            position: absolute; bottom: 0; left: 0; right: 0; width: 100%;
+            height: 54px; background: #fff; border-top: 1px solid #e8edf5;
+            display: flex; align-items: center; justify-content: space-around;
+            z-index: 20; padding: 4px 16px 8px;
+        }
+        .nav-mini-item {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 2px; font-size: 8px; font-weight: 700; min-width: 44px;
+        }
+        .nav-mini-item i { font-size: 19px; line-height: 1; }
+        .nav-mini-item.active { color: var(--primary); }
+        .nav-mini-item:not(.active) { color: #94a3b8; }
+
+        /* Section Layout Spacing */
+        .sec { padding: 112px 24px; }
+        .sec-white { background: #ffffff; }
+        .sec-light { background: #f5f7fb; }
+        .sec-head { text-align: center; margin-bottom: 72px; }
+        .sec-label {
+            display: inline-block; font-size: 12px; font-weight: 900;
+            text-transform: uppercase; letter-spacing: .14em;
+            color: var(--primary); margin-bottom: 14px;
+        }
+        .sec-title {
+            font-size: clamp(28px, 4vw, 42px); font-weight: 900;
+            color: #1e293b; line-height: 1.25; margin-bottom: 16px;
+        }
+        .sec-desc {
+            font-size: 15px; font-weight: 500; color: #64748b;
+            max-width: 500px; margin: 0 auto; line-height: 1.8;
+        }
     </style>
 </head>
 <body class="bg-white text-slate-800 antialiased">
 
 {{-- ===== HEADER ===== --}}
-<header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
-    <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+<header style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#ffffff;border-bottom:2px solid #e8edf5;box-shadow:0 2px 14px rgba(36,66,123,.08);">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm" style="background:var(--primary);">
                 <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
             </div>
-            <span class="font-extrabold text-xl text-blue-700 tracking-tight">NEAR JOB</span>
+            <span class="font-black text-xl tracking-tight" style="color:var(--primary-dark);">NEAR JOB</span>
         </div>
         <div class="flex items-center gap-3">
-            <a href="{{ route('login') }}" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors px-3 py-2">Masuk</a>
-            <a href="{{ route('register.applicant') }}" class="text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl transition-colors">Daftar</a>
+            <a href="{{ route('login') }}" class="text-sm font-extrabold px-5 py-2.5 rounded-xl transition-colors hover:bg-slate-100" style="color:var(--primary-dark);text-decoration:none;">Masuk</a>
+            <a href="{{ route('register.applicant') }}" class="text-sm font-extrabold text-white px-6 py-2.5 rounded-xl shadow-md transition-all hover:opacity-95" style="background:var(--primary);text-decoration:none;">Daftar Gratis</a>
         </div>
     </div>
 </header>
 
 {{-- ===== HERO ===== --}}
-<section class="hero-bg pt-32 pb-20 px-4 text-white text-center relative overflow-hidden">
-    <div class="absolute inset-0 opacity-10">
-        <div class="absolute top-20 left-10 w-32 h-32 bg-white rounded-full blur-3xl"></div>
-        <div class="absolute bottom-10 right-10 w-48 h-48 bg-white rounded-full blur-3xl"></div>
+<section class="hero-gradient px-6 text-white relative overflow-hidden" style="padding-top:112px;padding-bottom:64px;">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full opacity-10" style="background:radial-gradient(circle,white,transparent);"></div>
+        <div class="absolute top-1/2 -left-12 w-48 h-48 rounded-full opacity-5" style="background:radial-gradient(circle,white,transparent);"></div>
     </div>
-    <div class="relative max-w-2xl mx-auto">
-        <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 text-sm font-semibold mb-6">
-            <i class='bx bx-map'></i> Lebih dari 500 lowongan di seluruh Indonesia
+
+    <div class="relative max-w-3xl mx-auto text-center" style="display:flex;flex-direction:column;gap:28px;align-items:center;">
+        <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black shadow-sm" style="background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);">
+            <i class='bx bx-map-pin text-yellow-300 text-sm'></i> Lebih dari 500+ lowongan pekerjaan di sekitar Anda
         </div>
-        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-5">
+
+        <h1 style="font-size:clamp(36px,6vw,62px);font-weight:900;line-height:1.15;letter-spacing:-.02em;margin:0;">
             Pekerjaan yang Tepat<br>
-            <span class="text-yellow-300">Mungkin Lebih Dekat</span><br>
+            <span style="color:#a8c7ff;">Mungkin Lebih Dekat</span><br>
             Dari yang Anda Kira.
         </h1>
-        <p class="text-blue-100 text-lg mb-8 max-w-lg mx-auto leading-relaxed">
-            Near Job membantu Anda menemukan peluang kerja di sekitar berdasarkan lokasi dan keahlian. Hubungi pemberi kerja langsung.
+
+        <p style="color:#bfdbfe;font-size:16px;max-width:560px;line-height:1.8;font-weight:600;margin:0;">
+            Near Job membantu Anda menemukan berbagai peluang lowongan pekerjaan lokal terdekat berdasarkan lokasi presisi dan keahlian Anda. Hubungi pemberi kerja langsung via WhatsApp.
         </p>
-        <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="{{ route('register.applicant') }}" class="inline-flex items-center justify-center gap-2 bg-white text-blue-700 font-extrabold text-base px-8 py-4 rounded-2xl hover:bg-yellow-50 transition-all shadow-xl shadow-blue-900/20">
-                <i class='bx bx-search'></i> Cari Pekerjaan
+
+        <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:4px;">
+            <a href="{{ route('register.applicant') }}" style="display:inline-flex;align-items:center;gap:10px;background:#fff;color:var(--primary-dark);font-weight:900;font-size:16px;padding:16px 36px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.25);text-decoration:none;white-space:nowrap;">
+                <i class='bx bx-search' style="font-size:20px;"></i> Cari Pekerjaan Sekarang
             </a>
-            <a href="{{ route('register.company') }}" class="inline-flex items-center justify-center gap-2 bg-white/15 backdrop-blur-sm border-2 border-white/40 text-white font-bold text-base px-8 py-4 rounded-2xl hover:bg-white/25 transition-all">
-                <i class='bx bx-buildings'></i> Saya Butuh Tenaga Kerja
+            <a href="{{ route('register.company') }}" style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.12);color:#fff;font-weight:800;font-size:16px;padding:16px 36px;border-radius:18px;border:2px solid rgba(255,255,255,.35);text-decoration:none;white-space:nowrap;">
+                <i class='bx bx-buildings' style="font-size:20px;"></i> Saya Butuh Karyawan
             </a>
         </div>
     </div>
 
-    {{-- Mock Map --}}
-    <div class="max-w-2xl mx-auto mt-14 map-mock" style="height: 280px;">
-        <div style="width:100%;height:100%;background:linear-gradient(135deg,#d1e8f7,#e8f4fd);position:relative;">
-            {{-- Fake map grid --}}
-            <svg width="100%" height="100%" style="position:absolute;opacity:.15"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#2563eb" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)"/></svg>
-            {{-- Fake roads --}}
-            <svg width="100%" height="100%" style="position:absolute;opacity:.3"><line x1="0" y1="140" x2="100%" y2="140" stroke="#94a3b8" stroke-width="3"/><line x1="0" y1="180" x2="100%" y2="180" stroke="#94a3b8" stroke-width="2"/><line x1="200" y1="0" x2="200" y2="100%" stroke="#94a3b8" stroke-width="3"/><line x1="350" y1="0" x2="350" y2="100%" stroke="#94a3b8" stroke-width="2"/></svg>
-            {{-- Job Pins --}}
-            <div class="pin" style="top:60px;left:15%"><i class='bx bx-restaurant'></i> Kitchen Helper · 1.4 km</div>
-            <div class="pin" style="top:120px;left:45%"><i class='bx bx-store'></i> Kasir · 2.1 km</div>
-            <div class="pin" style="top:40px;right:15%;background:#059669"><i class='bx bx-cog'></i> Operator · 3.7 km</div>
-            <div class="pin" style="bottom:60px;left:30%;background:#7c3aed"><i class='bx bx-brush'></i> Cleaning · 4.2 km</div>
-            <div class="pin" style="bottom:40px;right:20%;background:#d97706"><i class='bx bx-package'></i> Helper Gudang · 5.1 km</div>
-            {{-- User Location --}}
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
-                <div style="width:16px;height:16px;background:#2563eb;border:3px solid white;border-radius:50%;box-shadow:0 0 0 8px rgba(37,99,235,.2);"></div>
-            </div>
-        </div>
-    </div>
-</section>
+    {{-- 4 PHONE MOCKUPS (PERFECTLY CENTERED & AMPLE WRAP SPACING) --}}
+    <div class="relative mt-16" style="padding-top:16px;">
+        <div class="absolute bottom-0 left-0 right-0 w-full" style="height:50%;background:var(--primary);z-index:0;"></div>
+        <div class="relative z-10 w-full" style="overflow-x:auto;">
+            <div style="display:flex;flex-wrap:nowrap;justify-content:center;align-items:flex-end;gap:28px;padding:8px 40px 0;min-width:max-content;margin:0 auto;">
 
-{{-- ===== 3 LANGKAH ===== --}}
-<section class="py-20 px-4 bg-white">
-    <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-14">
-            <h2 class="text-3xl font-extrabold text-slate-800 mb-3">Cara Kerja Near Job</h2>
-            <p class="text-slate-500">Tiga langkah mudah untuk mendapatkan pekerjaan di sekitar Anda.</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="text-center p-6">
-                <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl"><i class='bx bx-map'></i></div>
-                <div class="text-blue-600 font-black text-sm tracking-widest mb-2">LANGKAH 01</div>
-                <h3 class="text-xl font-bold text-slate-800 mb-2">Temukan</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Lihat lowongan pekerjaan di sekitar Anda langsung di peta interaktif.</p>
-            </div>
-            <div class="text-center p-6 relative">
-                <div class="hidden md:block absolute top-8 -left-4 w-8 h-0.5 bg-slate-200"></div>
-                <div class="hidden md:block absolute top-8 -right-4 w-8 h-0.5 bg-slate-200"></div>
-                <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl"><i class='bx bx-filter-alt'></i></div>
-                <div class="text-emerald-600 font-black text-sm tracking-widest mb-2">LANGKAH 02</div>
-                <h3 class="text-xl font-bold text-slate-800 mb-2">Pilih</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Filter berdasarkan keahlian, jarak, jenis kerja, dan kisaran gaji yang Anda inginkan.</p>
-            </div>
-            <div class="text-center p-6">
-                <div class="w-16 h-16 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl"><i class='bx bxl-whatsapp'></i></div>
-                <div class="text-orange-600 font-black text-sm tracking-widest mb-2">LANGKAH 03</div>
-                <h3 class="text-xl font-bold text-slate-800 mb-2">Lamar</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Hubungi pemberi kerja langsung melalui WhatsApp atau Email. Tanpa perantara.</p>
-            </div>
-        </div>
-    </div>
-</section>
+                {{-- PHONE 1: Filter Panel --}}
+                <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+                    <div style="padding:9px 20px;background:#fff;border-radius:99px;font-size:12px;font-weight:800;color:var(--primary-dark);box-shadow:0 4px 16px rgba(0,0,0,.12);display:flex;align-items:center;gap:6px;">
+                        <i class='bx bx-filter-alt' style="color:var(--primary);"></i> 1. Filter Peta &amp; Jarak
+                    </div>
+                    <div class="phone-frame">
+                        <div class="phone-notch"><div class="phone-notch-inner"></div></div>
+                        <div class="phone-statusbar"><span>9:41</span><div class="flex gap-1"><i class='bx bx-signal-5'></i><i class='bx bx-wifi'></i><i class='bx bxs-battery-full'></i></div></div>
 
-{{-- ===== KENAPA NEAR JOB ===== --}}
-<section class="py-20 px-4 bg-slate-50">
-    <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-14">
-            <h2 class="text-3xl font-extrabold text-slate-800 mb-3">Kenapa Near Job?</h2>
-            <p class="text-slate-500">Dirancang untuk pencari kerja dan pemberi kerja lokal Indonesia.</p>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            @foreach([
-                ["<i class='bx bx-map'></i>", 'Lowongan di Sekitar Anda', 'Temukan pekerjaan berdasarkan jarak terdekat dari lokasi Anda sekarang.'],
-                ["<i class='bx bx-user-plus'></i>", 'Tanpa Perlu Relasi', 'Tidak perlu kenalan atau jaringan profesional. Semua orang punya kesempatan yang sama.'],
-                ["<i class='bx bx-gift'></i>", '3 Lamaran Gratis', 'Setiap akun mendapatkan 3 kesempatan melamar secara gratis. Hemat dan mudah.'],
-                ["<i class='bx bxl-whatsapp'></i>", 'Kontak Langsung', 'Lamar langsung ke pemberi kerja via WhatsApp atau Email. Tidak ada perantara.'],
-                ["<i class='bx bx-file'></i>", 'CV ATS Otomatis', 'Buat CV profesional siap ATS dari data profil Anda kapan pun dibutuhkan.'],
-                ["<i class='bx bx-store'></i>", 'Untuk Usaha Lokal', 'Cocok untuk warung, toko, hotel, pabrik, dan usaha lokal lainnya yang butuh karyawan.'],
-            ] as [$icon, $title, $desc])
-            <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex items-start gap-4">
-                <div class="text-2xl shrink-0">{!! $icon !!}</div>
-                <div>
-                    <h4 class="font-bold text-slate-800 mb-1">{{ $title }}</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed">{{ $desc }}</p>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid #f1f5f9;">
+                            <span style="width:20px"></span>
+                            <span style="font-weight:800;color:#1e293b;font-size:13px;">Terapkan Filter</span>
+                            <i class='bx bx-x' style="font-size:20px;color:#94a3b8;cursor:pointer;"></i>
+                        </div>
 
-{{-- ===== CONTOH LOWONGAN ===== --}}
-<section class="py-20 px-4 bg-white">
-    <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-10">
-            <h2 class="text-3xl font-extrabold text-slate-800 mb-3">Contoh Lowongan Tersedia</h2>
-            <p class="text-slate-500">Ribuan lowongan untuk berbagai bidang dan keahlian.</p>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10">
-            @foreach([
-                ["<i class='bx bx-restaurant'></i>",'Kitchen Helper','Warung Makan ABC','1.4 km','Rp2,5–3 juta','Full-time','whatsapp'],
-                ["<i class='bx bx-store'></i>",'Kasir','Toko Makmur','2.1 km','Rp2,3–2,8 juta','Full-time','whatsapp'],
-                ["<i class='bx bx-cog'></i>",'Operator Produksi','CV Maju Bersama','3.7 km','Rp3–3,5 juta','Full-time','email'],
-                ["<i class='bx bx-brush'></i>",'Cleaning Service','Hotel Banyuwangi','4.2 km','Rp2,5–3 juta','Full-time','whatsapp'],
-                ["<i class='bx bx-package'></i>",'Helper Gudang','PT Logistik Jaya','5.1 km','Rp2,8–3,4 juta','Full-time','email'],
-                ["<i class='bx bx-car'></i>",'Driver','CV Jasa Antar','3.2 km','Rp3–4 juta','Full-time','whatsapp'],
-            ] as [$icon, $pos, $emp, $dist, $gaji, $type, $contact])
-            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-xl shrink-0">{!! $icon !!}</div>
-                    <div class="min-w-0">
-                        <h4 class="font-bold text-slate-800 text-sm truncate">{{ $pos }}</h4>
-                        <p class="text-xs text-slate-500 truncate">{{ $emp }} ✓</p>
+                        <div style="padding:16px 18px;display:flex;flex-direction:column;gap:16px;">
+                            <div>
+                                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                                    <span style="font-size:10px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:.08em;">Bidang Lowongan:</span>
+                                    <span style="font-size:10px;font-weight:800;color:var(--primary);">Pilih Semua</span>
+                                </div>
+                                <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
+                                    @foreach([['bx-restaurant','F&B',false],['bx-coffee','Barista',false],['bx-user-voice','Jasa',false],['bx-store','Retail',true],['bx-package','Logistik',false],['bx-cog','Produksi',false]] as $cat)
+                                    @php $a=$cat[2]; @endphp
+                                    <div style="display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 8px;border-radius:10px;font-size:10px;font-weight:800;{{ $a?'background:var(--primary);color:#fff;border:1px solid transparent;':'background:#f8faff;color:#475569;border:1px solid #e2e8f0;' }}">
+                                        <i class='bx {{ $cat[0] }}' style="font-size:14px;"></i> {{ $cat[1] }}
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <div>
+                                <span style="font-size:10px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:10px;text-align:left;">Jenis Pekerjaan:</span>
+                                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">
+                                    @foreach(['Part-time','Full-time','Keduanya'] as $i=>$t)
+                                    <div style="text-align:center;padding:9px 4px;border-radius:10px;font-size:9.5px;font-weight:800;white-space:nowrap;{{ $i===2?'background:var(--primary);color:#fff;':'background:#f8faff;color:#475569;border:1px solid #e2e8f0;' }}">{{ $t }}</div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="position:absolute;bottom:0;left:0;right:0;width:100%;padding:14px 18px;background:#fff;border-top:1px solid #e8edf5;">
+                            <div style="width:100%;padding:11px;border-radius:12px;color:#fff;font-size:12px;font-weight:800;text-align:center;background:var(--primary);box-shadow:0 4px 14px rgba(86,128,216,.3);">Terapkan Filter</div>
+                        </div>
                     </div>
                 </div>
-                <div class="space-y-1 mb-3">
-                    <div class="flex items-center gap-1 text-xs text-slate-500"><span><i class='bx bx-map'></i></span> {{ $dist }} dari Anda</div>
-                    <div class="flex items-center gap-1 text-xs text-slate-500"><span><i class='bx bx-money'></i></span> {{ $gaji }}/bulan</div>
-                    <div class="flex items-center gap-1 text-xs text-slate-500"><span><i class='bx bx-time-five'></i></span> {{ $type }}</div>
+
+                {{-- PHONE 2: Job List --}}
+                <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+                    <div style="padding:9px 20px;background:#fff;border-radius:99px;font-size:12px;font-weight:800;color:var(--primary-dark);box-shadow:0 4px 16px rgba(0,0,0,.12);display:flex;align-items:center;gap:6px;">
+                        <i class='bx bx-list-ul' style="color:var(--primary);"></i> 2. Kartu Lowongan Karusel
+                    </div>
+                    <div class="phone-frame" style="background:#f8faff;">
+                        <div class="phone-notch"><div class="phone-notch-inner"></div></div>
+                        <div class="phone-statusbar" style="background:#fff;"><span>9:41</span><div class="flex gap-1"><i class='bx bx-signal-5'></i><i class='bx bx-wifi'></i><i class='bx bxs-battery-full'></i></div></div>
+
+                        <div style="background:#fff;padding:12px 14px 14px;box-shadow:0 2px 8px rgba(0,0,0,.03);">
+                            <div style="display:flex;align-items:center;background:#f1f5f9;border-radius:12px;padding:9px 12px;margin-bottom:10px;">
+                                <i class='bx bx-search' style="color:#94a3b8;font-size:15px;margin-right:8px;"></i>
+                                <span style="font-size:11px;color:#334155;flex:1;font-weight:700;">Kota Yogyakarta</span>
+                                <i class='bx bx-current-location' style="color:#94a3b8;font-size:15px;"></i>
+                            </div>
+                            <div style="display:flex;gap:8px;overflow-x:auto;" class="hide-scrollbar">
+                                <div class="filter-chip" style="background:var(--teal);color:#fff;"><i class='bx bx-filter-alt'></i> Filter</div>
+                                <div class="filter-chip" style="background:var(--teal);color:#fff;">Terdekat</div>
+                                <div class="filter-chip" style="background:#fff;color:#475569;border:1px solid #e2e8f0;">Part-time</div>
+                            </div>
+                        </div>
+
+                        <div style="padding:14px;overflow-y:auto;padding-bottom:70px;height:calc(100% - 118px);" class="hide-scrollbar">
+                            @foreach([['Pramusaji','Warung Gudeg','2 km','2,5 jt','F&B'],['SPG Toko','Batik Sekar','3.1 km','1,8 jt','Retail'],['Resepsionis','Hotel Mutiara','4.5 km','3,2 jt','Jasa']] as [$pos,$emp,$dist,$sal,$cat])
+                            <div class="job-card-mini text-left">
+                                <div style="display:flex;gap:10px;margin-bottom:10px;align-items:center;">
+                                    <div style="width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;background:#eef2fb;color:var(--primary);">{{ substr($emp,0,1) }}</div>
+                                    <div style="flex:1;min-width:0;">
+                                        <h4 style="font-size:11px;font-weight:800;color:#1e293b;margin:0;line-height:1.3;">{{ $pos }}</h4>
+                                        <p style="font-size:9px;color:#64748b;margin:2px 0 0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $emp }} · {{ $dist }}</p>
+                                    </div>
+                                    <span style="font-size:10px;font-weight:800;color:#1e293b;flex-shrink:0;">{{ $sal }}</span>
+                                </div>
+                                <div style="display:flex;justify-content:space-between;align-items:center;">
+                                    <span style="font-size:9px;font-weight:800;padding:3px 8px;border-radius:6px;background:#eef2fb;color:var(--primary);">{{ $cat }}</span>
+                                    <button class="apply-btn-mini">Lamar</button>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <div class="bottom-nav-mini">
+                            <div class="nav-mini-item active"><i class='bx bxs-home'></i><span>Beranda</span></div>
+                            <div class="nav-mini-item"><i class='bx bx-briefcase-alt-2'></i><span>Lamaran</span></div>
+                            <div class="nav-mini-item"><i class='bx bx-user'></i><span>Profil</span></div>
+                        </div>
+                    </div>
                 </div>
-                <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-lg {{ $contact === 'whatsapp' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700' }}">
-                    {!! $contact === 'whatsapp' ? "<i class='bx bxl-whatsapp'></i> WhatsApp" : "<i class='bx bx-envelope'></i> Email" !!}
-                </span>
+
+                {{-- PHONE 3: Map View --}}
+                <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+                    <div style="padding:9px 20px;background:#fff;border-radius:99px;font-size:12px;font-weight:800;color:var(--primary-dark);box-shadow:0 4px 16px rgba(0,0,0,.12);display:flex;align-items:center;gap:6px;">
+                        <i class='bx bx-map-alt' style="color:var(--primary);"></i> 3. Pin Lokasi Peta Presisi
+                    </div>
+                    <div class="phone-frame" style="background:#d4e1f0;">
+                        <svg width="100%" height="100%" style="position:absolute;opacity:.4"><path d="M-30,120 Q80,140 260,80 M60,-20 Q100,220 140,580 M-20,280 Q80,320 260,430 M220,-10 Q190,200 260,560" fill="none" stroke="#fff" stroke-width="5"/></svg>
+
+                        <div class="map-cluster" style="position:absolute;top:32%;left:22%;width:26px;height:26px;font-size:9px;">8</div>
+                        <div class="map-cluster" style="position:absolute;top:44%;left:54%;width:34px;height:34px;font-size:11px;">20</div>
+                        <div class="map-cluster" style="position:absolute;top:60%;left:32%;width:44px;height:44px;font-size:13px;box-shadow:0 6px 18px rgba(86,128,216,.5);">50</div>
+
+                        <div style="position:absolute;top:0;left:0;right:0;width:100%;z-index:20;padding:8px 12px 12px;background:linear-gradient(160deg,#24427b,#5680d8);">
+                            <div class="phone-notch" style="position:relative;height:20px;"><div class="phone-notch-inner" style="background:rgba(255,255,255,.2);"></div></div>
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:0 4px;font-size:9.5px;font-weight:600;color:rgba(255,255,255,.85);">
+                                <span>9:41</span><div class="flex gap-1"><i class='bx bx-signal-5'></i><i class='bx bx-wifi'></i><i class='bx bxs-battery-full'></i></div>
+                            </div>
+                            <div style="display:flex;align-items:center;border-radius:12px;padding:8px 12px;background:rgba(255,255,255,.2);backdrop-filter:blur(6px);">
+                                <i class='bx bx-search' style="color:#fff;margin-right:8px;font-size:14px;"></i>
+                                <span style="font-size:11px;color:#fff;font-weight:600;flex:1;">Yogyakarta, 25 km</span>
+                            </div>
+                        </div>
+
+                        <div class="bottom-nav-mini">
+                            <div class="nav-mini-item active"><i class='bx bxs-home'></i><span>Beranda</span></div>
+                            <div class="nav-mini-item"><i class='bx bx-briefcase-alt-2'></i><span>Lamaran</span></div>
+                            <div class="nav-mini-item"><i class='bx bx-user'></i><span>Profil</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- PHONE 4: Detail Card --}}
+                <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+                    <div style="padding:9px 20px;background:#fff;border-radius:99px;font-size:12px;font-weight:800;color:var(--primary-dark);box-shadow:0 4px 16px rgba(0,0,0,.12);display:flex;align-items:center;gap:6px;">
+                        <i class='bx bx-detail' style="color:var(--primary);"></i> 4. Detail &amp; Kontak Langsung
+                    </div>
+                    <div class="phone-frame" style="background:#d4e1f0;">
+                        <div class="map-cluster" style="position:absolute;top:26%;left:42%;width:42px;height:42px;font-size:13px;box-shadow:0 6px 18px rgba(86,128,216,.5);">50</div>
+
+                        <div style="position:absolute;bottom:54px;left:0;right:0;width:100%;z-index:20;border-radius:22px 22px 0 0;padding:16px 14px;background:rgba(255,255,255,.98);backdrop-filter:blur(10px);box-shadow:0 -8px 25px rgba(0,0,0,.10);text-align:left;">
+                            <div style="width:36px;height:4px;background:#cbd5e1;border-radius:99px;margin:0 auto 12px;"></div>
+
+                            <div style="background:#fff;border-radius:14px;padding:12px 14px;border:2px solid var(--primary);box-shadow:0 4px 16px rgba(86,128,216,.15);">
+                                <div style="display:flex;gap:10px;margin-bottom:10px;align-items:center;">
+                                    <div style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;background:#eef2fb;color:var(--primary);">W</div>
+                                    <div style="flex:1;min-width:0;">
+                                        <h4 style="font-size:11px;font-weight:800;color:#1e293b;margin:0;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Pramusaji</h4>
+                                        <p style="font-size:9px;color:#64748b;margin:2px 0 0;font-weight:600;">Warung Gudeg Bu Yanti · 2 km</p>
+                                    </div>
+                                </div>
+                                <div style="display:flex;justify-content:space-between;align-items:center;">
+                                    <span style="font-size:9px;font-weight:800;padding:3px 8px;border-radius:6px;background:#eef2fb;color:var(--primary);">F&B</span>
+                                    <button style="padding:6px 14px;background:var(--primary);color:#fff;border-radius:8px;font-size:9.5px;font-weight:800;border:none;">Lamar via WA</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bottom-nav-mini">
+                            <div class="nav-mini-item active"><i class='bx bxs-home'></i><span>Beranda</span></div>
+                            <div class="nav-mini-item"><i class='bx bx-briefcase-alt-2'></i><span>Lamaran</span></div>
+                            <div class="nav-mini-item"><i class='bx bx-user'></i><span>Profil</span></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- Transition strip --}}
+<div style="background:var(--primary);height:64px;"></div>
+
+{{-- ===== CARA KERJA ===== --}}
+<section class="sec sec-white">
+    <div class="max-w-5xl mx-auto">
+        <div class="sec-head">
+            <span class="sec-label">Cara Kerja</span>
+            <h2 class="sec-title">Tiga Langkah Mudah</h2>
+            <p class="sec-desc">Proses pencarian dan pelamaran kerja lokal tercepat tanpa perantara</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            @foreach([
+                ['01','bx-map-alt','Temukan Lowongan','Lihat posisi pekerjaan terdekat yang tersedia langsung dari peta presisi di sekitar Anda.'],
+                ['02','bx-filter-alt','Filter & Pilih','Sesuaikan filter pencarian berdasarkan jarak km, bidang usaha, jenis kerja, dan ekspektasi gaji.'],
+                ['03','bxl-whatsapp','Lamar Langsung','Kirimkan lamaran dan hubungi pemberi kerja langsung via WhatsApp atau Email tanpa birokrasi.'],
+            ] as [$num,$ico,$title,$desc])
+            <div style="background:#fafbff;border:1.5px solid #e8edf5;border-radius:24px;padding:36px 30px;text-align:center;box-shadow:0 4px 20px rgba(37,67,155,.03);transition:all .2s;" class="hover:shadow-lg">
+                <div style="font-size:48px;font-weight:900;color:#e2e8f0;margin-bottom:8px;line-height:1;">{{ $num }}</div>
+                <div style="width:64px;height:64px;border-radius:20px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 22px;box-shadow:0 4px 14px rgba(86,128,216,.3);">
+                    <i class='bx {{ $ico }}'></i>
+                </div>
+                <h3 style="font-size:19px;font-weight:900;color:#1e293b;margin-bottom:12px;">{{ $title }}</h3>
+                <p style="font-size:14px;color:#64748b;line-height:1.75;font-weight:500;margin:0;">{{ $desc }}</p>
             </div>
             @endforeach
         </div>
-        <div class="text-center">
-            <a href="{{ route('register.applicant') }}" class="inline-flex items-center gap-2 bg-blue-600 text-white font-bold text-base px-8 py-4 rounded-2xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20">
-                <i class='bx bx-search'></i> Lihat Semua Lowongan — Daftar Gratis
+    </div>
+</section>
+
+{{-- ===== KEUNGGULAN NEAR JOB ===== --}}
+<section class="sec sec-light">
+    <div class="max-w-5xl mx-auto">
+        <div class="sec-head">
+            <span class="sec-label">Keunggulan Utama</span>
+            <h2 class="sec-title">Kenapa Harus Near Job?</h2>
+            <p class="sec-desc">Dirancang khusus untuk ekosistem tenaga kerja dan pemilik usaha lokal Indonesia.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            @foreach([
+                ['bx-map','Lokasi Presisi Sekitar','Temukan lowongan pekerjaan berdasarkan radius km dari lokasi Anda sekarang. Tidak perlu scroll ribuan lowongan luar kota.'],
+                ['bx-user-plus','Tanpa Perlu Relasi','Semua pencari kerja memiliki kesempatan yang sama tanpa perlu orang dalam atau jaringan khusus.'],
+                ['bx-gift','3 Kredit Lamaran Gratis','Setiap akun baru pelamar langsung mendapatkan 3 kredit kesempatan melamar pekerjaan secara gratis.'],
+                ['bxl-whatsapp','Kontak Langsung WA','Kirimkan lamaran dan profil langsung ke nomor WhatsApp resmi pemberi kerja.'],
+                ['bx-file','CV ATS Otomatis','Buat dokumen CV ATS standar profesional secara otomatis dari data profil Anda kapan saja.'],
+                ['bx-store','Untuk Usaha Lokal','Sangat cocok untuk warung, toko, kafe, restoran, hotel, pabrik, dan usaha UMKM lokal.'],
+            ] as [$ico,$title,$desc])
+            <div style="background:#fff;border-radius:24px;padding:32px 28px;border:1.5px solid #e8edf5;display:flex;flex-direction:column;gap:18px;box-shadow:0 4px 16px rgba(37,67,155,.04);transition:all .2s;" class="hover:shadow-md">
+                <div style="width:54px;height:54px;border-radius:16px;background:#eef2fb;color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">
+                    <i class='bx {{ $ico }}'></i>
+                </div>
+                <div>
+                    <h4 style="font-size:17px;font-weight:900;color:#1e293b;margin-bottom:10px;line-height:1.3;">{{ $title }}</h4>
+                    <p style="font-size:14px;color:#64748b;line-height:1.75;font-weight:500;margin:0;">{{ $desc }}</p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- ===== LOWONGAN TERBARU ===== --}}
+<section class="sec sec-white">
+    <div class="max-w-5xl mx-auto">
+        <div class="sec-head">
+            <span class="sec-label">Tersedia Sekarang</span>
+            <h2 class="sec-title">Lowongan Pekerjaan Terbaru</h2>
+            <p class="sec-desc">Temukan lowongan aktif yang siap dilamar hari ini</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8" style="margin-bottom:56px;">
+            @foreach([
+                ['bx-restaurant','Kitchen Helper','Warung Makan ABC','1.4 km','Rp 2,5–3 juta','Full-time','whatsapp'],
+                ['bx-store','Kasir Toko','Toko Makmur','2.1 km','Rp 2,3–2,8 juta','Full-time','whatsapp'],
+                ['bx-cog','Operator Produksi','CV Maju Bersama','3.7 km','Rp 3–3,5 juta','Kontrak','email'],
+                ['bx-brush','Cleaning Service','Hotel Banyuwangi','4.2 km','Rp 2,5–3 juta','Full-time','whatsapp'],
+                ['bx-package','Helper Gudang','PT Logistik Jaya','5.1 km','Rp 2,8–3,4 juta','Harian','email'],
+                ['bx-car','Driver Pengiriman','CV Jasa Antar','3.2 km','Rp 3–4 juta','Full-time','whatsapp'],
+            ] as [$ico,$pos,$emp,$dist,$gaji,$type,$contact])
+            <div style="background:#f8faff;border-radius:24px;padding:28px 24px;border:1.5px solid #e8edf5;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 2px 10px rgba(0,0,0,.02);transition:all .2s;" class="hover:shadow-md">
+                <div>
+                    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+                        <div style="width:48px;height:48px;border-radius:15px;background:#eef2fb;color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">
+                            <i class='bx {{ $ico }}'></i>
+                        </div>
+                        <div style="min-width:0;">
+                            <h4 style="font-weight:900;color:#1e293b;font-size:16px;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ $pos }}</h4>
+                            <p style="font-size:13px;color:#64748b;font-weight:700;margin:0;">{{ $emp }} <span style="color:var(--teal);">✓</span></p>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;flex-direction:column;gap:10px;margin:20px 0;padding:14px 16px;background:#ffffff;border-radius:14px;border:1px solid #eef2fb;">
+                        <div style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#475569;"><i class='bx bx-map' style="color:var(--primary);font-size:17px;"></i> {{ $dist }} dari lokasi Anda</div>
+                        <div style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#475569;"><i class='bx bx-money' style="color:var(--primary);font-size:17px;"></i> {{ $gaji }} / bulan</div>
+                        <div style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#475569;"><i class='bx bx-time-five' style="color:var(--primary);font-size:17px;"></i> {{ $type }}</div>
+                    </div>
+                </div>
+
+                <div style="padding-top:4px;">
+                    <span style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;padding:10px 18px;border-radius:12px;{{ $contact==='whatsapp'?'background:#dcfce7;color:#15803d;':'background:#dbeafe;color:#1d4ed8;' }}">
+                        {!! $contact==='whatsapp' ? "<i class='bx bxl-whatsapp' style='font-size:16px;'></i> Lamar via WhatsApp" : "<i class='bx bx-envelope' style='font-size:16px;'></i> Lamar via Email" !!}
+                    </span>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        <div style="text-align:center;">
+            <a href="{{ route('register.applicant') }}" style="display:inline-flex;align-items:center;gap:10px;background:var(--primary);color:#fff;font-weight:900;font-size:16px;padding:18px 44px;border-radius:18px;box-shadow:0 6px 25px rgba(86,128,216,.35);text-decoration:none;">
+                <i class='bx bx-search' style="font-size:20px;"></i> Buka Peta &amp; Lihat Semua Lowongan
             </a>
+        </div>
+    </div>
+</section>
+
+{{-- ===== PROFILE PREVIEW ===== --}}
+<section class="sec sec-light">
+    <div class="max-w-5xl mx-auto">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:72px;">
+
+            {{-- Phone Mockup --}}
+            <div style="flex-shrink:0;">
+                <div style="width:280px;height:550px;border-radius:2.75rem;border:6px solid #e8edf5;box-shadow:0 24px 60px rgba(37,67,155,.20);overflow:hidden;position:relative;background:#fff;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 18px 6px;font-size:9.5px;font-weight:700;color:#475569;">
+                        <span>9:41</span>
+                        <div style="display:flex;gap:4px;"><i class='bx bx-signal-5'></i><i class='bx bx-wifi'></i><i class='bx bxs-battery-full'></i></div>
+                    </div>
+
+                    <div style="background:linear-gradient(160deg,#24427b,#5680d8);padding:24px 20px;text-align:center;">
+                        <div style="width:66px;height:66px;border-radius:50%;margin:0 auto 10px;border:3px solid rgba(255,255,255,.8);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;background:rgba(255,255,255,.2);color:white;box-shadow:0 4px 14px rgba(0,0,0,.15);">B</div>
+                        <p style="font-weight:900;font-size:15px;color:white;margin:0 0 3px;">Budi Santoso</p>
+                        <p style="font-size:10.5px;color:rgba(255,255,255,.85);font-weight:600;margin:0 0 12px;">Kota Yogyakarta</p>
+                        <div style="display:inline-flex;align-items:center;gap:5px;background:var(--teal);color:white;padding:5px 16px;border-radius:99px;font-size:9.5px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.12);">✓ Aktif Cari Kerja</div>
+                    </div>
+
+                    <div style="padding:16px 20px;">
+                        <p style="font-size:11px;font-weight:900;color:#1e293b;margin:0 0 12px;text-transform:uppercase;letter-spacing:.06em;">Kelengkapan Profil Anda</p>
+                        @foreach(['Data Kontak & Kota','Pendidikan Terakhir','Foto Profil & Banner','Pengalaman Kerja'] as $lbl)
+                        <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #f1f5f9;">
+                            <span style="font-size:11px;color:#475569;font-weight:600;">{{ $lbl }}</span>
+                            <div style="width:20px;height:20px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;">
+                                <i class='bx bx-check' style="color:white;font-size:12px;"></i>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+
+                    <div class="bottom-nav-mini">
+                        <div class="nav-mini-item"><i class='bx bx-home'></i><span>Beranda</span></div>
+                        <div class="nav-mini-item"><i class='bx bx-briefcase-alt-2'></i><span>Lamaran</span></div>
+                        <div class="nav-mini-item active"><i class='bx bxs-user'></i><span>Profil</span></div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Right Content --}}
+            <div style="max-width:480px;display:flex;flex-direction:column;gap:28px;">
+                <div>
+                    <span class="sec-label" style="color:var(--teal);">Kemudahan Pelamar</span>
+                    <h2 class="sec-title" style="margin-bottom:0;">Profil Anda<br>Adalah CV Anda</h2>
+                </div>
+
+                <p style="font-size:15px;color:#64748b;line-height:1.8;font-weight:500;margin:0;">
+                    Profil pelamar dirancang sebagai CV digital lengkap. Pemberi kerja dapat langsung melihat kualifikasi, keahlian, dan riwayat pekerjaan Anda dalam satu tampilan profesional.
+                </p>
+
+                <ul style="display:flex;flex-direction:column;gap:16px;list-style:none;padding:0;margin:0;">
+                    @foreach([
+                        'Informasi pribadi dan nomor kontak WhatsApp terverifikasi',
+                        'Keahlian (skills) dan riwayat pengalaman kerja lengkap',
+                        'Dokumen CV ATS profesional yang dapat diunduh otomatis',
+                        'Pantau riwayat status lamaran secara gratis dan akurat',
+                    ] as $item)
+                    <li style="display:flex;align-items:flex-start;gap:14px;font-size:14.5px;font-weight:600;color:#334155;line-height:1.6;">
+                        <div style="width:26px;height:26px;border-radius:50%;background:#eef2fb;color:var(--teal);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+                            <i class='bx bx-check' style="font-size:15px;"></i>
+                        </div>
+                        <span>{{ $item }}</span>
+                    </li>
+                    @endforeach
+                </ul>
+
+                <div>
+                    <a href="{{ route('register.applicant') }}" style="display:inline-flex;align-items:center;gap:10px;background:var(--primary);color:#fff;font-weight:800;font-size:15px;padding:18px 36px;border-radius:18px;box-shadow:0 4px 20px rgba(86,128,216,.35);text-decoration:none;white-space:nowrap;">
+                        <i class='bx bx-user-plus' style="font-size:19px;"></i> Buat Akun Profil Gratis
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 {{-- ===== CTA EMPLOYER ===== --}}
-<section class="py-20 px-4 bg-gradient-to-br from-slate-800 to-slate-900 text-white">
-    <div class="max-w-2xl mx-auto text-center">
-        <div class="text-4xl mb-4"><i class='bx bx-buildings'></i></div>
-        <h2 class="text-3xl font-extrabold mb-4">Butuh Tenaga Kerja?</h2>
-        <p class="text-slate-300 text-lg mb-8 leading-relaxed">Posting lowongan gratis dan temukan karyawan yang tinggal di dekat usaha Anda. Cocok untuk warung, toko, hotel, dan semua jenis usaha lokal.</p>
-        <a href="{{ route('register.company') }}" class="inline-flex items-center gap-2 bg-white text-slate-900 font-extrabold text-base px-8 py-4 rounded-2xl hover:bg-yellow-50 transition-all">
-            <i class='bx bx-rocket'></i> Mulai Posting Lowongan — Gratis
+<section style="padding:112px 24px;background:linear-gradient(135deg,#1a2f5a 0%,var(--primary-dark) 100%);">
+    <div style="max-width:620px;margin:0 auto;text-align:center;display:flex;flex-direction:column;gap:28px;align-items:center;">
+        <div style="width:72px;height:72px;border-radius:22px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:32px;color:#fff;box-shadow:0 6px 20px rgba(0,0,0,.15);">
+            <i class='bx bx-buildings'></i>
+        </div>
+
+        <h2 style="font-size:clamp(28px,4vw,42px);font-weight:900;color:#fff;line-height:1.25;margin:0;">Butuh Tenaga Kerja<br>untuk Usaha Anda?</h2>
+
+        <p style="font-size:15px;color:#bfdbfe;line-height:1.8;font-weight:500;max-width:480px;margin:0;">
+            Pasang lowongan pekerjaan Anda sekarang dan dapatkan calon karyawan lokal yang tinggal tepat di sekitar tempat usaha Anda.
+        </p>
+
+        <a href="{{ route('register.company') }}" style="display:inline-flex;align-items:center;gap:10px;background:#fff;color:var(--primary-dark);font-weight:900;font-size:16px;padding:18px 44px;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.3);text-decoration:none;">
+            <i class='bx bx-rocket' style="font-size:22px;"></i> Pasang Lowongan — Gratis
         </a>
     </div>
 </section>
 
 {{-- ===== FOOTER ===== --}}
-<footer class="bg-slate-900 text-slate-400 py-10 px-4">
-    <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-        <div class="flex items-center gap-2">
-            <div class="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center">
-                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+<footer style="background:#0f172a;padding:72px 24px 48px;">
+    <div style="max-w-5xl mx-auto" style="max-width:1024px;margin:0 auto;">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:24px;padding-bottom:36px;border-bottom:1px solid #1e293b;margin-bottom:36px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div style="width:38px;height:38px;border-radius:11px;background:var(--primary);display:flex;align-items:center;justify-content:center;">
+                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                </div>
+                <span style="font-weight:900;color:#fff;font-size:20px;letter-spacing:-.02em;">NEAR JOB</span>
             </div>
-            <span class="font-extrabold text-white">NEAR JOB</span>
+            <div style="display:flex;gap:32px;">
+                <a href="{{ route('login') }}" style="font-size:14px;font-weight:600;color:#94a3b8;text-decoration:none;" class="hover:text-white transition-colors">Masuk</a>
+                <a href="{{ route('register.applicant') }}" style="font-size:14px;font-weight:600;color:#94a3b8;text-decoration:none;" class="hover:text-white transition-colors">Daftar Pelamar</a>
+                <a href="{{ route('register.company') }}" style="font-size:14px;font-weight:600;color:#94a3b8;text-decoration:none;" class="hover:text-white transition-colors">Daftar Pemberi Kerja</a>
+            </div>
         </div>
-        <p class="text-sm">Temukan pekerjaan di sekitar Anda. Hubungi pemberi kerja secara langsung.</p>
-        <p class="text-xs">© 2026 Near Job. Prototype demo.</p>
+
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;">
+            <p style="font-size:13px;font-weight:500;color:#64748b;margin:0;">Platform pencari kerja lokal berbasis peta dan koordinat lokasi presisi.</p>
+            <p style="font-size:13px;font-weight:500;color:#64748b;margin:0;">© 2026 Near Job. All Rights Reserved.</p>
+        </div>
     </div>
 </footer>
 

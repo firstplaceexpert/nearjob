@@ -173,7 +173,7 @@ class DemoSeeder extends Seeder
             'work_type' => 'full_time', 'job_category' => 'fnb', 'min_education' => 'sma',
             'salary_min' => 2000000, 'salary_max' => 2500000, 'work_duration' => 'Tetap',
             'work_hours' => '09.00 – 21.00 (shift)', 'contact_method' => 'whatsapp',
-            'contact_whatsapp' => '6281298765432', 'status' => 'active',
+            'contact_whatsapp' => '6281298765432', 'quota' => 3, 'status' => 'active',
         ]);
 
         // 2. Retail + Part Time + WhatsApp
@@ -186,7 +186,7 @@ class DemoSeeder extends Seeder
             'work_type' => 'part_time', 'job_category' => 'retail', 'min_education' => 'sma',
             'salary_min' => 1200000, 'salary_max' => 1800000, 'work_duration' => 'Paruh waktu (akhir pekan)',
             'work_hours' => 'Sabtu–Minggu 09.00 – 18.00', 'contact_method' => 'whatsapp',
-            'contact_whatsapp' => '6285712345678', 'status' => 'active',
+            'contact_whatsapp' => '6285712345678', 'quota' => 2, 'status' => 'active',
         ]);
 
         // 3. Jasa + Full Time + WhatsApp
@@ -199,7 +199,7 @@ class DemoSeeder extends Seeder
             'work_type' => 'full_time', 'job_category' => 'jasa', 'min_education' => 'd3',
             'salary_min' => 2800000, 'salary_max' => 3500000, 'work_duration' => 'Tetap',
             'work_hours' => 'Shift: 07.00–15.00 / 15.00–23.00 / 23.00–07.00', 'contact_method' => 'whatsapp',
-            'contact_whatsapp' => '6287823456789', 'status' => 'active',
+            'contact_whatsapp' => '6287823456789', 'quota' => 1, 'status' => 'active',
         ]);
 
         // 4. Produksi + Kontrak + Email
@@ -212,7 +212,7 @@ class DemoSeeder extends Seeder
             'work_type' => 'kontrak', 'job_category' => 'produksi', 'min_education' => 'sma',
             'salary_min' => 2500000, 'salary_max' => 3200000, 'work_duration' => 'Kontrak 6 bulan (dapat diperpanjang)',
             'work_hours' => '07.00 – 16.00 (Senin–Sabtu)', 'contact_method' => 'email',
-            'contact_email' => 'hendra@demo.com', 'status' => 'active',
+            'contact_email' => 'hendra@demo.com', 'quota' => 5, 'status' => 'active',
         ]);
 
         // 5. Logistik + Harian + Email
@@ -225,7 +225,7 @@ class DemoSeeder extends Seeder
             'work_type' => 'harian', 'job_category' => 'logistik', 'min_education' => 'sma',
             'salary_min' => 120000, 'salary_max' => 150000, 'work_duration' => 'Harian (sesuai kebutuhan)',
             'work_hours' => '07.00 – 16.00', 'contact_method' => 'email',
-            'contact_email' => 'rini@demo.com', 'status' => 'active',
+            'contact_email' => 'rini@demo.com', 'quota' => 4, 'status' => 'active',
         ]);
 
         // 6. Konstruksi + Harian + WhatsApp
@@ -238,7 +238,7 @@ class DemoSeeder extends Seeder
             'work_type' => 'harian', 'job_category' => 'konstruksi', 'min_education' => 'sma',
             'salary_min' => 130000, 'salary_max' => 180000, 'work_duration' => 'Harian (proyek)',
             'work_hours' => '07.00 – 17.00', 'contact_method' => 'whatsapp',
-            'contact_whatsapp' => '6283567890123', 'status' => 'active',
+            'contact_whatsapp' => '6283567890123', 'quota' => 6, 'status' => 'active',
         ]);
 
         // 7. Administrasi + Full Time + Email
@@ -251,7 +251,7 @@ class DemoSeeder extends Seeder
             'work_type' => 'full_time', 'job_category' => 'administrasi', 'min_education' => 'd3',
             'salary_min' => 2500000, 'salary_max' => 3000000, 'work_duration' => 'Tetap',
             'work_hours' => '08.00 – 17.00 (Senin–Sabtu)', 'contact_method' => 'email',
-            'contact_email' => 'fitri@demo.com', 'status' => 'active',
+            'contact_email' => 'fitri@demo.com', 'quota' => 2, 'status' => 'active',
         ]);
 
         // 8. Teknisi + Full Time + WhatsApp
@@ -264,7 +264,7 @@ class DemoSeeder extends Seeder
             'work_type' => 'full_time', 'job_category' => 'teknisi', 'min_education' => 'sma',
             'salary_min' => 2800000, 'salary_max' => 3500000, 'work_duration' => 'Tetap',
             'work_hours' => '08.00 – 17.00 (Senin–Sabtu)', 'contact_method' => 'whatsapp',
-            'contact_whatsapp' => '6285789012345', 'status' => 'active',
+            'contact_whatsapp' => '6285789012345', 'quota' => 3, 'status' => 'active',
         ]);
 
         // 9. Lainnya + Part Time + WhatsApp
@@ -277,7 +277,7 @@ class DemoSeeder extends Seeder
             'work_type' => 'part_time', 'job_category' => 'lainnya', 'min_education' => 'sma',
             'salary_min' => 1500000, 'salary_max' => 2500000, 'work_duration' => 'Part time (fleksibel)',
             'work_hours' => '10.00–14.00 & 17.00–21.00', 'contact_method' => 'whatsapp',
-            'contact_whatsapp' => '6281298765432', 'status' => 'active',
+            'contact_whatsapp' => '6281298765432', 'quota' => 2, 'status' => 'active',
         ]);
 
         // 10. Retail + Kontrak + WhatsApp (tambahan untuk variasi radius)
@@ -290,7 +290,7 @@ class DemoSeeder extends Seeder
             'work_type' => 'kontrak', 'job_category' => 'retail', 'min_education' => 'sma',
             'salary_min' => 2000000, 'salary_max' => 2500000, 'work_duration' => 'Kontrak 3 bulan',
             'work_hours' => '09.00 – 17.00', 'contact_method' => 'whatsapp',
-            'contact_whatsapp' => '6285712345678', 'status' => 'active',
+            'contact_whatsapp' => '6285712345678', 'quota' => 1, 'status' => 'active',
         ]);
 
         // ============================================================

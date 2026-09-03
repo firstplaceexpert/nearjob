@@ -1,51 +1,51 @@
-<div class="p-4 bg-slate-50 min-h-full pb-8">
-    <div class="max-w-xl mx-auto">
-        <h1 class="text-2xl font-extrabold text-slate-800 mb-2">Generator CV ATS</h1>
-        <p class="text-slate-500 text-sm mb-6">Buat CV profesional yang ramah ATS (Applicant Tracking System) secara otomatis dari profil Anda.</p>
+<div class="pb-36 pt-16" style="background: #f0f4f9; min-height: 100vh;">
+    <div class="max-w-xl mx-auto px-4 pt-5">
+        <h1 class="text-2xl font-extrabold text-slate-800 mb-1">Generator CV ATS</h1>
+        <p class="text-slate-400 text-sm mb-5">Buat CV profesional yang ramah ATS dari profil Anda secara otomatis.</p>
 
         @if(!$isPaid)
             {{-- Mock Payment Flow --}}
-            <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 text-center">
-                <div class="w-20 h-20 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-4">
+            <div class="bg-white rounded-2xl p-6 text-center" style="border: 1px solid #e8edf5; box-shadow: 0 2px 12px rgba(37,67,155,.06);">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center text-4xl mx-auto mb-4" style="background: #eef2fb; color: #5680d8;">
                     <i class='bx bx-file'></i>
                 </div>
-                <h2 class="text-xl font-extrabold text-slate-800 mb-2">Buka Fitur CV ATS</h2>
-                <p class="text-slate-500 text-sm mb-6 max-w-[280px] mx-auto">Hanya bayar sekali untuk dapat membuat dan mengunduh CV tanpa batas kapan saja.</p>
+                <h2 class="text-xl font-extrabold text-slate-800 mb-2">Buat CV ATS Profesional</h2>
+                <p class="text-slate-400 text-sm mb-6 max-w-[260px] mx-auto">Data profil Anda akan digunakan untuk membuat CV secara otomatis. Bayar sekali, unduh kapan saja.</p>
 
-                <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 mb-6 text-left max-w-sm mx-auto">
+                <div class="p-4 rounded-2xl mb-5 text-left max-w-sm mx-auto" style="background: #f8faff; border: 1px solid #e8edf5;">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-sm font-bold text-slate-700">Akses Generator CV</span>
+                        <span class="text-sm font-bold text-slate-700">Generator CV ATS</span>
                         <span class="text-sm font-extrabold text-slate-800">Rp14.999</span>
                     </div>
-                    <div class="flex justify-between items-center text-xs text-slate-500 pb-2 border-b border-slate-200">
+                    <div class="flex justify-between items-center text-xs text-slate-400 pb-2 mb-2" style="border-bottom: 1px solid #e8edf5;">
                         <span>Biaya Layanan</span>
                         <span>Rp1.000</span>
                     </div>
-                    <div class="flex justify-between items-center mt-2">
+                    <div class="flex justify-between items-center">
                         <span class="text-sm font-extrabold text-slate-700">Total</span>
-                        <span class="text-lg font-black text-blue-600">Rp15.999</span>
+                        <span class="text-xl font-black" style="color: #5680d8;">Rp15.999</span>
                     </div>
                 </div>
 
                 <div class="max-w-sm mx-auto space-y-3">
-                    <button wire:click="processPayment" wire:loading.attr="disabled" class="w-full py-3.5 bg-[#00AA13] hover:bg-[#008f10] text-white font-bold rounded-xl text-sm transition-colors flex items-center justify-center gap-2">
-                        <span wire:loading.remove>Bayar dengan GoPay</span>
+                    <button wire:click="processPayment" wire:loading.attr="disabled" class="w-full py-3.5 text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2" style="background: #00AA13;">
+                        <span wire:loading.remove><i class='bx bx-money'></i> Bayar dengan GoPay</span>
                         <span wire:loading>Memproses...</span>
                     </button>
-                    <button wire:click="processPayment" wire:loading.attr="disabled" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm transition-colors flex items-center justify-center gap-2">
-                        <span wire:loading.remove>Bayar dengan QRIS / Bank Transfer</span>
+                    <button wire:click="processPayment" wire:loading.attr="disabled" class="w-full py-3.5 text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2" style="background: #5680d8; box-shadow: 0 4px 15px rgba(86,128,216,.3);">
+                        <span wire:loading.remove><i class='bx bx-qr-scan'></i> Bayar dengan QRIS / Bank Transfer</span>
                         <span wire:loading>Memproses...</span>
                     </button>
                 </div>
-                <p class="text-[10px] text-slate-400 mt-4">*Ini adalah demo pembayaran. Tidak ada uang yang ditagih.</p>
+                <p class="text-[10px] text-slate-400 mt-4">*Demo pembayaran. Tidak ada uang yang ditagih.</p>
             </div>
         @else
             {{-- CV Result --}}
             <div class="flex items-center justify-between mb-4">
-                <span class="bg-emerald-100 text-emerald-700 font-bold text-xs px-3 py-1.5 rounded-full border border-emerald-200 flex items-center gap-1">
-                    <i class='bx bx-check-circle'></i> Akses Aktif
+                <span class="font-bold text-xs px-3 py-1.5 rounded-full flex items-center gap-1" style="background: #e6f8f6; color: #2a9d8f; border: 1px solid #99f6e4;">
+                    <i class='bx bx-check-circle'></i> CV Tersedia
                 </span>
-                <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-4 py-2 rounded-lg transition-colors flex items-center gap-2 shadow-lg">
+                <button onclick="window.print()" class="text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 transition-all" style="background: #24427b; box-shadow: 0 4px 12px rgba(37,67,155,.3);">
                     <i class='bx bx-printer'></i> Cetak / Simpan PDF
                 </button>
             </div>

@@ -1,4 +1,4 @@
-<div class="p-4 bg-slate-50 min-h-full pb-8">
+<div class="p-4 bg-slate-50 min-h-screen pb-36 pt-16">
     <div class="max-w-md mx-auto">
         <div class="flex items-center gap-3 mb-6">
             <a href="{{ route('company.jobs') }}" class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-slate-500 hover:bg-slate-100 transition-colors border border-slate-200">
@@ -29,6 +29,20 @@
                     <label class="block text-xs font-bold text-slate-700 mb-1">Posisi / Jabatan Pekerjaan <span class="text-red-500">*</span></label>
                     <input type="text" wire:model="position" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="Contoh: Kasir, Kitchen Helper, dll">
                     @error('position') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">
+                        Kuota Lowongan (Jumlah Kebutuhan) <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <input type="number" min="1" max="999" wire:model="quota" 
+                               class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white font-bold" 
+                               placeholder="Contoh: 2 atau 5">
+                        <span class="absolute right-4 top-3 text-xs font-bold text-slate-400">Orang</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 font-medium">Angka kuota ini akan muncul langsung di pin peta calon pelamar.</p>
+                    @error('quota') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">

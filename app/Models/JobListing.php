@@ -12,13 +12,14 @@ class JobListing extends Model
         'work_type', 'job_category', 'required_skills', 'min_education',
         'salary_min', 'salary_max', 'work_duration', 'work_hours',
         'contact_method', 'contact_whatsapp', 'contact_email',
-        'radius_km', 'status',
+        'radius_km', 'quota', 'status',
     ];
 
     protected $casts = [
         'required_skills' => 'array',
         'salary_min'      => 'integer',
         'salary_max'      => 'integer',
+        'quota'           => 'integer',
     ];
 
     public function company()

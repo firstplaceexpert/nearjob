@@ -1,12 +1,12 @@
 <div class="min-h-screen bg-slate-50 flex flex-col">
-    <div class="px-4 py-6 max-w-sm mx-auto w-full">
-        <div class="mb-6">
-            <div class="text-3xl mb-2"><i class='bx bx-buildings'></i></div>
+    <div class="px-4 py-8 max-w-md mx-auto w-full">
+        <div class="mb-6 text-center sm:text-left">
+            <div class="text-3xl mb-2 text-blue-600"><i class='bx bx-buildings'></i></div>
             <h1 class="text-2xl font-extrabold text-slate-800">Daftar sebagai Pemberi Kerja</h1>
             <p class="text-slate-500 text-sm mt-1">Posting lowongan dan temukan tenaga kerja di sekitar usaha Anda.</p>
         </div>
 
-        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-5 space-y-4">
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-7 sm:p-8 space-y-5">
 
             <div class="pb-3 border-b border-slate-50">
                 <p class="text-xs font-extrabold text-blue-600 tracking-widest uppercase mb-3">Data Pemilik</p>

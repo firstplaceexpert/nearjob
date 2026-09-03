@@ -33,6 +33,7 @@ class JobListingForm extends Component
     public string $contact_method = 'whatsapp';
     public string $contact_whatsapp = '';
     public string $contact_email = '';
+    public int $quota = 1;
     public string $status = 'active';
 
     public function mount(?JobListing $jobListing = null)
@@ -48,6 +49,7 @@ class JobListingForm extends Component
             $this->contact_method = $company->contact_method;
             $this->contact_whatsapp = $company->whatsapp;
             $this->contact_email = $company->contact_email;
+            $this->quota = 1;
         }
     }
 
@@ -75,6 +77,7 @@ class JobListingForm extends Component
         $this->contact_method = $this->job->contact_method;
         $this->contact_whatsapp = $this->job->contact_whatsapp ?? '';
         $this->contact_email = $this->job->contact_email ?? '';
+        $this->quota = (int) ($this->job->quota ?? 1);
         $this->status = $this->job->status;
     }
 
@@ -104,6 +107,7 @@ class JobListingForm extends Component
             'description' => 'required|string',
             'qualifications' => 'required|string',
             'contact_method' => 'required|in:whatsapp,email',
+            'quota' => 'required|integer|min:1|max:999',
             'status' => 'required|in:active,filled,closed',
         ]);
 
@@ -123,6 +127,7 @@ class JobListingForm extends Component
             'contact_method' => $this->contact_method,
             'contact_whatsapp' => $this->contact_whatsapp,
             'contact_email' => $this->contact_email,
+            'quota' => (int) $this->quota,
             'status' => $this->status,
         ];
 
