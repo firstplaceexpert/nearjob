@@ -28,14 +28,16 @@ class CvGenerator extends Component
         $this->isPaid = (bool) ($this->profile?->cv_generated);
     }
 
-    public function buyCv(MidtransService $midtrans): void
+    public function buyCv(?MidtransService $midtrans = null): void
     {
+        $midtrans = $midtrans ?: app(MidtransService::class);
         $pkg = Order::packages()['cv_ats'];
         $this->processOrder($pkg, $midtrans);
     }
 
-    public function buyBundle(MidtransService $midtrans): void
+    public function buyBundle(?MidtransService $midtrans = null): void
     {
+        $midtrans = $midtrans ?: app(MidtransService::class);
         $pkg = Order::packages()['bundle_komplit'];
         $this->processOrder($pkg, $midtrans);
     }

@@ -55,9 +55,10 @@ class CreditTopup extends Component
         $this->selectedPackage = $key;
     }
 
-    public function buyPackage(string $packageKey, MidtransService $midtrans): void
+    public function buyPackage(string $packageKey, ?MidtransService $midtrans = null): void
     {
         $this->isProcessing = true;
+        $midtrans = $midtrans ?: app(MidtransService::class);
         $packages = Order::packages();
 
         if (!isset($packages[$packageKey])) {
@@ -139,8 +140,9 @@ class CreditTopup extends Component
         }
     }
 
-    public function syncOrder(int $orderId, MidtransService $midtrans): void
+    public function syncOrder(int $orderId, ?MidtransService $midtrans = null): void
     {
+        $midtrans = $midtrans ?: app(MidtransService::class);
         $order = Order::where('id', $orderId)->where('user_id', Auth::id())->first();
         if (!$order) {
             return;
