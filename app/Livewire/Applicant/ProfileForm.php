@@ -176,6 +176,7 @@ class ProfileForm extends Component
     {
         // Mock payment — simulate adding 1 credit
         $this->profile->increment('application_credits');
+        $this->dispatch('credits-updated', credits: $this->profile->fresh()->application_credits);
         $this->dispatch('notify', ['message' => 'Pembayaran berhasil! 1 kredit lamaran telah ditambahkan.', 'type' => 'success']);
     }
 
@@ -184,8 +185,8 @@ class ProfileForm extends Component
         return view('livewire.applicant.profile-form', [
             'cities' => City::orderBy('name')->get(),
             'educationLevels' => ApplicantProfile::educationLevels(),
-            'credits' => $this->profile->application_credits ?? 0,
-            'cv_generated' => $this->profile->cv_generated ?? false,
+            'credits' => $this->profile->fresh()->application_credits ?? 0,
+            'cv_generated' => $this->profile->fresh()->cv_generated ?? false,
         ])->title('Profil Pelamar — NEAR JOB');
     }
 }

@@ -77,6 +77,15 @@
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
     @livewireStyles
+
+    {{-- Midtrans Snap JS --}}
+    @php
+        $snapJsUrl = config('services.midtrans.is_production')
+            ? 'https://app.midtrans.com/snap/snap.js'
+            : 'https://app.sandbox.midtrans.com/snap/snap.js';
+        $clientKey = config('services.midtrans.client_key') ?: env('MIDTRANS_CLIENT_KEY', '');
+    @endphp
+    <script src="{{ $snapJsUrl }}" data-client-key="{{ $clientKey }}"></script>
 </head>
 <body class="min-h-screen flex flex-col" style="font-family: 'Plus Jakarta Sans', sans-serif;">
 
@@ -92,11 +101,15 @@
         <div class="flex items-center gap-2">
             @auth
             @if(auth()->user()->isApplicant())
-                @php $credits = auth()->user()->applicantProfile?->application_credits ?? 0; @endphp
-                <div class="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border"
-                     style="background: var(--primary-light); color: var(--primary); border-color: #c7d6f5;">
-                    <i class='bx bx-star text-sm'></i> {{ $credits }} kredit
-                </div>
+                @php $credits = auth()->user()->applicantProfile?->fresh()->application_credits ?? 0; @endphp
+                <a href="{{ route('applicant.topup') }}"
+                   x-data="{ credits: {{ $credits }} }"
+                   @credits-updated.window="credits = ($event.detail && typeof $event.detail.credits !== 'undefined') ? $event.detail.credits : ($event.detail ?? credits)"
+                   class="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border hover:shadow-sm hover:scale-105 transition-all text-decoration-none"
+                   style="background: var(--primary-light); color: var(--primary); border-color: #c7d6f5;" title="Isi ulang kuota lamaran">
+                    <i class='bx bx-coin-stack text-sm'></i> <span x-text="`${credits} kuota`">{{ $credits }} kuota</span>
+                    <span class="w-4 h-4 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-black leading-none">+</span>
+                </a>
             @endif
             <form method="POST" action="{{ route('logout') }}" class="inline">
                 @csrf

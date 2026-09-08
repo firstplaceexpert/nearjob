@@ -40,6 +40,7 @@ class JobDetail extends Component
 
         // Kurangi kredit
         $profile->decrement('application_credits');
+        $this->dispatch('credits-updated', credits: $profile->fresh()->application_credits);
 
         // Buat record lamaran
         Application::create([

@@ -29,6 +29,7 @@ class User extends Authenticatable
     public function applicantProfile() { return $this->hasOne(ApplicantProfile::class); }
     public function company()          { return $this->hasOne(Company::class); }
     public function applications()     { return $this->hasMany(Application::class); }
+    public function orders()           { return $this->hasMany(Order::class); }
 
     public function getAgeAttribute(): int
     {

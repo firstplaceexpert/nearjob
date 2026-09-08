@@ -1,9 +1,16 @@
 <?php
 
-// Enable error reporting
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+// Check if debug mode is explicitly enabled
+$isDebug = (getenv('APP_DEBUG') === 'true' || ($_ENV['APP_DEBUG'] ?? '') === 'true');
+if ($isDebug) {
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    error_reporting(E_ALL);
+} else {
+    ini_set('display_errors', '0');
+    ini_set('display_startup_errors', '0');
+    error_reporting(0);
+}
 
 // 1. Ensure required storage directories exist in /tmp (the only writable directory in Vercel)
 $storageDirs = [
@@ -92,10 +99,17 @@ try {
     require __DIR__ . '/../public/index.php';
 } catch (\Throwable $e) {
     http_response_code(500);
-    echo "<div style='font-family:sans-serif;padding:30px;max-width:800px;margin:auto;'>";
-    echo "<h2 style='color:#dc2626;'>Laravel Error on Vercel</h2>";
-    echo "<p><strong>Message:</strong> " . htmlspecialchars($e->getMessage()) . "</p>";
-    echo "<p><strong>File:</strong> " . htmlspecialchars($e->getFile()) . ":" . $e->getLine() . "</p>";
-    echo "<pre style='background:#f1f5f9;padding:15px;border-radius:8px;overflow:auto;font-size:12px;'>" . htmlspecialchars($e->getTraceAsString()) . "</pre>";
-    echo "</div>";
+    if ($isDebug) {
+        echo "<div style='font-family:sans-serif;padding:30px;max-width:800px;margin:auto;'>";
+        echo "<h2 style='color:#dc2626;'>Laravel Error on Vercel</h2>";
+        echo "<p><strong>Message:</strong> " . htmlspecialchars($e->getMessage()) . "</p>";
+        echo "<p><strong>File:</strong> " . htmlspecialchars($e->getFile()) . ":" . $e->getLine() . "</p>";
+        echo "<pre style='background:#f1f5f9;padding:15px;border-radius:8px;overflow:auto;font-size:12px;'>" . htmlspecialchars($e->getTraceAsString()) . "</pre>";
+        echo "</div>";
+    } else {
+        echo "<div style='font-family:sans-serif;padding:50px 20px;max-width:600px;margin:auto;text-align:center;'>";
+        echo "<h1 style='color:#1e293b;font-size:24px;font-weight:700;'>Terjadi Kendala pada Server</h1>";
+        echo "<p style='color:#64748b;font-size:14px;line-height:1.6;'>Sistem sedang mengalami kendala teknis sementara. Silakan coba beberapa saat lagi atau hubungi tim pengelola.</p>";
+        echo "</div>";
+    }
 }

@@ -31,6 +31,12 @@ Route::post('/keluar', function () {
 })->middleware('auth')->name('logout');
 
 // ========================
+// MIDTRANS PAYMENT WEBHOOK & API
+// ========================
+Route::post('/api/midtrans/webhook', [App\Http\Controllers\MidtransWebhookController::class, 'handle'])->name('midtrans.webhook');
+Route::get('/api/orders/{order}/check-status', [App\Http\Controllers\MidtransWebhookController::class, 'checkStatus'])->name('orders.check-status');
+
+// ========================
 // APPLICANT ROUTES
 // ========================
 Route::middleware(['auth', 'role:applicant'])
@@ -42,6 +48,7 @@ Route::middleware(['auth', 'role:applicant'])
         Route::get('/lamaran', App\Livewire\Applicant\ApplicationHistory::class)->name('applications');
         Route::get('/profil', App\Livewire\Applicant\ProfileForm::class)->name('profile');
         Route::get('/cv-generator', App\Livewire\Applicant\CvGenerator::class)->name('cv.generator');
+        Route::get('/isi-kuota', App\Livewire\Applicant\CreditTopup::class)->name('topup');
     });
 
 // ========================

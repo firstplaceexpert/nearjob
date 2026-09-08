@@ -63,31 +63,51 @@ class JobMap extends Component
 
         // Cek kredit lamaran
         if ($profile->application_credits <= 0) {
-            $this->dispatch('notify', 'Kredit lamaran Anda habis. Silakan beli kredit untuk melanjutkan.');
+            $this->dispatch('notify', [
+                'message' => 'Kuota lamaran habis. Mengalihkan ke isi ulang kuota...',
+                'type' => 'error'
+            ]);
+            $this->redirect(route('applicant.topup'), navigate: true);
             return;
         }
 
-        // Kurangi kredit
-        $profile->decrement('application_credits');
+        // Kurangi kredit & buat lamaran secara atomik
+        \Illuminate\Support\Facades\DB::transaction(function () use ($profile, $user, $job) {
+            $profile->decrement('application_credits');
 
-        // Buat record lamaran
-        Application::create([
-            'user_id' => $user->id,
-            'job_listing_id' => $job->id,
-            'status' => 'menunggu',
-            'contact_method' => $job->contact_method,
-            'application_date' => now(),
-        ]);
+            Application::create([
+                'user_id' => $user->id,
+                'job_listing_id' => $job->id,
+                'status' => 'menunggu',
+                'contact_method' => $job->contact_method,
+                'application_date' => now(),
+            ]);
+        });
 
-        // Generate pesan WhatsApp / Email
+        $this->dispatch('credits-updated', credits: $profile->fresh()->application_credits);
+
+        // Generate pesan WhatsApp / Email yang terstruktur & profesional
         if ($job->contact_method === 'whatsapp') {
-            $message = "Halo {$job->company->owner_name}, saya {$user->name} melihat lowongan {$job->position} di Near Job. Apakah lowongan ini masih tersedia?";
+            $edu = strtoupper($profile->education_level ?? 'SMA/SMK');
+            $city = $profile->city ?? 'Area Sekitar';
+            $companyName = $job->company->company_name;
+            $ownerName = $job->company->owner_name ?: 'Bapak/Ibu HRD';
+
+            $message = "Halo Yth. {$ownerName} ({$companyName}),\n\n"
+                     . "Perkenalkan saya *{$user->name}* (Domisili: {$city}, Pend. Terakhir: {$edu}).\n"
+                     . "Saya menemukan informasi lowongan *{$job->position}* melalui platform *Near Job*.\n\n"
+                     . "Saya memiliki minat dan kualifikasi yang sesuai untuk posisi ini. Apakah lowongan masih terbuka untuk proses interview?\n\n"
+                     . "Terima kasih atas perhatian dan kesempatannya.\n"
+                     . "Salam hormat,\n"
+                     . "{$user->name}";
+
             $waNumber = preg_replace('/[^0-9]/', '', $job->contact_whatsapp);
             if (str_starts_with($waNumber, '0')) {
                 $waNumber = '62' . substr($waNumber, 1);
             }
             $url = "https://wa.me/{$waNumber}?text=" . urlencode($message);
             $this->redirect($url);
+            return;
         } else {
             $subject = "Lamaran Pekerjaan: {$job->position} - {$user->name}";
             $body = "Yth. HRD {$job->company->company_name},\n\nSaya mendapatkan informasi lowongan {$job->position} dari Near Job...\n\nSalam,\n{$user->name}";
