@@ -1,5 +1,15 @@
 <div class="max-w-3xl mx-auto px-4 py-6">
 
+    {{-- Tombol Kembali ke Halaman Sebelumnya --}}
+    <div class="mb-4">
+        <button type="button" 
+                onclick="window.history.length > 1 ? window.history.back() : window.location.href='{{ route('applicant.map') }}'"
+                class="inline-flex items-center gap-2 text-xs font-bold px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-blue-600 transition-all shadow-sm cursor-pointer">
+            <i class='bx bx-left-arrow-alt text-lg leading-none'></i>
+            <span>Kembali</span>
+        </button>
+    </div>
+
     {{-- Header & Info Saldo --}}
     <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mb-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
