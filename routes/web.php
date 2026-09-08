@@ -16,6 +16,10 @@ Route::get('/', function () {
 })->name('home');
 
 // Auth routes (guest only)
+Route::redirect('/login', '/masuk');
+Route::redirect('/register', '/daftar/pelamar');
+Route::redirect('/daftar', '/daftar/pelamar');
+
 Route::middleware('guest')->group(function () {
     Route::get('/masuk', App\Livewire\Auth\Login::class)->name('login');
     Route::get('/daftar/pelamar', App\Livewire\Auth\RegisterApplicant::class)->name('register.applicant');
