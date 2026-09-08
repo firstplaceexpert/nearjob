@@ -87,11 +87,11 @@
                     <p class="text-3xl font-black mb-2">{{ $credits }} <span class="text-xs font-bold text-blue-200">Kredit Tersisa</span></p>
                     <p class="text-xs text-blue-100/90 font-medium leading-relaxed">1 kredit digunakan per lamaran yang dikirim.</p>
                 </div>
-                <button onclick="document.getElementById('buy-credits-section').scrollIntoView({behavior:'smooth'})"
-                   class="mt-6 text-xs sm:text-sm font-extrabold px-4 py-3.5 rounded-xl w-full text-center transition-all shadow-sm flex items-center justify-center gap-2 hover:opacity-95"
+                <a href="{{ route('applicant.topup') }}"
+                   class="mt-6 text-xs sm:text-sm font-extrabold px-4 py-3.5 rounded-xl w-full text-center transition-all shadow-sm flex items-center justify-center gap-2 hover:opacity-95 text-decoration-none"
                    style="background: white; color: #24427b;">
-                    <i class='bx bx-plus-circle text-base'></i> Beli Kredit Lamaran
-                </button>
+                    <i class='bx bx-coin-stack text-base'></i> Isi Ulang Kuota Lamaran
+                </a>
             </div>
 
             {{-- CV Card --}}
@@ -149,36 +149,6 @@
                     @endif
                 </div>
                 @endforeach
-            </div>
-        </div>
-
-        {{-- ===== BUY CREDITS SECTION ===== --}}
-        <div id="buy-credits-section" class="bg-white rounded-3xl overflow-hidden border shadow-sm" style="border-color: #e2e8f0;">
-            <div class="flex items-center justify-between" style="padding: 22px 26px; border-bottom: 1.5px solid #f1f5f9; background: #fafcff;">
-                <div>
-                    <h3 class="font-black text-slate-800 text-sm">Tambah Kredit Lamaran</h3>
-                    <p class="text-xs text-slate-500 mt-1 font-medium">Melamar lowongan pekerjaan lokal tanpa batas</p>
-                </div>
-                <span class="text-xs font-black px-3.5 py-1.5 rounded-full" style="background: #eef2fb; color: #5680d8;">
-                    {{ $credits }}/3 Kredit
-                </span>
-            </div>
-            
-            <div style="padding: 26px 26px 30px;">
-                <div class="flex items-center justify-between" style="padding: 20px 22px; margin-bottom: 22px; border-radius: 18px; background: #f8faff; border: 1.5px solid #e8edf5;">
-                    <div>
-                        <span class="text-xs sm:text-sm font-extrabold text-slate-800 block mb-1">Paket 1 Kredit Melamar</span>
-                        <span class="text-xs text-slate-400 font-medium">Bisa langsung digunakan melamar ke WhatsApp/Email</span>
-                    </div>
-                    <span class="text-xl font-black" style="color: #5680d8;">Rp5.999</span>
-                </div>
-
-                <button wire:click="buyCredit"
-                    class="w-full py-4 text-white font-black rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md hover:opacity-95"
-                    style="background: #5680d8; box-shadow: 0 4px 16px rgba(86,128,216,.35);">
-                    <i class='bx bx-credit-card text-base'></i>
-                    Beli 1 Kredit Sekarang — Rp5.999
-                </button>
             </div>
         </div>
 

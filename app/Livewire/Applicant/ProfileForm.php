@@ -172,14 +172,6 @@ class ProfileForm extends Component
         $this->dispatch('notify', ['message' => 'Profil berhasil disimpan!', 'type' => 'success']);
     }
 
-    public function buyCredit(): void
-    {
-        // Mock payment — simulate adding 1 credit
-        $this->profile->increment('application_credits');
-        $this->dispatch('credits-updated', credits: $this->profile->fresh()->application_credits);
-        $this->dispatch('notify', ['message' => 'Pembayaran berhasil! 1 kredit lamaran telah ditambahkan.', 'type' => 'success']);
-    }
-
     public function render()
     {
         return view('livewire.applicant.profile-form', [
