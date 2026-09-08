@@ -16,10 +16,12 @@
                 'quota'       => (int) ($j->quota ?: 1),
                 'distance'    => $j->distance,
                 'method'      => $j->contact_method,
+                'hasWa'       => !empty(trim($j->contact_whatsapp ?? '')),
+                'hasEmail'    => !empty(trim($j->contact_email ?? '')),
                 'education'   => strtoupper($j->min_education),
                 'workType'    => $j->work_type_label,
                 'applyRoute'  => route('applicant.job.detail', $j->id),
-                'profileRoute'=> route('applicant.profile'),
+                'topupRoute'  => route('applicant.topup'),
             ])->values()->all(),
         ]) !!}
     </script>
@@ -116,11 +118,19 @@
                 {{-- Row 3: Tag WA/Email + Tombol Lamar --}}
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
                     <div>
-                        @if($job->contact_method === 'whatsapp')
+                        @php
+                            $cardHasWa = !empty(trim($job->contact_whatsapp ?? ''));
+                            $cardHasMail = !empty(trim($job->contact_email ?? ''));
+                        @endphp
+                        @if($cardHasWa && $cardHasMail)
+                            <span style="font-size:10px;font-weight:700;background:#dcfce7;color:#16a34a;padding:4px 9px;border-radius:8px;display:inline-flex;align-items:center;gap:3px;" title="Tersedia WhatsApp & Email (Prioritas Direct ke WA)">
+                                <i class='bx bxl-whatsapp'></i> WA & Email
+                            </span>
+                        @elseif($cardHasWa)
                             <span style="font-size:10px;font-weight:700;background:#dcfce7;color:#16a34a;padding:4px 9px;border-radius:8px;display:inline-flex;align-items:center;gap:3px;">
                                 <i class='bx bxl-whatsapp'></i> WA
                             </span>
-                        @else
+                        @elseif($cardHasMail)
                             <span style="font-size:10px;font-weight:700;background:#eef2fb;color:#5680d8;padding:4px 9px;border-radius:8px;display:inline-flex;align-items:center;gap:3px;">
                                 <i class='bx bx-envelope'></i> Email
                             </span>
@@ -319,11 +329,11 @@
                 +'<div style="display:flex;gap:10px;">'
                 +'<a href="'+j.applyRoute+'" style="flex:1;padding:14px;text-align:center;font-size:13px;font-weight:700;color:#475569;background:white;border:2px solid #e2e8f0;border-radius:14px;text-decoration:none;">Detail</a>'
                 +(CRED>0
-                    ? '<button onclick="njobApply('+j.id+')" style="flex:2;padding:14px;font-size:13px;font-weight:800;color:white;background:#5680d8;border:none;border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px rgba(86,128,216,.4);">Lamar Sekarang <span style="background:rgba(255,255,255,.25);padding:2px 8px;border-radius:20px;font-size:10px;">-1 Kredit</span></button>'
-                    : '<button style="flex:2;padding:14px;font-size:13px;font-weight:800;background:#cbd5e1;color:white;border:none;border-radius:14px;cursor:not-allowed;display:flex;align-items:center;justify-content:center;">Kredit Habis</button>'
+                    ? '<button onclick="njobApply('+j.id+')" style="flex:2;padding:14px;font-size:13px;font-weight:800;color:white;background:'+(j.hasWa?'#16a34a':'#2563eb')+';border:none;border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px '+(j.hasWa?'rgba(22,163,74,.4)':'rgba(37,99,235,.4)')+';"><i class=\'bx '+(j.hasWa?'bxl-whatsapp':'bx-envelope')+'\'></i> '+(j.hasWa?'Lamar via WhatsApp':'Lamar via Email')+' <span style="background:rgba(255,255,255,.25);padding:2px 8px;border-radius:20px;font-size:10px;">-1 Kuota</span></button>'
+                    : '<button style="flex:2;padding:14px;font-size:13px;font-weight:800;background:#cbd5e1;color:white;border:none;border-radius:14px;cursor:not-allowed;display:flex;align-items:center;justify-content:center;">Kuota Habis</button>'
                 )
                 +'</div>'
-                +(CRED<=0?'<div style="margin-top:12px;padding:12px;background:#fff5f5;border:1px solid #fecaca;border-radius:12px;text-align:center;font-size:12px;font-weight:700;color:#dc2626;">Kredit habis · <a href="'+j.profileRoute+'" style="color:#5680d8;">Beli 1 Kredit — Rp5.999</a></div>':'');
+                +(CRED<=0?'<div style="margin-top:12px;padding:12px;background:#fff5f5;border:1px solid #fecaca;border-radius:12px;text-align:center;font-size:12px;font-weight:700;color:#dc2626;">Kuota lamaran habis · <a href="'+j.topupRoute+'" style="color:#5680d8;font-weight:800;text-decoration:underline;">Isi Ulang Kuota Lamaran</a></div>':'');
             document.getElementById('njob-sheet-body').innerHTML=html;
             const sheet = document.getElementById('njob-sheet');
             sheet.style.display = 'block';

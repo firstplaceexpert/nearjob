@@ -155,15 +155,34 @@
                     </div>
                     @endif
 
+                    @php
+                        $hasWa = !empty(trim($job->contact_whatsapp ?? ''));
+                        $hasMail = !empty(trim($job->contact_email ?? ''));
+                    @endphp
+
                     <div style="background: #f8faff; border: 1.5px solid #e8edf5; border-radius: 16px; padding: 16px 18px; display: flex; align-items: flex-start; gap: 14px;">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5 shadow-2xs" style="background: {{ $job->contact_method === 'whatsapp' ? '#dcfce7' : '#eef2fb' }}; color: {{ $job->contact_method === 'whatsapp' ? '#16a34a' : '#5680d8' }}; border: 1px solid {{ $job->contact_method === 'whatsapp' ? '#bbf7d0' : '#c7d6f5' }};">
-                            <i class='bx {{ $job->contact_method === "whatsapp" ? "bxl-whatsapp" : "bx-envelope" }} text-lg'></i>
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5 shadow-2xs" style="background: {{ $hasWa ? '#dcfce7' : '#eef2fb' }}; color: {{ $hasWa ? '#16a34a' : '#5680d8' }}; border: 1px solid {{ $hasWa ? '#bbf7d0' : '#c7d6f5' }};">
+                            <i class='bx {{ $hasWa ? "bxl-whatsapp" : "bx-envelope" }} text-lg'></i>
                         </div>
                         <div>
-                            <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 block mb-1">METODE KOMUNIKASI</span>
-                            <p class="font-extrabold text-xs sm:text-sm {{ $job->contact_method === 'whatsapp' ? 'text-green-600' : 'text-blue-600' }}">
-                                Melalui {{ $job->contact_method === 'whatsapp' ? 'WhatsApp (Pesan Langsung)' : 'Email (Kirim Surat)' }}
-                            </p>
+                            <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 block mb-1">METODE KOMUNIKASI & KONTAK</span>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                @if($hasWa)
+                                    <span class="inline-flex items-center gap-1 text-xs font-extrabold px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                        <i class='bx bxl-whatsapp text-sm'></i> WhatsApp: {{ $job->contact_whatsapp }}
+                                    </span>
+                                @endif
+                                @if($hasMail)
+                                    <span class="inline-flex items-center gap-1 text-xs font-extrabold px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-200">
+                                        <i class='bx bx-envelope text-sm'></i> Email: {{ $job->contact_email }}
+                                    </span>
+                                @endif
+                            </div>
+                            @if($hasWa && $hasMail)
+                                <span class="text-[11px] text-slate-500 font-medium block mt-1.5">
+                                    <i class='bx bx-check text-emerald-600 font-bold'></i> Tersedia 2 opsi. Pelamar otomatis diarahkan ke <strong>WhatsApp</strong> perusahaan secara prioritas.
+                                </span>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -183,22 +202,22 @@
                 </div>
             @else
                 <button wire:click="applyForJob"
-                    class="w-full py-4 text-white font-black rounded-2xl text-sm flex items-center justify-center gap-2 transition-all shadow-lg"
-                    style="{{ $credits > 0 ? 'background: #5680d8; box-shadow: 0 6px 25px rgba(86,128,216,.4);' : 'background: #cbd5e1; cursor: not-allowed;' }}">
+                    class="w-full py-4 text-white font-black rounded-2xl text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:opacity-95 cursor-pointer"
+                    style="{{ $credits > 0 ? ($hasWa ? 'background: #16a34a; box-shadow: 0 6px 25px rgba(22,163,74,.4);' : 'background: #2563eb; box-shadow: 0 6px 25px rgba(37,99,235,.4);') : 'background: #cbd5e1; cursor: not-allowed;' }}">
                     @if($credits > 0)
-                        <i class='bx bx-send text-lg'></i>
-                        LAMAR SEKARANG
-                        <span class="text-xs px-2.5 py-0.5 rounded-full font-bold" style="background: rgba(255,255,255,.25);">-1 Kredit</span>
+                        <i class='bx {{ $hasWa ? "bxl-whatsapp" : "bx-envelope" }} text-xl'></i>
+                        {{ $hasWa ? 'LAMAR VIA WHATSAPP' : 'LAMAR VIA EMAIL' }}
+                        <span class="text-xs px-2.5 py-0.5 rounded-full font-bold" style="background: rgba(255,255,255,.25);">-1 Kuota</span>
                     @else
-                        <i class='bx bx-lock text-lg'></i> Kredit Melamar Habis
+                        <i class='bx bx-lock text-lg'></i> Kuota Melamar Habis
                     @endif
                 </button>
 
                 @if($credits <= 0)
                 <div class="mt-2.5 p-3 rounded-xl flex items-center justify-between" style="background: #fff5f5; border: 1px solid #fecaca;">
-                    <p class="text-xs font-bold text-red-600">Kredit lamaran Anda habis (0 kredit)</p>
-                    <a href="{{ route('applicant.profile') }}" class="text-xs font-bold text-white px-3.5 py-1.5 rounded-lg" style="background: #ef4444;">
-                        Beli Kredit
+                    <p class="text-xs font-bold text-red-600">Kuota lamaran Anda habis (0 kuota)</p>
+                    <a href="{{ route('applicant.topup') }}" class="text-xs font-bold text-white px-3.5 py-1.5 rounded-lg shadow-sm hover:opacity-95 text-decoration-none" style="background: #ef4444;">
+                        <i class='bx bx-plus-circle'></i> Isi Kuota
                     </a>
                 </div>
                 @endif

@@ -136,33 +136,35 @@
                     </div>
                 </div>
 
-                <h3 class="text-sm font-extrabold text-blue-600 uppercase tracking-widest border-b border-slate-100 pb-2 mt-6">Kontak Lamaran</h3>
+                <h3 class="text-sm font-extrabold text-blue-600 uppercase tracking-widest border-b border-slate-100 pb-2 mt-6">Kontak Penerima Lamaran</h3>
                 
-                <p class="text-xs text-slate-500 mb-2">Pilih bagaimana cara pelamar menghubungi Anda.</p>
+                <div class="p-3.5 rounded-xl bg-blue-50/70 border border-blue-100 text-xs text-blue-900 leading-relaxed">
+                    <p class="font-bold flex items-center gap-1.5 mb-1 text-blue-700">
+                        <i class='bx bx-info-circle text-base'></i> Fleksibilitas Kontak Lamaran:
+                    </p>
+                    Anda dapat mencantumkan <strong>WhatsApp saja</strong>, <strong>Email saja</strong>, atau <strong>Keduanya Sekaligus</strong> (minimal salah satu terisi). Jika Anda mencantumkan keduanya, pelamar akan otomatis diarahkan secara prioritas langsung ke WhatsApp Anda.
+                </div>
 
-                <div>
-                    <div class="grid grid-cols-2 gap-2 mb-3">
-                        <button type="button" wire:click="$set('contact_method', 'whatsapp')"
-                            class="py-3 rounded-xl border-2 text-sm font-bold transition-all {{ $contact_method === 'whatsapp' ? 'border-green-500 bg-green-50 text-green-700' : 'border-slate-200 text-slate-500 hover:bg-slate-50' }}">
-                            <i class='bx bxl-whatsapp'></i> WhatsApp
-                        </button>
-                        <button type="button" wire:click="$set('contact_method', 'email')"
-                            class="py-3 rounded-xl border-2 text-sm font-bold transition-all {{ $contact_method === 'email' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-slate-200 text-slate-500 hover:bg-slate-50' }}">
-                            <i class='bx bx-envelope'></i> Email
-                        </button>
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">
+                            <i class='bx bxl-whatsapp text-green-600 text-sm'></i> Nomor WhatsApp
+                        </label>
+                        <input type="tel" wire:model="contact_whatsapp" 
+                               class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" 
+                               placeholder="Contoh: 081234567890">
+                        @error('contact_whatsapp') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
-                    @if($contact_method === 'whatsapp')
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp Penerima Lamaran</label>
-                            <input type="tel" wire:model="contact_whatsapp" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="08xxxxxxxxxx">
-                        </div>
-                    @else
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Email Penerima Lamaran</label>
-                            <input type="email" wire:model="contact_email" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="hrd@usaha.com">
-                        </div>
-                    @endif
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">
+                            <i class='bx bx-envelope text-blue-600 text-sm'></i> Email Penerima Lamaran
+                        </label>
+                        <input type="email" wire:model="contact_email" 
+                               class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" 
+                               placeholder="Contoh: hrd@perusahaan.com">
+                        @error('contact_email') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                    </div>
                 </div>
 
                 <div class="pt-4">

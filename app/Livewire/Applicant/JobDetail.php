@@ -34,37 +34,68 @@ class JobDetail extends Component
 
         // Cek kredit lamaran
         if ($profile->application_credits <= 0) {
-            $this->dispatch('notify', 'Kredit lamaran Anda habis. Silakan beli kredit di profil Anda.');
+            $this->dispatch('notify', [
+                'message' => 'Kuota lamaran habis. Mengalihkan ke isi ulang kuota...',
+                'type' => 'error'
+            ]);
+            $this->redirect(route('applicant.topup'), navigate: true);
             return;
         }
 
-        // Kurangi kredit
-        $profile->decrement('application_credits');
+        // Tentukan metode kontak direct (prioritas WhatsApp jika tersedia, atau Email jika hanya ada email)
+        $hasWhatsapp = !empty(trim($this->job->contact_whatsapp ?? ''));
+        $hasEmail = !empty(trim($this->job->contact_email ?? ''));
+        $appliedVia = $hasWhatsapp ? 'whatsapp' : ($hasEmail ? 'email' : 'whatsapp');
+
+        // Kurangi kredit & buat lamaran secara atomik
+        \Illuminate\Support\Facades\DB::transaction(function () use ($profile, $user, $appliedVia) {
+            $profile->decrement('application_credits');
+
+            Application::create([
+                'user_id' => $user->id,
+                'job_listing_id' => $this->job->id,
+                'status' => 'menunggu',
+                'contact_method' => $appliedVia,
+                'application_date' => now(),
+            ]);
+        });
+
         $this->dispatch('credits-updated', credits: $profile->fresh()->application_credits);
 
-        // Buat record lamaran
-        Application::create([
-            'user_id' => $user->id,
-            'job_listing_id' => $this->job->id,
-            'status' => 'menunggu',
-            'contact_method' => $this->job->contact_method,
-            'application_date' => now(),
-        ]);
+        $edu = strtoupper($profile->education_level ?? 'SMA/SMK');
+        $city = $profile->city ?? 'Area Sekitar';
+        $companyName = $this->job->company->company_name;
+        $ownerName = $this->job->company->owner_name ?: 'Bapak/Ibu HRD';
 
-        // Generate pesan WhatsApp / Email
-        if ($this->job->contact_method === 'whatsapp') {
-            $message = "Halo {$this->job->company->owner_name}, saya {$user->name} melihat lowongan {$this->job->position} di Near Job. Apakah lowongan ini masih tersedia?";
+        // Generate pesan WhatsApp / Email yang terstruktur & profesional
+        if ($appliedVia === 'whatsapp' && $hasWhatsapp) {
+            $message = "Halo Yth. {$ownerName} ({$companyName}),\n\n"
+                     . "Perkenalkan saya *{$user->name}* (Domisili: {$city}, Pend. Terakhir: {$edu}).\n"
+                     . "Saya menemukan informasi lowongan *{$this->job->position}* melalui platform *Near Job*.\n\n"
+                     . "Saya memiliki minat dan kualifikasi yang sesuai untuk posisi ini. Apakah lowongan masih terbuka untuk proses interview?\n\n"
+                     . "Terima kasih atas perhatian dan kesempatannya.\n"
+                     . "Salam hormat,\n"
+                     . "{$user->name}";
+
             $waNumber = preg_replace('/[^0-9]/', '', $this->job->contact_whatsapp);
             if (str_starts_with($waNumber, '0')) {
                 $waNumber = '62' . substr($waNumber, 1);
             }
             $url = "https://wa.me/{$waNumber}?text=" . urlencode($message);
             $this->redirect($url);
+            return;
         } else {
             $subject = "Lamaran Pekerjaan: {$this->job->position} - {$user->name}";
-            $body = "Yth. HRD {$this->job->company->company_name},\n\nSaya mendapatkan informasi lowongan {$this->job->position} dari Near Job...\n\nSalam,\n{$user->name}";
+            $body = "Yth. {$ownerName} ({$companyName}),\n\n"
+                  . "Perkenalkan saya {$user->name} (Domisili: {$city}, Pendidikan Terakhir: {$edu}).\n\n"
+                  . "Saya mendapatkan informasi lowongan pekerjaan untuk posisi {$this->job->position} melalui platform Near Job.\n\n"
+                  . "Saya sangat tertarik dan berminat untuk mengisi posisi tersebut. Bersama pesan ini saya mengajukan diri untuk dapat mengikuti tahapan rekrutmen selanjutnya.\n\n"
+                  . "Terima kasih atas waktu dan kesempatan yang diberikan.\n\n"
+                  . "Hormat saya,\n"
+                  . "{$user->name}";
             $url = "mailto:{$this->job->contact_email}?subject=" . rawurlencode($subject) . "&body=" . rawurlencode($body);
             $this->redirect($url);
+            return;
         }
     }
     

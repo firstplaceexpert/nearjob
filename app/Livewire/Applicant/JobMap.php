@@ -71,28 +71,33 @@ class JobMap extends Component
             return;
         }
 
+        // Tentukan metode kontak direct (prioritas WhatsApp jika tersedia, atau Email jika hanya ada email)
+        $hasWhatsapp = !empty(trim($job->contact_whatsapp ?? ''));
+        $hasEmail = !empty(trim($job->contact_email ?? ''));
+        $appliedVia = $hasWhatsapp ? 'whatsapp' : ($hasEmail ? 'email' : 'whatsapp');
+
         // Kurangi kredit & buat lamaran secara atomik
-        \Illuminate\Support\Facades\DB::transaction(function () use ($profile, $user, $job) {
+        \Illuminate\Support\Facades\DB::transaction(function () use ($profile, $user, $job, $appliedVia) {
             $profile->decrement('application_credits');
 
             Application::create([
                 'user_id' => $user->id,
                 'job_listing_id' => $job->id,
                 'status' => 'menunggu',
-                'contact_method' => $job->contact_method,
+                'contact_method' => $appliedVia,
                 'application_date' => now(),
             ]);
         });
 
         $this->dispatch('credits-updated', credits: $profile->fresh()->application_credits);
 
-        // Generate pesan WhatsApp / Email yang terstruktur & profesional
-        if ($job->contact_method === 'whatsapp') {
-            $edu = strtoupper($profile->education_level ?? 'SMA/SMK');
-            $city = $profile->city ?? 'Area Sekitar';
-            $companyName = $job->company->company_name;
-            $ownerName = $job->company->owner_name ?: 'Bapak/Ibu HRD';
+        $edu = strtoupper($profile->education_level ?? 'SMA/SMK');
+        $city = $profile->city ?? 'Area Sekitar';
+        $companyName = $job->company->company_name;
+        $ownerName = $job->company->owner_name ?: 'Bapak/Ibu HRD';
 
+        // Generate pesan WhatsApp / Email yang terstruktur & profesional
+        if ($appliedVia === 'whatsapp' && $hasWhatsapp) {
             $message = "Halo Yth. {$ownerName} ({$companyName}),\n\n"
                      . "Perkenalkan saya *{$user->name}* (Domisili: {$city}, Pend. Terakhir: {$edu}).\n"
                      . "Saya menemukan informasi lowongan *{$job->position}* melalui platform *Near Job*.\n\n"
@@ -110,9 +115,16 @@ class JobMap extends Component
             return;
         } else {
             $subject = "Lamaran Pekerjaan: {$job->position} - {$user->name}";
-            $body = "Yth. HRD {$job->company->company_name},\n\nSaya mendapatkan informasi lowongan {$job->position} dari Near Job...\n\nSalam,\n{$user->name}";
+            $body = "Yth. {$ownerName} ({$companyName}),\n\n"
+                  . "Perkenalkan saya {$user->name} (Domisili: {$city}, Pendidikan Terakhir: {$edu}).\n\n"
+                  . "Saya mendapatkan informasi lowongan pekerjaan untuk posisi {$job->position} melalui platform Near Job.\n\n"
+                  . "Saya sangat tertarik dan berminat untuk mengisi posisi tersebut. Bersama pesan ini saya mengajukan diri untuk dapat mengikuti tahapan rekrutmen selanjutnya.\n\n"
+                  . "Terima kasih atas waktu dan kesempatan yang diberikan.\n\n"
+                  . "Hormat saya,\n"
+                  . "{$user->name}";
             $url = "mailto:{$job->contact_email}?subject=" . rawurlencode($subject) . "&body=" . rawurlencode($body);
             $this->redirect($url);
+            return;
         }
     }
 

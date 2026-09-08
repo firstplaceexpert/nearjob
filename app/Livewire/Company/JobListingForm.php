@@ -106,10 +106,23 @@ class JobListingForm extends Component
             'city' => 'required|string',
             'description' => 'required|string',
             'qualifications' => 'required|string',
-            'contact_method' => 'required|in:whatsapp,email',
             'quota' => 'required|integer|min:1|max:999',
             'status' => 'required|in:active,filled,closed',
+            'contact_whatsapp' => 'nullable|string|max:25',
+            'contact_email' => 'nullable|email|max:255',
         ]);
+
+        $hasWhatsapp = !empty(trim($this->contact_whatsapp));
+        $hasEmail = !empty(trim($this->contact_email));
+
+        if (!$hasWhatsapp && !$hasEmail) {
+            $this->addError('contact_whatsapp', 'Harap cantumkan minimal salah satu kontak (Nomor WhatsApp atau Email).');
+            $this->addError('contact_email', 'Harap cantumkan minimal salah satu kontak (Nomor WhatsApp atau Email).');
+            return;
+        }
+
+        // Tentukan contact_method utama (prioritas WhatsApp jika tersedia)
+        $primaryContactMethod = $hasWhatsapp ? 'whatsapp' : 'email';
 
         $data = [
             'position' => $this->position,
@@ -124,9 +137,9 @@ class JobListingForm extends Component
             'description' => $this->description,
             'qualifications' => $this->qualifications,
             'required_skills' => $this->required_skills,
-            'contact_method' => $this->contact_method,
-            'contact_whatsapp' => $this->contact_whatsapp,
-            'contact_email' => $this->contact_email,
+            'contact_method' => $primaryContactMethod,
+            'contact_whatsapp' => $this->contact_whatsapp ?: null,
+            'contact_email' => $this->contact_email ?: null,
             'quota' => (int) $this->quota,
             'status' => $this->status,
         ];
