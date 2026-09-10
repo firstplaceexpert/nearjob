@@ -47,6 +47,12 @@ $_ENV['APP_ROUTES_CACHE'] = '/tmp/routes.php';
 putenv('APP_MAINTENANCE_DRIVER=file');
 $_ENV['APP_MAINTENANCE_DRIVER'] = 'file';
 
+if (empty($_ENV['APP_URL']) || empty(getenv('APP_URL'))) {
+    $host = $_SERVER['HTTP_HOST'] ?? 'nearjob-theta.vercel.app';
+    putenv("APP_URL=https://{$host}");
+    $_ENV['APP_URL'] = "https://{$host}";
+}
+
 if (empty($_ENV['CACHE_STORE']) || empty(getenv('CACHE_STORE'))) {
     putenv('CACHE_STORE=array');
     $_ENV['CACHE_STORE'] = 'array';
