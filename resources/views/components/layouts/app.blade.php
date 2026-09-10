@@ -11,6 +11,7 @@
     <meta name="keywords" content="lowongan kerja, cari loker, loker terdekat, info loker, loker yogyakarta, loker jakarta, loker surabaya, loker bandung, kerja part time, kerja freelance, lowongan kerja sma smk, portal karir, near job">
     <meta name="author" content="NEAR JOB">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="google-site-verification" content="RKLJDnOXuHbLSkcXrvG-6NPID4IztA0WMdMT9Ywlb-I">
     <link rel="canonical" href="{{ url()->current() }}">
 
     {{-- Geo Tags for Local SEO --}}
