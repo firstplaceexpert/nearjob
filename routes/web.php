@@ -26,10 +26,12 @@ Route::middleware('guest')->group(function () {
     Route::get('/daftar/pelamar', App\Livewire\Auth\RegisterApplicant::class)->name('register.applicant');
     Route::get('/daftar/pemberi-kerja', App\Livewire\Auth\RegisterCompany::class)->name('register.company');
     
-    // Google OAuth Routes
+    // Google OAuth redirect (only guest can initiate)
     Route::get('/auth/google', [App\Http\Controllers\GoogleAuthController::class, 'redirectToGoogle'])->name('auth.google');
-    Route::get('/auth/google/callback', [App\Http\Controllers\GoogleAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 });
+
+// Google OAuth callback — MUST be outside guest middleware so Socialite can process the response
+Route::get('/auth/google/callback', [App\Http\Controllers\GoogleAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
 // Logout
 Route::post('/keluar', function () {

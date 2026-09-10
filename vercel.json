@@ -57,6 +57,7 @@
     "APP_EVENTS_CACHE": "/tmp/events.php",
     "APP_PACKAGES_CACHE": "/tmp/packages.php",
     "APP_ROUTES_CACHE": "/tmp/routes.php",
-    "APP_SERVICES_CACHE": "/tmp/services.php"
+    "APP_SERVICES_CACHE": "/tmp/services.php",
+    "GOOGLE_REDIRECT_URI": "https://nearjob-theta.vercel.app/auth/google/callback"
   }
 }
