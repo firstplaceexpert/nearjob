@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ isset($title) ? $title . ' — NEAR JOB' : 'NEAR JOB' }}</title>
+    <title>{{ isset($title) ? $title . ' — NEAR JOB' : 'Masuk / Daftar — NEAR JOB' }}</title>
+    <meta name="description" content="Masuk atau daftar di NEAR JOB untuk menemukan lowongan kerja terdekat di sekitar tempat tinggal Anda.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url()->current() }}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])

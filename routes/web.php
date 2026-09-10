@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 // ========================
 // PUBLIC ROUTES
 // ========================
+Route::get('/sitemap.xml', [App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 Route::get('/', App\Livewire\Applicant\JobMap::class)->name('home');
 Route::get('/pelamar/beranda', App\Livewire\Applicant\JobMap::class)->name('applicant.map');
 Route::get('/pelamar/lowongan/{jobListing}', App\Livewire\Applicant\JobDetail::class)->name('applicant.job.detail');

@@ -1,10 +1,71 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ isset($title) ? $title . ' — NEAR JOB' : 'NEAR JOB' }}</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    {{-- Primary SEO Meta Tags --}}
+    <title>{{ isset($title) ? $title . ' — NEAR JOB' : 'Lowongan Kerja Terdekat & Info Loker Terbaru — NEAR JOB' }}</title>
+    <meta name="description" content="Temukan ribuan lowongan kerja terdekat di sekitar lokasi Anda dengan mudah di NEAR JOB. Portal pencarian loker part-time, full-time, fresh graduate, SMA/SMK langsung terhubung ke HRD perusahaan.">
+    <meta name="keywords" content="lowongan kerja, cari loker, loker terdekat, info loker, loker yogyakarta, loker jakarta, loker surabaya, loker bandung, kerja part time, kerja freelance, lowongan kerja sma smk, portal karir, near job">
+    <meta name="author" content="NEAR JOB">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- Geo Tags for Local SEO --}}
+    <meta name="geo.region" content="ID">
+    <meta name="geo.placename" content="Indonesia">
+
+    {{-- Open Graph / Facebook / WhatsApp --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="{{ isset($title) ? $title . ' — NEAR JOB' : 'Lowongan Kerja Terdekat & Info Loker Terbaru — NEAR JOB' }}">
+    <meta property="og:description" content="Temukan ribuan lowongan kerja terdekat di sekitar lokasi Anda. Akses cepat dan terhubung langsung ke perusahaan terpercaya.">
+    <meta property="og:image" content="{{ asset('img/og-preview.jpg') }}">
+    <meta property="og:site_name" content="NEAR JOB">
+    <meta property="og:locale" content="id_ID">
+
+    {{-- Twitter Card --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ isset($title) ? $title . ' — NEAR JOB' : 'Lowongan Kerja Terdekat & Info Loker Terbaru — NEAR JOB' }}">
+    <meta name="twitter:description" content="Temukan ribuan lowongan kerja terdekat di sekitar lokasi Anda dengan mudah di NEAR JOB.">
+    <meta name="twitter:image" content="{{ asset('img/og-preview.jpg') }}">
+
+    {{-- Schema.org Structured Data (Google Knowledge Graph & Sitelinks Searchbox) --}}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "{{ url('/') }}/#website",
+          "url": "{{ url('/') }}",
+          "name": "NEAR JOB",
+          "description": "Portal Lowongan Kerja Terdekat Berbasis Peta GPS",
+          "inLanguage": "id-ID",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "{{ url('/') }}?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "{{ url('/') }}/#organization",
+          "name": "NEAR JOB Indonesia",
+          "url": "{{ url('/') }}",
+          "logo": "{{ asset('img/logo.png') }}",
+          "sameAs": [
+            "https://www.facebook.com",
+            "https://www.instagram.com"
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -86,6 +147,7 @@
         $clientKey = config('services.midtrans.client_key') ?: env('MIDTRANS_CLIENT_KEY', '');
     @endphp
     <script src="{{ $snapJsUrl }}" data-client-key="{{ $clientKey }}"></script>
+    @stack('head')
 </head>
 <body class="min-h-screen flex flex-col" style="font-family: 'Plus Jakarta Sans', sans-serif;">
 

@@ -1,4 +1,44 @@
 {{-- Detail Lowongan Pekerjaan --}}
+@push('head')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "JobPosting",
+  "title": "{{ addslashes($job->position) }}",
+  "description": "{{ addslashes(strip_tags($job->description ?: $job->position . ' di ' . $job->company->company_name)) }}",
+  "datePosted": "{{ $job->created_at ? $job->created_at->toIso8601String() : date('c') }}",
+  "validThrough": "{{ $job->expires_at ? $job->expires_at->toIso8601String() : date('c', strtotime('+3 months')) }}",
+  "employmentType": "{{ strtoupper($job->work_type ?? 'FULL_TIME') }}",
+  "hiringOrganization": {
+    "@type": "Organization",
+    "name": "{{ addslashes($job->company->company_name) }}",
+    "sameAs": "{{ url('/') }}",
+    "logo": "{{ asset('img/logo.png') }}"
+  },
+  "jobLocation": {
+    "@type": "Place",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "{{ addslashes($job->company->city ?? 'Yogyakarta') }}",
+      "addressRegion": "{{ addslashes($job->company->province ?? 'DI Yogyakarta') }}",
+      "addressCountry": "ID"
+    }
+  },
+  "baseSalary": {
+    "@type": "MonetaryAmount",
+    "currency": "IDR",
+    "value": {
+      "@type": "QuantitativeValue",
+      "value": {{ $job->salary_min ?: 2000000 }},
+      "minValue": {{ $job->salary_min ?: 2000000 }},
+      "maxValue": {{ $job->salary_max ?: 5000000 }},
+      "unitText": "MONTH"
+    }
+  }
+}
+</script>
+@endpush
+
 <div style="background: #f0f4f9; min-height: calc(100vh - 172px); padding: 16px 0 240px;">
     <div class="max-w-2xl mx-auto px-4">
 
