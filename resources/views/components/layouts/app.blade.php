@@ -35,24 +35,24 @@
     {{-- Schema.org Structured Data (Google Knowledge Graph & Sitelinks Searchbox) --}}
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@graph": [
+      "@@context": "https://schema.org",
+      "@@graph": [
         {
-          "@type": "WebSite",
-          "@id": "{{ url('/') }}/#website",
+          "@@type": "WebSite",
+          "@@id": "{{ url('/') }}/#website",
           "url": "{{ url('/') }}",
           "name": "NEAR JOB",
           "description": "Portal Lowongan Kerja Terdekat Berbasis Peta GPS",
           "inLanguage": "id-ID",
           "potentialAction": {
-            "@type": "SearchAction",
+            "@@type": "SearchAction",
             "target": "{{ url('/') }}?q={search_term_string}",
             "query-input": "required name=search_term_string"
           }
         },
         {
-          "@type": "Organization",
-          "@id": "{{ url('/') }}/#organization",
+          "@@type": "Organization",
+          "@@id": "{{ url('/') }}/#organization",
           "name": "NEAR JOB Indonesia",
           "url": "{{ url('/') }}",
           "logo": "{{ asset('img/logo.png') }}",
