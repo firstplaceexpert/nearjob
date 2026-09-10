@@ -201,26 +201,34 @@
                     <i class='bx bx-check-circle text-xl'></i> Anda Sudah Melamar Lowongan Ini
                 </div>
             @else
+                @php
+                    $isGuest = !auth()->check();
+                    $canApply = $isGuest || $credits > 0;
+                @endphp
                 <button wire:click="applyForJob"
                     class="w-full py-4 text-white font-black rounded-2xl text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:opacity-95 cursor-pointer"
-                    style="{{ $credits > 0 ? ($hasWa ? 'background: #16a34a; box-shadow: 0 6px 25px rgba(22,163,74,.4);' : 'background: #2563eb; box-shadow: 0 6px 25px rgba(37,99,235,.4);') : 'background: #cbd5e1; cursor: not-allowed;' }}">
-                    @if($credits > 0)
+                    style="{{ $canApply ? ($hasWa ? 'background: #16a34a; box-shadow: 0 6px 25px rgba(22,163,74,.4);' : 'background: #2563eb; box-shadow: 0 6px 25px rgba(37,99,235,.4);') : 'background: #cbd5e1; cursor: not-allowed;' }}">
+                    @if($canApply)
                         <i class='bx {{ $hasWa ? "bxl-whatsapp" : "bx-envelope" }} text-xl'></i>
                         {{ $hasWa ? 'LAMAR VIA WHATSAPP' : 'LAMAR VIA EMAIL' }}
-                        <span class="text-xs px-2.5 py-0.5 rounded-full font-bold" style="background: rgba(255,255,255,.25);">-1 Kuota</span>
+                        @auth
+                            <span class="text-xs px-2.5 py-0.5 rounded-full font-bold" style="background: rgba(255,255,255,.25);">-1 Kuota</span>
+                        @endauth
                     @else
                         <i class='bx bx-lock text-lg'></i> Kuota Melamar Habis
                     @endif
                 </button>
 
-                @if($credits <= 0)
-                <div class="mt-2.5 p-3 rounded-xl flex items-center justify-between" style="background: #fff5f5; border: 1px solid #fecaca;">
-                    <p class="text-xs font-bold text-red-600">Kuota lamaran Anda habis (0 kuota)</p>
-                    <a href="{{ route('applicant.topup') }}" class="text-xs font-bold text-white px-3.5 py-1.5 rounded-lg shadow-sm hover:opacity-95 text-decoration-none" style="background: #ef4444;">
-                        <i class='bx bx-plus-circle'></i> Isi Kuota
-                    </a>
-                </div>
-                @endif
+                @auth
+                    @if($credits <= 0)
+                    <div class="mt-2.5 p-3 rounded-xl flex items-center justify-between" style="background: #fff5f5; border: 1px solid #fecaca;">
+                        <p class="text-xs font-bold text-red-600">Kuota lamaran Anda habis (0 kuota)</p>
+                        <a href="{{ route('applicant.topup') }}" class="text-xs font-bold text-white px-3.5 py-1.5 rounded-lg shadow-sm hover:opacity-95 text-decoration-none" style="background: #ef4444;">
+                            <i class='bx bx-plus-circle'></i> Isi Kuota
+                        </a>
+                    </div>
+                    @endif
+                @endauth
             @endif
         </div>
     </div>

@@ -49,11 +49,33 @@ class JobMap extends Component
     {
         if (!$this->selectedJobId) return;
 
+        if (!Auth::check()) {
+            $job = JobListing::find($this->selectedJobId);
+            $companyName = $job?->company->company_name ?? 'perusahaan';
+            $this->dispatch('open-auth-modal', [
+                'title' => 'Masuk / Daftar untuk Melamar',
+                'subtitle' => 'Masuk atau jawab kuis singkat untuk langsung melamar ke ' . $companyName . '.',
+                'jobId' => $this->selectedJobId,
+            ]);
+            return;
+        }
+
         $user = Auth::user();
+        if ($user->isCompany()) {
+            $this->dispatch('notify', ['message' => 'Akun pemberi kerja tidak dapat melamar lowongan.', 'type' => 'error']);
+            return;
+        }
+
         $profile = $user->applicantProfile;
         $job = JobListing::find($this->selectedJobId);
 
-        if (!$job || !$profile) return;
+        if (!$job) return;
+
+        if (!$profile) {
+            $this->dispatch('notify', ['message' => 'Lengkapi data profil Anda terlebih dahulu.', 'type' => 'info']);
+            $this->redirect(route('applicant.profile'), navigate: true);
+            return;
+        }
 
         // Cek apakah sudah pernah melamar
         if (Application::where('user_id', $user->id)->where('job_listing_id', $job->id)->exists()) {

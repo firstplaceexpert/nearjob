@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Route;
 // ========================
 // PUBLIC ROUTES
 // ========================
-Route::get('/', function () {
-    return view('landing');
-})->name('home');
+Route::get('/', App\Livewire\Applicant\JobMap::class)->name('home');
+Route::get('/pelamar/beranda', App\Livewire\Applicant\JobMap::class)->name('applicant.map');
+Route::get('/pelamar/lowongan/{jobListing}', App\Livewire\Applicant\JobDetail::class)->name('applicant.job.detail');
 
 // Auth routes (guest only)
 Route::redirect('/login', '/masuk');
@@ -24,6 +24,10 @@ Route::middleware('guest')->group(function () {
     Route::get('/masuk', App\Livewire\Auth\Login::class)->name('login');
     Route::get('/daftar/pelamar', App\Livewire\Auth\RegisterApplicant::class)->name('register.applicant');
     Route::get('/daftar/pemberi-kerja', App\Livewire\Auth\RegisterCompany::class)->name('register.company');
+    
+    // Google OAuth Routes
+    Route::get('/auth/google', [App\Http\Controllers\GoogleAuthController::class, 'redirectToGoogle'])->name('auth.google');
+    Route::get('/auth/google/callback', [App\Http\Controllers\GoogleAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 });
 
 // Logout
@@ -41,14 +45,12 @@ Route::post('/api/midtrans/webhook', [App\Http\Controllers\MidtransWebhookContro
 Route::get('/api/orders/{order}/check-status', [App\Http\Controllers\MidtransWebhookController::class, 'checkStatus'])->name('orders.check-status');
 
 // ========================
-// APPLICANT ROUTES
+// APPLICANT PROTECTED ROUTES
 // ========================
 Route::middleware(['auth', 'role:applicant'])
     ->prefix('pelamar')
     ->name('applicant.')
     ->group(function () {
-        Route::get('/beranda', App\Livewire\Applicant\JobMap::class)->name('map');
-        Route::get('/lowongan/{jobListing}', App\Livewire\Applicant\JobDetail::class)->name('job.detail');
         Route::get('/lamaran', App\Livewire\Applicant\ApplicationHistory::class)->name('applications');
         Route::get('/profil', App\Livewire\Applicant\ProfileForm::class)->name('profile');
         Route::get('/cv-generator', App\Livewire\Applicant\CvGenerator::class)->name('cv.generator');

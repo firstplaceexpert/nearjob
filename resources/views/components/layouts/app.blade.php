@@ -113,10 +113,27 @@
             @endif
             <form method="POST" action="{{ route('logout') }}" class="inline">
                 @csrf
-                <button type="submit" class="text-xs font-semibold text-slate-400 hover:text-red-500 transition-colors px-2 py-1 rounded-lg hover:bg-red-50">
+                <button type="submit" class="text-xs font-semibold text-slate-400 hover:text-red-500 transition-colors px-2 py-1 rounded-lg hover:bg-red-50" title="Keluar">
                     <i class='bx bx-log-out-circle text-lg'></i>
                 </button>
             </form>
+            @else
+            <div class="flex items-center gap-1.5 sm:gap-2" x-data>
+                <button type="button" 
+                   @click="$dispatch('open-quick-auth-modal')"
+                   class="text-xs font-extrabold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-slate-700 hover:text-blue-600 hover:bg-slate-100 transition-all border-none bg-transparent cursor-pointer">
+                    Masuk
+                </button>
+                <button type="button" 
+                   @click="$dispatch('open-quick-auth-modal')"
+                   class="text-xs font-extrabold px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-600/20 transition-all border-none cursor-pointer">
+                    Daftar
+                </button>
+                <a href="{{ route('register.company') }}" 
+                   class="hidden sm:inline-flex text-xs font-extrabold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all text-decoration-none">
+                    Untuk Perusahaan
+                </a>
+            </div>
             @endauth
         </div>
     </header>
@@ -130,8 +147,8 @@
     @auth
     <nav class="bottom-nav fixed bottom-0 left-0 right-0 z-50 flex items-center" style="padding-bottom: env(safe-area-inset-bottom);">
         @if(auth()->user()->isApplicant())
-            <a href="{{ route('applicant.map') }}" class="nav-item {{ request()->routeIs('applicant.map') ? 'active' : '' }}">
-                <i class='bx {{ request()->routeIs('applicant.map') ? "bxs-home" : "bx-home" }}'></i>
+            <a href="{{ route('applicant.map') }}" class="nav-item {{ request()->routeIs('applicant.map') || request()->routeIs('home') ? 'active' : '' }}">
+                <i class='bx {{ request()->routeIs('applicant.map') || request()->routeIs('home') ? "bxs-home" : "bx-home" }}'></i>
                 <span>Beranda</span>
             </a>
             <a href="{{ route('applicant.applications') }}" class="nav-item {{ request()->routeIs('applicant.applications') ? 'active' : '' }}">
@@ -157,7 +174,29 @@
             </a>
         @endif
     </nav>
+    @else
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 z-50 flex items-center" style="padding-bottom: env(safe-area-inset-bottom);" x-data>
+        <a href="{{ route('home') }}" class="nav-item {{ request()->routeIs('home') || request()->routeIs('applicant.map') ? 'active' : '' }}">
+            <i class='bx {{ request()->routeIs('home') || request()->routeIs('applicant.map') ? "bxs-map" : "bx-map" }}'></i>
+            <span>Peta Lowongan</span>
+        </a>
+        <a href="{{ route('login') }}" @click.prevent="$dispatch('open-quick-auth-modal')" class="nav-item {{ request()->routeIs('login') ? 'active' : '' }}">
+            <i class='bx {{ request()->routeIs('login') ? "bxs-log-in-circle" : "bx-log-in-circle" }}'></i>
+            <span>Masuk</span>
+        </a>
+        <a href="{{ route('register.applicant') }}" @click.prevent="$dispatch('open-quick-auth-modal')" class="nav-item {{ request()->routeIs('register.applicant') ? 'active' : '' }}">
+            <i class='bx {{ request()->routeIs('register.applicant') ? "bxs-user-plus" : "bx-user-plus" }}'></i>
+            <span>Daftar Pelamar</span>
+        </a>
+        <a href="{{ route('register.company') }}" class="nav-item {{ request()->routeIs('register.company') ? 'active' : '' }}">
+            <i class='bx {{ request()->routeIs('register.company') ? "bxs-buildings" : "bx-buildings" }}'></i>
+            <span>Perusahaan</span>
+        </a>
+    </nav>
     @endauth
+
+    {{-- Global Quick Auth & Onboarding Quiz Modal --}}
+    @livewire('auth.quick-auth-quiz-modal')
 
     @livewireScripts
 

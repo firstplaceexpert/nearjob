@@ -23,8 +23,28 @@ class JobDetail extends Component
 
     public function applyForJob(): void
     {
+        if (!Auth::check()) {
+            $companyName = $this->job->company->company_name ?? 'perusahaan';
+            $this->dispatch('open-auth-modal', [
+                'title' => 'Masuk / Daftar untuk Melamar',
+                'subtitle' => 'Masuk atau jawab kuis singkat untuk langsung melamar ke ' . $companyName . '.',
+                'jobId' => $this->job->id,
+            ]);
+            return;
+        }
+
         $user = Auth::user();
+        if ($user->isCompany()) {
+            $this->dispatch('notify', ['message' => 'Akun pemberi kerja tidak dapat melamar lowongan.', 'type' => 'error']);
+            return;
+        }
+
         $profile = $user->applicantProfile;
+        if (!$profile) {
+            $this->dispatch('notify', ['message' => 'Lengkapi data profil Anda terlebih dahulu.', 'type' => 'info']);
+            $this->redirect(route('applicant.profile'), navigate: true);
+            return;
+        }
 
         // Cek apakah sudah pernah melamar
         if (Application::where('user_id', $user->id)->where('job_listing_id', $this->job->id)->exists()) {
@@ -114,8 +134,8 @@ class JobDetail extends Component
 
     public function render()
     {
-        $hasApplied = Application::where('user_id', Auth::id())->where('job_listing_id', $this->job->id)->exists();
-        $credits = Auth::user()->applicantProfile?->application_credits ?? 0;
+        $hasApplied = Auth::check() ? Application::where('user_id', Auth::id())->where('job_listing_id', $this->job->id)->exists() : false;
+        $credits = Auth::user()?->applicantProfile?->application_credits ?? 0;
         
         return view('livewire.applicant.job-detail', compact('hasApplied', 'credits'))
             ->title($this->job->position . ' — ' . $this->job->company->company_name);

@@ -16,7 +16,12 @@ class Login extends Component
     #[Rule('required|min:6')]
     public string $password = '';
 
-    public bool $remember = false;
+    public ?string $redirectUrl = null;
+
+    public function mount(): void
+    {
+        $this->redirectUrl = request()->query('redirect');
+    }
 
     public function login(): void
     {
@@ -29,6 +34,11 @@ class Login extends Component
             session()->regenerate();
 
             $user = Auth::user();
+
+            if ($this->redirectUrl && (filter_var($this->redirectUrl, FILTER_VALIDATE_URL) || str_starts_with($this->redirectUrl, '/'))) {
+                $this->redirect($this->redirectUrl, navigate: true);
+                return;
+            }
 
             if ($user->isCompany()) {
                 $this->redirect(route('company.dashboard'), navigate: true);

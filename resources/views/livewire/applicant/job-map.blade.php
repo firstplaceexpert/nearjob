@@ -4,6 +4,7 @@
         {!! json_encode([
             'userLat'  => $userLat,
             'userLon'  => $userLon,
+            'isAuth'   => auth()->check(),
             'credits'  => $credits,
             'jobs'     => $jobsMapDataArray ?? [],
             'jobCards' => $jobs->map(fn($j) => [
@@ -234,6 +235,7 @@
     (function(){
         const D     = JSON.parse(document.getElementById('njob-map-data').textContent);
         const ULAT  = D.userLat, ULON = D.userLon;
+        const IS_AUTH = Boolean(D.isAuth);
         let JOBS = D.jobs, CARDS = D.jobCards, CRED = D.credits;
         let map = null, markers = {}, selId = null, panelOpen = false;
 
@@ -327,13 +329,19 @@
                 +'<div style="font-size:12px;color:#2563eb;font-weight:800;grid-column:span 2;background:#eff6ff;padding:8px 12px;border-radius:10px;border:1px solid #bfdbfe;">🎯 Kuota: '+(j.quota||1)+' Lowongan Dibutuhkan</div>'
                 +'</div>'
                 +'<div style="display:flex;gap:10px;">'
-                +'<a href="'+j.applyRoute+'" style="flex:1;padding:14px;text-align:center;font-size:13px;font-weight:700;color:#475569;background:white;border:2px solid #e2e8f0;border-radius:14px;text-decoration:none;">Detail</a>'
-                +(CRED>0
-                    ? '<button onclick="njobApply('+j.id+')" style="flex:2;padding:14px;font-size:13px;font-weight:800;color:white;background:'+(j.hasWa?'#16a34a':'#2563eb')+';border:none;border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px '+(j.hasWa?'rgba(22,163,74,.4)':'rgba(37,99,235,.4)')+';"><i class=\'bx '+(j.hasWa?'bxl-whatsapp':'bx-envelope')+'\'></i> '+(j.hasWa?'Lamar via WhatsApp':'Lamar via Email')+' <span style="background:rgba(255,255,255,.25);padding:2px 8px;border-radius:20px;font-size:10px;">-1 Kuota</span></button>'
-                    : '<button style="flex:2;padding:14px;font-size:13px;font-weight:800;background:#cbd5e1;color:white;border:none;border-radius:14px;cursor:not-allowed;display:flex;align-items:center;justify-content:center;">Kuota Habis</button>'
+                +(!IS_AUTH
+                    ? '<button onclick="window.Livewire.dispatch(\'open-quick-auth-modal\', {jobId: '+j.id+', title: \'Masuk / Buat Akun untuk Melamar\', subtitle: \'Lamar lowongan '+j.position.replace(/'/g, "\\'")+' di '+j.company.replace(/'/g, "\\'")+'\'})" style="flex:1;padding:14px;text-align:center;font-size:13px;font-weight:700;color:#2563eb;background:#eff6ff;border:2px solid #bfdbfe;border-radius:14px;cursor:pointer;">Lihat Detail</button>'
+                    : '<a href="'+j.applyRoute+'" style="flex:1;padding:14px;text-align:center;font-size:13px;font-weight:700;color:#475569;background:white;border:2px solid #e2e8f0;border-radius:14px;text-decoration:none;">Detail</a>'
+                )
+                +(!IS_AUTH
+                    ? '<button onclick="window.Livewire.dispatch(\'open-quick-auth-modal\', {jobId: '+j.id+', title: \'Masuk / Buat Akun untuk Melamar\', subtitle: \'Lamar lowongan '+j.position.replace(/'/g, "\\'")+' di '+j.company.replace(/'/g, "\\'")+'\'})" style="flex:2;padding:14px;font-size:13px;font-weight:800;color:white;background:'+(j.hasWa?'#16a34a':'#2563eb')+';border:none;border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px '+(j.hasWa?'rgba(22,163,74,.4)':'rgba(37,99,235,.4)')+';"><i class=\'bx '+(j.hasWa?'bxl-whatsapp':'bx-envelope')+'\'></i> '+(j.hasWa?'Lamar via WhatsApp':'Lamar via Email')+'</button>'
+                    : (CRED>0
+                        ? '<button onclick="njobApply('+j.id+')" style="flex:2;padding:14px;font-size:13px;font-weight:800;color:white;background:'+(j.hasWa?'#16a34a':'#2563eb')+';border:none;border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px '+(j.hasWa?'rgba(22,163,74,.4)':'rgba(37,99,235,.4)')+';"><i class=\'bx '+(j.hasWa?'bxl-whatsapp':'bx-envelope')+'\'></i> '+(j.hasWa?'Lamar via WhatsApp':'Lamar via Email')+' <span style="background:rgba(255,255,255,.25);padding:2px 8px;border-radius:20px;font-size:10px;">-1 Kuota</span></button>'
+                        : '<button style="flex:2;padding:14px;font-size:13px;font-weight:800;background:#cbd5e1;color:white;border:none;border-radius:14px;cursor:not-allowed;display:flex;align-items:center;justify-content:center;">Kuota Habis</button>'
+                    )
                 )
                 +'</div>'
-                +(CRED<=0?'<div style="margin-top:12px;padding:12px;background:#fff5f5;border:1px solid #fecaca;border-radius:12px;text-align:center;font-size:12px;font-weight:700;color:#dc2626;">Kuota lamaran habis · <a href="'+j.topupRoute+'" style="color:#5680d8;font-weight:800;text-decoration:underline;">Isi Ulang Kuota Lamaran</a></div>':'');
+                +(IS_AUTH && CRED<=0?'<div style="margin-top:12px;padding:12px;background:#fff5f5;border:1px solid #fecaca;border-radius:12px;text-align:center;font-size:12px;font-weight:700;color:#dc2626;">Kuota lamaran habis · <a href="'+j.topupRoute+'" style="color:#5680d8;font-weight:800;text-decoration:underline;">Isi Ulang Kuota Lamaran</a></div>':'');
             document.getElementById('njob-sheet-body').innerHTML=html;
             const sheet = document.getElementById('njob-sheet');
             sheet.style.display = 'block';

@@ -13,6 +13,12 @@ use Livewire\Component;
 class RegisterApplicant extends Component
 {
     public int $step = 1;
+    public ?string $redirectUrl = null;
+
+    public function mount(): void
+    {
+        $this->redirectUrl = request()->query('redirect');
+    }
 
     // Step 1 — Identitas
     public string $name = '';
@@ -142,6 +148,11 @@ class RegisterApplicant extends Component
 
         Auth::login($user);
         session()->regenerate();
+
+        if ($this->redirectUrl && (filter_var($this->redirectUrl, FILTER_VALIDATE_URL) || str_starts_with($this->redirectUrl, '/'))) {
+            $this->redirect($this->redirectUrl, navigate: true);
+            return;
+        }
 
         $this->redirect(route('applicant.map'), navigate: true);
     }
