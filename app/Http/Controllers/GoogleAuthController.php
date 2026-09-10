@@ -9,10 +9,22 @@ use Laravel\Socialite\Facades\Socialite;
 
 class GoogleAuthController extends Controller
 {
+    protected function getRedirectUrl(): string
+    {
+        $uri = config('services.google.redirect');
+        if (!empty($uri) && filter_var($uri, FILTER_VALIDATE_URL)) {
+            return $uri;
+        }
+
+        return url('/auth/google/callback');
+    }
+
     public function redirectToGoogle(): RedirectResponse
     {
         try {
-            return Socialite::driver('google')->redirect();
+            return Socialite::driver('google')
+                ->redirectUrl($this->getRedirectUrl())
+                ->redirect();
         } catch (\Throwable $e) {
             return redirect()->route('home')->with('notify', [
                 'message' => 'Gagal menghubungkan ke Google: ' . $e->getMessage(),
@@ -24,7 +36,9 @@ class GoogleAuthController extends Controller
     public function handleGoogleCallback(): RedirectResponse
     {
         try {
-            $googleUser = Socialite::driver('google')->user();
+            $googleUser = Socialite::driver('google')
+                ->redirectUrl($this->getRedirectUrl())
+                ->user();
         } catch (\Throwable $e) {
             return redirect()->route('home')->with('notify', [
                 'message' => 'Login Google dibatalkan atau gagal.',
