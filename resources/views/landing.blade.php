@@ -98,14 +98,14 @@
 
 {{-- ===== HEADER ===== --}}
 <header style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#ffffff;border-bottom:2px solid #e8edf5;box-shadow:0 2px 14px rgba(36,66,123,.08);">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <img src="{{ asset('logo.png') }}" alt="NEAR JOB" class="w-10 h-10 rounded-xl object-contain shadow-sm border border-black/10">
-            <span class="font-black text-xl tracking-tight" style="color:#000000;">NEAR JOB</span>
+    <div class="max-w-6xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+            <img src="{{ asset('logo.png') }}" alt="NEAR JOB" class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl object-contain shadow-sm border border-black/10">
+            <span class="font-black text-base sm:text-xl tracking-tight text-black">NEAR JOB</span>
         </div>
-        <div class="flex items-center gap-3">
-            <a href="{{ route('login') }}" class="text-sm font-extrabold px-5 py-2.5 rounded-xl transition-colors hover:bg-slate-100" style="color:#000000;text-decoration:none;">Masuk</a>
-            <a href="{{ route('register.applicant') }}" class="text-sm font-extrabold text-white px-6 py-2.5 rounded-xl shadow-md transition-all hover:opacity-95" style="background:var(--primary);text-decoration:none;">Daftar Gratis</a>
+        <div class="flex items-center gap-1.5 sm:gap-3">
+            <a href="{{ route('login') }}" class="text-xs sm:text-sm font-extrabold px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl transition-colors hover:bg-black/5 text-black" style="text-decoration:none;">Masuk</a>
+            <a href="{{ route('register.company') }}" class="text-xs sm:text-sm font-extrabold px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl border border-black/25 text-black hover:bg-black/5 transition-colors whitespace-nowrap" style="text-decoration:none;">Untuk Perusahaan</a>
         </div>
     </div>
 </header>

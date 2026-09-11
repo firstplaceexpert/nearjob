@@ -26,8 +26,9 @@
             <img src="{{ asset('logo.png') }}" alt="NEAR JOB" class="w-8 h-8 rounded-xl object-contain shadow-xs border border-black/10">
             <span class="font-black text-black tracking-tight text-lg">NEAR JOB</span>
         </a>
-        <div class="flex items-center gap-2 text-sm text-black">
-            <a href="{{ route('login') }}" class="font-bold text-black hover:opacity-80 transition-opacity text-decoration-none">Masuk</a>
+        <div class="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-black">
+            <a href="{{ route('login') }}" class="font-bold text-black hover:opacity-80 transition-opacity text-decoration-none px-2 py-1">Masuk</a>
+            <a href="{{ route('register.company') }}" class="font-bold text-black border border-black/25 px-2.5 sm:px-3 py-1.5 rounded-xl hover:bg-black/5 transition-colors text-decoration-none">Untuk Perusahaan</a>
         </div>
     </header>
     @endunless

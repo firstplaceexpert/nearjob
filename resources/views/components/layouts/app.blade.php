@@ -157,20 +157,20 @@
 <body class="min-h-screen flex flex-col" style="font-family: 'Plus Jakarta Sans', sans-serif;">
 
     {{-- ===== TOP HEADER ===== --}}
-    <header class="app-header px-4 h-14 flex items-center justify-between fixed top-0 left-0 right-0 z-50">
-        <a href="{{ auth()->user()?->isCompany() ? route('company.dashboard') : route('applicant.map') }}" class="flex items-center gap-2">
-            <img src="{{ asset('logo.png') }}" alt="NEAR JOB" class="w-8 h-8 rounded-xl object-contain shadow-xs border border-black/10">
-            <span class="font-extrabold tracking-tight text-lg" style="color: #000000;">NEAR JOB</span>
+    <header class="app-header px-3 sm:px-6 h-14 flex items-center justify-between fixed top-0 left-0 right-0 z-50">
+        <a href="{{ auth()->user()?->isCompany() ? route('company.dashboard') : route('applicant.map') }}" class="flex items-center gap-2 text-decoration-none shrink-0">
+            <img src="{{ asset('logo.png') }}" alt="NEAR JOB" class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl object-contain shadow-xs border border-black/10">
+            <span class="font-black tracking-tight text-base sm:text-lg text-black">NEAR JOB</span>
         </a>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5 sm:gap-2">
             @auth
             @if(auth()->user()->isApplicant())
                 @php $credits = auth()->user()->applicantProfile?->fresh()->application_credits ?? 0; @endphp
                 <a href="{{ route('applicant.topup') }}"
                    x-data="{ credits: {{ $credits }} }"
                    @credits-updated.window="credits = ($event.detail && typeof $event.detail.credits !== 'undefined') ? $event.detail.credits : ($event.detail ?? credits)"
-                   class="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border hover:shadow-sm hover:scale-105 transition-all text-decoration-none"
+                   class="flex items-center gap-1.5 text-xs font-bold px-2.5 sm:px-3 py-1.5 rounded-full border hover:shadow-sm hover:scale-105 transition-all text-decoration-none"
                    style="background: #ffffff; color: #000000; border: 1px solid rgba(0,0,0,0.3);" title="Isi ulang kuota lamaran">
                     <i class='bx bx-coin-stack text-sm'></i> <span x-text="`${credits} kuota`">{{ $credits }} kuota</span>
                     <span class="w-4 h-4 rounded-full bg-[#5680d8] text-white flex items-center justify-center text-[10px] font-black leading-none">+</span>
@@ -183,19 +183,14 @@
                 </button>
             </form>
             @else
-            <div class="flex items-center gap-1.5 sm:gap-2" x-data>
+            <div class="flex items-center gap-1.5 sm:gap-2.5" x-data>
                 <button type="button" 
                    @click="$dispatch('open-quick-auth-modal')"
-                   class="text-xs font-extrabold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-black hover:text-black hover:bg-black/5 transition-all border-none bg-transparent cursor-pointer">
+                   class="text-xs sm:text-sm font-extrabold px-2 sm:px-3 py-1.5 rounded-xl text-black hover:bg-black/5 transition-all border-none bg-transparent cursor-pointer">
                     Masuk
                 </button>
-                <button type="button" 
-                   @click="$dispatch('open-quick-auth-modal')"
-                   class="text-xs font-extrabold px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-white text-white shadow-md transition-all border-none cursor-pointer">
-                    Daftar
-                </button>
                 <a href="{{ route('register.company') }}" 
-                   class="hidden sm:inline-flex text-xs font-extrabold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-black/30 text-black hover:bg-black/5 transition-all text-decoration-none">
+                   class="text-xs sm:text-sm font-extrabold px-2 sm:px-3 py-1.5 rounded-xl border border-black/25 text-black hover:bg-black/5 transition-all text-decoration-none whitespace-nowrap">
                     Untuk Perusahaan
                 </a>
             </div>
