@@ -5,8 +5,8 @@
         {{-- ===== HEADER ===== --}}
         <div class="flex items-center justify-between mb-8 pb-5 border-b border-slate-200/80">
             <div>
-                <h1 class="text-2xl font-black text-slate-800 tracking-tight">Riwayat Lamaran</h1>
-                <p class="text-slate-500 text-xs mt-1.5 font-semibold">Pantau status lamaran pekerjaan yang Anda kirimkan</p>
+                <h1 class="text-2xl font-black text-black tracking-tight">Riwayat Lamaran</h1>
+                <p class="text-black text-xs mt-1.5 font-semibold">Pantau status lamaran pekerjaan yang Anda kirimkan</p>
             </div>
             <a href="{{ route('applicant.map') }}"
                class="px-4 py-2.5 rounded-xl flex items-center gap-2 text-xs font-extrabold transition-all text-white shadow-md hover:opacity-95"
@@ -20,8 +20,8 @@
                 <div class="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-sm" style="background: #eef2fb; color: #5680d8;">
                     <i class='bx bx-notepad text-3xl'></i>
                 </div>
-                <h3 class="text-base font-extrabold text-slate-800">Belum Ada Lamaran Kiriman</h3>
-                <p class="text-xs text-slate-400 mt-2 max-w-[260px] mx-auto leading-relaxed font-medium">Anda belum pernah melamar pekerjaan. Ayo temukan berbagai peluang kerja terdekat di sekitar lokasi Anda!</p>
+                <h3 class="text-base font-extrabold text-black">Belum Ada Lamaran Kiriman</h3>
+                <p class="text-xs text-black mt-2 max-w-[260px] mx-auto leading-relaxed font-medium">Anda belum pernah melamar pekerjaan. Ayo temukan berbagai peluang kerja terdekat di sekitar lokasi Anda!</p>
                 <a href="{{ route('applicant.map') }}"
                    class="inline-flex items-center gap-2 mt-6 px-6 py-3 text-white text-xs font-extrabold rounded-xl shadow-lg"
                    style="background: #5680d8; box-shadow: 0 4px 15px rgba(86,128,216,.35);">
@@ -74,10 +74,10 @@
                                 {{-- Kota & Gaji Wrap Garis Hitam & Tulisan Hitam --}}
                                 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 6px;">
                                     <span style="display: inline-flex; align-items: center; gap: 5px; background: #ffffff; color: #000000; padding: 4px 12px; border-radius: 8px; font-size: 11.5px; font-weight: 700; border: 1px solid rgba(0,0,0,0.25);">
-                                        📍 {{ $app->jobListing->company->city }}
+                                        <i class='bx bx-map-pin text-[#5680d8]'></i> {{ $app->jobListing->company->city }}
                                     </span>
                                     <span style="display: inline-flex; align-items: center; gap: 5px; background: #ffffff; color: #000000; padding: 4px 12px; border-radius: 8px; font-size: 11.5px; font-weight: 800; border: 1px solid rgba(0,0,0,0.25);">
-                                        💰 {{ $app->jobListing->salary_range }}
+                                        <i class='bx bx-wallet text-[#5680d8]'></i> {{ $app->jobListing->salary_range }}
                                     </span>
                                 </div>
                             </div>
@@ -110,7 +110,7 @@
                             </div>
                         @elseif($app->status === 'diterima')
                             <div class="rounded-xl text-center bg-white border-2 border-black" style="padding: 14px 18px;">
-                                <p class="text-xs font-black text-black">🎉 Selamat! Anda telah diterima bekerja di tempat ini!</p>
+                                <p class="text-xs font-black text-black"><i class='bx bxs-party text-[#5680d8] align-middle text-sm'></i> Selamat! Anda telah diterima bekerja di tempat ini!</p>
                             </div>
                         @elseif($app->status === 'tidak_lolos')
                             <div class="rounded-xl text-center bg-white border border-black/20" style="padding: 14px 18px;">

@@ -123,8 +123,8 @@
             box-shadow: 0 4px 15px rgba(86,128,216,.3);
         }
         .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
-        .badge-primary { background: var(--primary-light); color: var(--primary); font-weight: 700; }
-        .badge-teal { background: #e6f8f6; color: #2a9d8f; font-weight: 700; }
+        .badge-primary { background: #ffffff; color: #000000; border: 1px solid #000000; font-weight: 700; }
+        .badge-teal { background: #ffffff; color: #000000; border: 1px solid #000000; font-weight: 700; }
 
         /* ── Scrollbar hide ── */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
@@ -161,7 +161,7 @@
             <div class="w-8 h-8 rounded-xl flex items-center justify-center" style="background: var(--primary);">
                 <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
             </div>
-            <span class="font-extrabold tracking-tight text-lg" style="color: var(--primary-dark);">NEAR JOB</span>
+            <span class="font-extrabold tracking-tight text-lg" style="color: #000000;">NEAR JOB</span>
         </a>
 
         <div class="flex items-center gap-2">
@@ -172,14 +172,14 @@
                    x-data="{ credits: {{ $credits }} }"
                    @credits-updated.window="credits = ($event.detail && typeof $event.detail.credits !== 'undefined') ? $event.detail.credits : ($event.detail ?? credits)"
                    class="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border hover:shadow-sm hover:scale-105 transition-all text-decoration-none"
-                   style="background: var(--primary-light); color: var(--primary); border-color: #c7d6f5;" title="Isi ulang kuota lamaran">
+                   style="background: #ffffff; color: #000000; border: 1px solid rgba(0,0,0,0.3);" title="Isi ulang kuota lamaran">
                     <i class='bx bx-coin-stack text-sm'></i> <span x-text="`${credits} kuota`">{{ $credits }} kuota</span>
-                    <span class="w-4 h-4 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-black leading-none">+</span>
+                    <span class="w-4 h-4 rounded-full bg-[#5680d8] text-white flex items-center justify-center text-[10px] font-black leading-none">+</span>
                 </a>
             @endif
             <form method="POST" action="{{ route('logout') }}" class="inline">
                 @csrf
-                <button type="submit" class="text-xs font-semibold text-slate-400 hover:text-red-500 transition-colors px-2 py-1 rounded-lg hover:bg-red-50" title="Keluar">
+                <button type="submit" class="text-xs font-semibold text-black hover:text-black transition-colors px-2 py-1 rounded-lg hover:bg-red-50" title="Keluar">
                     <i class='bx bx-log-out-circle text-lg'></i>
                 </button>
             </form>
@@ -187,16 +187,16 @@
             <div class="flex items-center gap-1.5 sm:gap-2" x-data>
                 <button type="button" 
                    @click="$dispatch('open-quick-auth-modal')"
-                   class="text-xs font-extrabold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-slate-700 hover:text-blue-600 hover:bg-slate-100 transition-all border-none bg-transparent cursor-pointer">
+                   class="text-xs font-extrabold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-black hover:text-black hover:bg-black/5 transition-all border-none bg-transparent cursor-pointer">
                     Masuk
                 </button>
                 <button type="button" 
                    @click="$dispatch('open-quick-auth-modal')"
-                   class="text-xs font-extrabold px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-600/20 transition-all border-none cursor-pointer">
+                   class="text-xs font-extrabold px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-white text-white shadow-md transition-all border-none cursor-pointer">
                     Daftar
                 </button>
                 <a href="{{ route('register.company') }}" 
-                   class="hidden sm:inline-flex text-xs font-extrabold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all text-decoration-none">
+                   class="hidden sm:inline-flex text-xs font-extrabold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-black/30 text-black hover:bg-black/5 transition-all text-decoration-none">
                     Untuk Perusahaan
                 </a>
             </div>

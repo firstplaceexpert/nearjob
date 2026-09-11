@@ -29,7 +29,7 @@
         <button type="button" 
                 wire:click="closeModal" 
                 title="Tutup"
-                style="position: absolute; top: 16px; right: 16px; z-index: 20; width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; border: none; color: #64748b; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 20px; font-weight: bold; transition: all .2s;">
+                style="position: absolute; top: 16px; right: 16px; z-index: 20; width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; border: none; color: #000000; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 20px; font-weight: bold; transition: all .2s;">
             <i class='bx bx-x'></i>
         </button>
 
@@ -51,7 +51,7 @@
             <div style="text-align: center;">
                 
                 {{-- Heading Title --}}
-                <h2 style="font-size: 25px; font-weight: 800; color: #1e293b; line-height: 1.3; margin: 0 auto 32px; max-width: 320px; letter-spacing: -0.02em; font-family: inherit;">
+                <h2 style="font-size: 25px; font-weight: 800; color: #000000; line-height: 1.3; margin: 0 auto 32px; max-width: 320px; letter-spacing: -0.02em; font-family: inherit;">
                     Masuk untuk temukan<br>lowongan yang cocok
                 </h2>
 
@@ -77,17 +77,17 @@
                     {{-- 2. Tombol Lanjutkan dengan Email --}}
                     <button type="button" 
                             wire:click="startEmailFlow"
-                            style="width: 100%; height: 52px; background: #ffffff; color: #1e293b; font-weight: 700; border-radius: 10px; font-size: 14.5px; border: 2px solid #2b3445; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: background .2s;">
-                        <i class='bx bx-envelope' style="font-size: 21px; color: #1e293b;"></i>
+                            style="width: 100%; height: 52px; background: #ffffff; color: #000000; font-weight: 700; border-radius: 10px; font-size: 14.5px; border: 2px solid #000000; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: background .2s;">
+                        <i class='bx bx-envelope' style="font-size: 21px; color: #000000;"></i>
                         <span>Lanjutkan dengan Email</span>
                     </button>
                 </div>
 
                 {{-- Links --}}
                 <div style="display: flex; flex-direction: column; gap: 14px;">
-                    <div style="font-size: 14.5px; color: #1e293b; font-weight: 600;">
+                    <div style="font-size: 14.5px; color: #000000; font-weight: 600;">
                         Belum punya akun? 
-                        <button type="button" wire:click="startEmailFlow" style="background: none; border: none; font-weight: 800; color: #1e293b; text-decoration: underline; cursor: pointer; font-size: 14.5px; padding: 0;">
+                        <button type="button" wire:click="startEmailFlow" style="background: none; border: none; font-weight: 800; color: #000000; text-decoration: underline; cursor: pointer; font-size: 14.5px; padding: 0;">
                             Daftar
                         </button>
                     </div>
@@ -95,16 +95,16 @@
                     <div x-data="{ showReason: false }">
                         <button type="button" 
                                 @click="showReason = !showReason"
-                                style="background: none; border: none; font-size: 14.5px; color: #1e293b; font-weight: 800; text-decoration: underline; cursor: pointer; padding: 0;">
+                                style="background: none; border: none; font-size: 14.5px; color: #000000; font-weight: 800; text-decoration: underline; cursor: pointer; padding: 0;">
                             Mengapa harus masuk?
                         </button>
                         
                         <div x-show="showReason" 
                              x-collapse
                              x-cloak
-                             style="margin-top: 12px; padding: 12px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; text-align: left; font-size: 12px; color: #475569; line-height: 1.5;">
-                            <div style="font-weight: 800; color: #0f172a; margin-bottom: 4px; display: flex; align-items: center; gap: 4px;">
-                                <i class='bx bxs-badge-check' style="color: #2563eb; font-size: 16px;"></i> Manfaat Masuk Akun:
+                             style="margin-top: 12px; padding: 12px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; text-align: left; font-size: 12px; color: #000000; line-height: 1.5;">
+                            <div style="font-weight: 800; color: #000000; margin-bottom: 4px; display: flex; align-items: center; gap: 4px;">
+                                <i class='bx bxs-badge-check' style="color: #5680d8; font-size: 16px;"></i> Manfaat Masuk Akun:
                             </div>
                             • Rekomendasi loker terdekat sesuai keahlian & lokasi Anda.<br>
                             • Simpan lowongan impian dan pantau status lamaran kerja.<br>
@@ -122,11 +122,11 @@
             @if($step === 'email')
             <div>
                 <div style="text-align: center; margin-bottom: 18px;">
-                    <div style="width: 46px; height: 46px; border-radius: 14px; background: #eff6ff; color: #2563eb; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 1px solid #bfdbfe;">
+                    <div style="width: 46px; height: 46px; border-radius: 14px; background: #eff6ff; color: #5680d8; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 1px solid #bfdbfe;">
                         <i class='bx bx-envelope'></i>
                     </div>
-                    <h2 style="font-size: 17px; font-weight: 900; color: #0f172a; margin: 0;">Masukkan Alamat Email Anda</h2>
-                    <p style="font-size: 12px; color: #64748b; font-weight: 600; margin: 3px 0 0;">
+                    <h2 style="font-size: 17px; font-weight: 900; color: #000000; margin: 0;">Masukkan Alamat Email Anda</h2>
+                    <p style="font-size: 12px; color: #000000; font-weight: 600; margin: 3px 0 0;">
                         Email belum terdaftar akan otomatis diarahkan untuk melengkapi profil.
                     </p>
                 </div>
@@ -141,12 +141,12 @@
                                placeholder="nama.anda@gmail.com" 
                                required
                                autofocus
-                               style="width: 100%; padding: 12px 14px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 13.5px; font-weight: bold; color: #0f172a; outline: none; box-sizing: border-box;">
+                               style="width: 100%; padding: 12px 14px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 13.5px; font-weight: bold; color: #000000; outline: none; box-sizing: border-box;">
                     </div>
 
                     <button type="submit" 
                             wire:loading.attr="disabled"
-                            style="width: 100%; padding: 13px; background: #2563eb; color: white; font-weight: 800; border-radius: 12px; font-size: 13.5px; border: none; cursor: pointer; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);">
+                            style="width: 100%; padding: 13px; background: #5680d8; color: white; font-weight: 800; border-radius: 12px; font-size: 13.5px; border: none; cursor: pointer; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);">
                         <span wire:loading.remove wire:target="checkEmail">Periksa & Lanjutkan →</span>
                         <span wire:loading wire:target="checkEmail">Memeriksa...</span>
                     </button>
@@ -154,7 +154,7 @@
                     <div style="text-align: center; padding-top: 2px;">
                         <button type="button" 
                                 wire:click="goBackToWelcome" 
-                                style="background: none; border: none; font-size: 12px; font-weight: 700; color: #64748b; cursor: pointer;">
+                                style="background: none; border: none; font-size: 12px; font-weight: 700; color: #000000; cursor: pointer;">
                             ← Kembali ke Pilihan Masuk
                         </button>
                     </div>
@@ -168,12 +168,12 @@
             @if($step === 'login')
             <div>
                 <div style="text-align: center; margin-bottom: 18px;">
-                    <div style="width: 46px; height: 46px; border-radius: 14px; background: #eff6ff; color: #2563eb; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 1px solid #bfdbfe;">
+                    <div style="width: 46px; height: 46px; border-radius: 14px; background: #eff6ff; color: #5680d8; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 1px solid #bfdbfe;">
                         <i class='bx bx-user-check'></i>
                     </div>
-                    <h2 style="font-size: 17px; font-weight: 900; color: #0f172a; margin: 0;">Selamat Datang Kembali!</h2>
-                    <p style="font-size: 12px; color: #64748b; font-weight: 600; margin: 3px 0 0;">
-                        Akun: <span style="color: #2563eb; font-weight: 800;">{{ $email }}</span>
+                    <h2 style="font-size: 17px; font-weight: 900; color: #000000; margin: 0;">Selamat Datang Kembali!</h2>
+                    <p style="font-size: 12px; color: #000000; font-weight: 600; margin: 3px 0 0;">
+                        Akun: <span style="color: #5680d8; font-weight: 800;">{{ $email }}</span>
                     </p>
                 </div>
 
@@ -187,12 +187,12 @@
                                placeholder="Masukkan password Anda" 
                                required
                                autofocus
-                               style="width: 100%; padding: 12px 14px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 13.5px; font-weight: bold; color: #0f172a; outline: none; box-sizing: border-box;">
+                               style="width: 100%; padding: 12px 14px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 13.5px; font-weight: bold; color: #000000; outline: none; box-sizing: border-box;">
                     </div>
 
                     <button type="submit" 
                             wire:loading.attr="disabled"
-                            style="width: 100%; padding: 13px; background: #2563eb; color: white; font-weight: 800; border-radius: 12px; font-size: 13.5px; border: none; cursor: pointer; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);">
+                            style="width: 100%; padding: 13px; background: #5680d8; color: white; font-weight: 800; border-radius: 12px; font-size: 13.5px; border: none; cursor: pointer; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);">
                         <span wire:loading.remove wire:target="login">Masuk & Buka Lowongan →</span>
                         <span wire:loading wire:target="login">Memproses...</span>
                     </button>
@@ -200,7 +200,7 @@
                     <div style="text-align: center; padding-top: 4px;">
                         <button type="button" 
                                 wire:click="goBackToWelcome" 
-                                style="background: none; border: none; font-size: 12px; font-weight: 700; color: #64748b; cursor: pointer;">
+                                style="background: none; border: none; font-size: 12px; font-weight: 700; color: #000000; cursor: pointer;">
                             ← Kembali ke Pilihan Masuk
                         </button>
                     </div>
@@ -215,19 +215,19 @@
             <div>
                 <div style="margin-bottom: 12px;">
                     <div style="display: flex; justify-content: space-between; font-size: 10.5px; font-weight: 800; color: #94a3b8; margin-bottom: 4px;">
-                        <span style="color: #2563eb;">Langkah 1 dari 3: Minat Pekerjaan</span>
+                        <span style="color: #5680d8;">Langkah 1 dari 3: Minat Pekerjaan</span>
                         <span>33%</span>
                     </div>
                     <div style="width: 100%; height: 5px; background: #f1f5f9; border-radius: 10px; overflow: hidden;">
-                        <div style="width: 33%; height: 100%; background: #2563eb; border-radius: 10px; transition: all .3s;"></div>
+                        <div style="width: 33%; height: 100%; background: #5680d8; border-radius: 10px; transition: all .3s;"></div>
                     </div>
                 </div>
 
                 <div style="margin-bottom: 12px;">
-                    <h2 style="font-size: 15px; font-weight: 900; color: #0f172a; margin: 0 0 3px;">
+                    <h2 style="font-size: 15px; font-weight: 900; color: #000000; margin: 0 0 3px;">
                         Apa bidang pekerjaan yang Anda cari?
                     </h2>
-                    <p style="font-size: 11px; color: #64748b; font-weight: 600; margin: 0;">
+                    <p style="font-size: 11px; color: #000000; font-weight: 600; margin: 0;">
                         Pilih satu atau lebih bidang yang Anda minati.
                     </p>
                 </div>
@@ -249,12 +249,12 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 10px;">
                     <button type="button" 
                             wire:click="goBackFromQuizInterest" 
-                            style="background: none; border: none; font-size: 11.5px; font-weight: 700; color: #64748b; cursor: pointer;">
+                            style="background: none; border: none; font-size: 11.5px; font-weight: 700; color: #000000; cursor: pointer;">
                         ← Kembali
                     </button>
                     <button type="button" 
                             wire:click="goToLocationStep" 
-                            style="padding: 10px 16px; background: #2563eb; color: white; font-weight: 800; border-radius: 10px; font-size: 11.5px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);">
+                            style="padding: 10px 16px; background: #5680d8; color: white; font-weight: 800; border-radius: 10px; font-size: 11.5px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);">
                         Lanjut ke Domisili →
                     </button>
                 </div>
@@ -268,19 +268,19 @@
             <div>
                 <div style="margin-bottom: 12px;">
                     <div style="display: flex; justify-content: space-between; font-size: 10.5px; font-weight: 800; color: #94a3b8; margin-bottom: 4px;">
-                        <span style="color: #2563eb;">Langkah 2 dari 3: Lokasi / Domisili</span>
+                        <span style="color: #5680d8;">Langkah 2 dari 3: Lokasi / Domisili</span>
                         <span>66%</span>
                     </div>
                     <div style="width: 100%; height: 5px; background: #f1f5f9; border-radius: 10px; overflow: hidden;">
-                        <div style="width: 66%; height: 100%; background: #2563eb; border-radius: 10px; transition: all .3s;"></div>
+                        <div style="width: 66%; height: 100%; background: #5680d8; border-radius: 10px; transition: all .3s;"></div>
                     </div>
                 </div>
 
                 <div style="margin-bottom: 12px;">
-                    <h2 style="font-size: 15px; font-weight: 900; color: #0f172a; margin: 0 0 3px;">
+                    <h2 style="font-size: 15px; font-weight: 900; color: #000000; margin: 0 0 3px;">
                         Di mana domisili atau lokasi Anda saat ini?
                     </h2>
-                    <p style="font-size: 11px; color: #64748b; font-weight: 600; margin: 0;">
+                    <p style="font-size: 11px; color: #000000; font-weight: 600; margin: 0;">
                         Peta akan otomatis memprioritaskan lowongan kerja terdekat.
                     </p>
                 </div>
@@ -291,7 +291,7 @@
                             Pilih Kota
                         </label>
                         <select wire:model="city" 
-                                style="width: 100%; padding: 10px 12px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 12px; font-weight: bold; color: #0f172a; outline: none;">
+                                style="width: 100%; padding: 10px 12px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 12px; font-weight: bold; color: #000000; outline: none;">
                             @foreach($cities as $c)
                             <option value="{{ $c->name }}">{{ $c->name }} ({{ $c->province }})</option>
                             @endforeach
@@ -307,7 +307,7 @@
                             <button type="button" 
                                     wire:click="$set('city', '{{ $quickCity }}')"
                                     style="font-size: 10.5px; font-weight: 800; padding: 4px 8px; border-radius: 8px; border: 1px solid {{ $city === $quickCity ? '#2563eb' : '#e2e8f0' }}; background: {{ $city === $quickCity ? '#2563eb' : '#f1f5f9' }}; color: {{ $city === $quickCity ? 'white' : '#475569' }}; cursor: pointer; display: flex; align-items: center; gap: 3px;">
-                                <i class='bx bxs-map' style="font-size: 11px; color: #2563eb;"></i> {{ $quickCity }}
+                                <i class='bx bxs-map' style="font-size: 11px; color: #5680d8;"></i> {{ $quickCity }}
                             </button>
                             @endforeach
                         </div>
@@ -317,12 +317,12 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 10px;">
                     <button type="button" 
                             wire:click="$set('step', 'quiz_interest')" 
-                            style="background: none; border: none; font-size: 11.5px; font-weight: 700; color: #64748b; cursor: pointer;">
+                            style="background: none; border: none; font-size: 11.5px; font-weight: 700; color: #000000; cursor: pointer;">
                         ← Kembali
                     </button>
                     <button type="button" 
                             wire:click="goToProfileStep" 
-                            style="padding: 10px 16px; background: #2563eb; color: white; font-weight: 800; border-radius: 10px; font-size: 11.5px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);">
+                            style="padding: 10px 16px; background: #5680d8; color: white; font-weight: 800; border-radius: 10px; font-size: 11.5px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);">
                         Lanjut ke Profil & Akun →
                     </button>
                 </div>
@@ -345,10 +345,10 @@
                 </div>
 
                 <div style="margin-bottom: 10px;">
-                    <h2 style="font-size: 14px; font-weight: 900; color: #0f172a; margin: 0 0 2px;">
+                    <h2 style="font-size: 14px; font-weight: 900; color: #000000; margin: 0 0 2px;">
                         Satu langkah lagi! Lengkapi profil
                     </h2>
-                    <p style="font-size: 10.5px; color: #64748b; font-weight: 600; margin: 0;">
+                    <p style="font-size: 10.5px; color: #000000; font-weight: 600; margin: 0;">
                         Akun otomatis dibuat dan Anda mendapatkan <b>3 Kuota Lamaran Gratis</b>.
                     </p>
                 </div>
@@ -362,7 +362,7 @@
                                wire:model="name" 
                                placeholder="Nama sesuai KTP" 
                                required
-                               style="width: 100%; padding: 8px 10px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 9px; font-size: 12px; font-weight: bold; color: #0f172a; outline: none; box-sizing: border-box;">
+                               style="width: 100%; padding: 8px 10px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 9px; font-size: 12px; font-weight: bold; color: #000000; outline: none; box-sizing: border-box;">
                     </div>
 
                     <div>
@@ -370,7 +370,7 @@
                             <label style="font-size: 10px; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.05em;">
                                 NIK (Nomor Induk Kependudukan)
                             </label>
-                            <span style="font-size: 9px; font-weight: 800; color: #2563eb; background: #eff6ff; padding: 1px 6px; border-radius: 4px;">
+                            <span style="font-size: 9px; font-weight: 800; color: #5680d8; background: #eff6ff; padding: 1px 6px; border-radius: 4px;">
                                 1 NIK = 1 Akun
                             </span>
                         </div>
@@ -382,8 +382,8 @@
                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                placeholder="16 digit nomor KTP (Contoh: 347101...)" 
                                required
-                               style="width: 100%; padding: 8px 10px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 9px; font-size: 12px; font-weight: bold; color: #0f172a; outline: none; box-sizing: border-box;">
-                        <p style="font-size: 9.5px; color: #64748b; margin: 2px 0 0; font-weight: 600;">
+                               style="width: 100%; padding: 8px 10px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 9px; font-size: 12px; font-weight: bold; color: #000000; outline: none; box-sizing: border-box;">
+                        <p style="font-size: 9.5px; color: #000000; margin: 2px 0 0; font-weight: 600;">
                             Satu NIK hanya dapat digunakan untuk satu akun pencari kerja.
                         </p>
                     </div>
@@ -394,7 +394,7 @@
                                 Pend. Terakhir
                             </label>
                             <select wire:model="education_level" 
-                                    style="width: 100%; padding: 8px 8px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 9px; font-size: 11px; font-weight: bold; color: #0f172a; outline: none;">
+                                    style="width: 100%; padding: 8px 8px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 9px; font-size: 11px; font-weight: bold; color: #000000; outline: none;">
                                 @foreach($educationLevels as $lvlKey => $lvlLabel)
                                 <option value="{{ $lvlKey }}">{{ $lvlLabel }}</option>
                                 @endforeach
@@ -405,7 +405,7 @@
                                 Pengalaman
                             </label>
                             <select wire:model="work_experience" 
-                                    style="width: 100%; padding: 8px 8px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 9px; font-size: 11px; font-weight: bold; color: #0f172a; outline: none;">
+                                    style="width: 100%; padding: 8px 8px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 9px; font-size: 11px; font-weight: bold; color: #000000; outline: none;">
                                 <option value="fresh_graduate">Fresh Graduate</option>
                                 <option value="1_tahun">1 Tahun</option>
                                 <option value="2_tahun">2 Tahun</option>
@@ -424,7 +424,7 @@
                                pattern="[0-9]*"
                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                placeholder="081234567890" 
-                               style="width: 100%; padding: 8px 10px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 9px; font-size: 12px; font-weight: bold; color: #0f172a; outline: none; box-sizing: border-box;">
+                               style="width: 100%; padding: 8px 10px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 9px; font-size: 12px; font-weight: bold; color: #000000; outline: none; box-sizing: border-box;">
                     </div>
 
                     <div>
@@ -435,13 +435,13 @@
                                wire:model="password" 
                                placeholder="Minimal 6 karakter" 
                                required
-                               style="width: 100%; padding: 8px 10px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 9px; font-size: 12px; font-weight: bold; color: #0f172a; outline: none; box-sizing: border-box;">
+                               style="width: 100%; padding: 8px 10px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 9px; font-size: 12px; font-weight: bold; color: #000000; outline: none; box-sizing: border-box;">
                     </div>
 
                     <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 10px;">
                         <button type="button" 
                                 wire:click="$set('step', 'quiz_location')" 
-                                style="background: none; border: none; font-size: 11.5px; font-weight: 700; color: #64748b; cursor: pointer;">
+                                style="background: none; border: none; font-size: 11.5px; font-weight: 700; color: #000000; cursor: pointer;">
                             ← Kembali
                         </button>
                         <button type="submit" 

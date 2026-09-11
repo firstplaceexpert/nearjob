@@ -179,7 +179,7 @@
                                 
                                 <div class="flex items-center rounded-xl border {{ $errors->has('phone_number') ? 'border-black ring-2 ring-black' : 'border-black/20 focus-within:border-black focus-within:ring-1 focus-within:ring-black' }} bg-white overflow-hidden">
                                     <div class="px-4 py-3 bg-black/5 border-r border-black/20 text-xs sm:text-sm font-bold text-black flex items-center gap-1 select-none">
-                                        <span>🇮🇩 +62</span>
+                                        <span class='inline-flex items-center gap-1.5'><i class='bx bx-phone text-[#5680d8]'></i> +62</span>
                                     </div>
                                     <input type="tel" wire:model.live="phone_number" inputmode="numeric" pattern="[0-9]*"
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '')"
@@ -280,7 +280,7 @@
                                         <img src="{{ $ktp_file->temporaryUrl() }}" class="w-14 h-10 object-cover rounded border border-black/20" alt="Preview KTP">
                                         <div class="text-xs">
                                             <p class="font-bold text-black">Preview KTP terpilih</p>
-                                            <p class="text-[11px] text-black font-medium">✓ Akun akan otomatis mendapatkan tanda verifikasi resmi</p>
+                                            <p class="text-[11px] text-black font-medium"><i class='bx bx-check-shield text-black'></i> Akun akan otomatis mendapatkan tanda verifikasi resmi</p>
                                         </div>
                                     </div>
                                 @endif

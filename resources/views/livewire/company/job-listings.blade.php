@@ -4,8 +4,8 @@
         {{-- ===== HEADER ===== --}}
         <div class="flex items-center justify-between mb-5">
             <div>
-                <h1 class="text-2xl font-extrabold text-slate-800">Lowongan Saya</h1>
-                <p class="text-slate-400 text-sm mt-0.5">Kelola lowongan yang Anda posting</p>
+                <h1 class="text-2xl font-extrabold text-black">Lowongan Saya</h1>
+                <p class="text-black text-sm mt-0.5">Kelola lowongan yang Anda posting</p>
             </div>
             <a href="{{ route('company.jobs.create') }}"
                class="w-11 h-11 text-white rounded-xl flex items-center justify-center text-xl transition-all"
@@ -17,8 +17,8 @@
         @if($jobs->isEmpty())
             <div class="text-center py-16 bg-white rounded-2xl" style="border: 1px dashed #c7d6f5;">
                 <i class='bx bx-mail-send text-5xl mb-4' style="color: #c7d6f5;"></i>
-                <h3 class="text-lg font-extrabold text-slate-600 mb-1">Belum ada lowongan</h3>
-                <p class="text-sm text-slate-400 mb-5 max-w-[220px] mx-auto">Mulai cari karyawan untuk usaha Anda sekarang</p>
+                <h3 class="text-lg font-extrabold text-black mb-1">Belum ada lowongan</h3>
+                <p class="text-sm text-black mb-5 max-w-[220px] mx-auto">Mulai cari karyawan untuk usaha Anda sekarang</p>
                 <a href="{{ route('company.jobs.create') }}"
                    class="inline-flex items-center gap-2 text-white text-sm font-bold px-6 py-3 rounded-xl"
                    style="background: #5680d8;">
@@ -38,7 +38,7 @@
                     </div>
 
                     <div class="pr-16 mb-3">
-                        <h3 class="font-extrabold text-lg text-slate-800">{{ $job->position }}</h3>
+                        <h3 class="font-extrabold text-lg text-black">{{ $job->position }}</h3>
                         <div class="flex items-center gap-2 mt-1">
                             @php
                                 $statusLabel = $job->status === 'active' ? 'Aktif' : ($job->status === 'filled' ? 'Terisi' : 'Ditutup');
@@ -46,25 +46,25 @@
                             <span class="text-[10px] font-bold px-2.5 py-0.5 rounded border border-black text-black uppercase tracking-wider bg-white">
                                 {{ $statusLabel }}
                             </span>
-                            <span class="text-xs text-slate-400">{{ $job->created_at->format('d M Y') }}</span>
+                            <span class="text-xs text-black">{{ $job->created_at->format('d M Y') }}</span>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-4 gap-2 p-3 rounded-xl mb-3 text-center bg-white border border-black/15">
                         <div>
-                            <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Pelamar</p>
+                            <p class="text-[9px] font-bold uppercase tracking-widest text-black mb-0.5">Pelamar</p>
                             <p class="text-base font-black text-black">{{ $job->applications_count }}</p>
                         </div>
                         <div>
-                            <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Kuota</p>
+                            <p class="text-[9px] font-bold uppercase tracking-widest text-black mb-0.5">Kuota</p>
                             <p class="text-base font-black text-black">{{ $job->quota ?? 1 }} Org</p>
                         </div>
                         <div>
-                            <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Bidang</p>
+                            <p class="text-[9px] font-bold uppercase tracking-widest text-black mb-0.5">Bidang</p>
                             <p class="text-xs font-bold text-black truncate">{{ \App\Models\JobListing::jobCategories()[$job->job_category] ?? '-' }}</p>
                         </div>
                         <div>
-                            <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Jenis</p>
+                            <p class="text-[9px] font-bold uppercase tracking-widest text-black mb-0.5">Jenis</p>
                             <p class="text-xs font-bold text-black">{{ \App\Models\JobListing::workTypes()[$job->work_type] ?? '-' }}</p>
                         </div>
                     </div>

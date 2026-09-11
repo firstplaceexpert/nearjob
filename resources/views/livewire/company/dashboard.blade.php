@@ -8,14 +8,14 @@
             </div>
             <div>
                 <div class="flex items-center gap-2 flex-wrap">
-                    <h1 class="text-lg font-extrabold text-slate-800">{{ $company->company_name }}</h1>
+                    <h1 class="text-lg font-extrabold text-black">{{ $company->company_name }}</h1>
                     @if($company->is_verified || $company->ktp_path)
                         <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded border border-black text-black bg-white">
                             <i class='bx bxs-badge-check text-xs text-black'></i> Terverifikasi
                         </span>
                     @endif
                 </div>
-                <p class="text-xs text-slate-400 mt-0.5">{{ $company->owner_name }}</p>
+                <p class="text-xs text-black mt-0.5">{{ $company->owner_name }}</p>
                 @if($company->is_verified || $company->ktp_path)
                     <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded border border-black text-black mt-1 bg-white">
                         <i class='bx bxs-badge-check text-black'></i> Akun Terverifikasi Resmi
@@ -32,12 +32,12 @@
         <div class="grid grid-cols-2 gap-3 mb-4">
             <div class="rounded-2xl p-5 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #5680d8, #3a5bbf); box-shadow: 0 4px 20px rgba(86,128,216,.3);">
                 <div class="absolute -right-4 -top-4 text-6xl opacity-10"><i class='bx bx-briefcase'></i></div>
-                <p class="text-[10px] font-bold uppercase tracking-widest text-blue-200 mb-1">Total Lowongan</p>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-white mb-1">Total Lowongan</p>
                 <p class="text-4xl font-black">{{ $totalJobs }}</p>
             </div>
             <div class="rounded-2xl p-5 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #47bfae, #2a9d8f); box-shadow: 0 4px 20px rgba(71,191,174,.3);">
                 <div class="absolute -right-4 -top-4 text-6xl opacity-10"><i class='bx bx-group'></i></div>
-                <p class="text-[10px] font-bold uppercase tracking-widest text-teal-100 mb-1">Total Pelamar</p>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-white mb-1">Total Pelamar</p>
                 <p class="text-4xl font-black">{{ $totalApplicants }}</p>
             </div>
         </div>
@@ -51,22 +51,22 @@
             </a>
             <a href="{{ route('company.jobs') }}"
                class="flex-1 py-3 font-bold rounded-xl text-center text-sm transition-all"
-               style="border: 1.5px solid #e2e8f0; color: #475569; background: white;">
+               style="border: 1.5px solid #e2e8f0; color: #000000; background: white;">
                 Semua Lowongan
             </a>
         </div>
 
         {{-- ===== RECENT JOBS ===== --}}
         <div class="flex items-center justify-between mb-3">
-            <h2 class="font-extrabold text-slate-800">Lowongan Terbaru</h2>
-            <a href="{{ route('company.jobs') }}" class="text-xs font-bold" style="color: #5680d8;">Lihat Semua →</a>
+            <h2 class="font-extrabold text-black">Lowongan Terbaru</h2>
+            <a href="{{ route('company.jobs') }}" class="text-xs font-bold" style="color: #000000;">Lihat Semua →</a>
         </div>
 
         @if($recentJobs->isEmpty())
             <div class="text-center py-14 bg-white rounded-2xl" style="border: 1px dashed #c7d6f5;">
                 <i class='bx bx-mail-send text-5xl mb-3' style="color: #c7d6f5;"></i>
-                <h3 class="font-extrabold text-slate-600 mb-1">Belum ada lowongan</h3>
-                <p class="text-sm text-slate-400 mb-5">Mulai cari karyawan untuk usaha Anda sekarang</p>
+                <h3 class="font-extrabold text-black mb-1">Belum ada lowongan</h3>
+                <p class="text-sm text-black mb-5">Mulai cari karyawan untuk usaha Anda sekarang</p>
                 <a href="{{ route('company.jobs.create') }}"
                    class="inline-flex items-center gap-2 text-white text-sm font-bold px-6 py-3 rounded-xl"
                    style="background: #5680d8;">
@@ -79,8 +79,8 @@
                 <div class="bg-white rounded-2xl p-4" style="border: 1px solid #e8edf5; box-shadow: 0 2px 10px rgba(0,0,0,.04);">
                     <div class="flex justify-between items-start mb-3">
                         <div>
-                            <h3 class="font-extrabold text-slate-800">{{ $job->position }}</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">{{ $job->created_at->diffForHumans() }}</p>
+                            <h3 class="font-extrabold text-black">{{ $job->position }}</h3>
+                            <p class="text-xs text-black mt-0.5">{{ $job->created_at->diffForHumans() }}</p>
                         </div>
                         @php
                             $statusLabel = $job->status === 'active' ? 'Aktif' : ($job->status === 'filled' ? 'Terisi' : 'Ditutup');
@@ -90,7 +90,7 @@
                         </span>
                     </div>
 
-                    <div class="flex items-center gap-4 text-xs font-semibold text-slate-500 mb-4 p-2.5 rounded-xl bg-white border border-black/15">
+                    <div class="flex items-center gap-4 text-xs font-semibold text-black mb-4 p-2.5 rounded-xl bg-white border border-black/15">
                         <span class="flex items-center gap-1.5"><i class='bx bx-group' style="color:#5680d8"></i> {{ $job->applications_count }} Pelamar</span>
                         <span class="flex items-center gap-1.5"><i class='bx bx-map' style="color:#5680d8"></i> {{ $job->city }}</span>
                         <span class="flex items-center gap-1.5"><i class='bx bx-category' style="color:#5680d8"></i> {{ \App\Models\JobListing::jobCategories()[$job->job_category] ?? '-' }}</span>

@@ -21,14 +21,14 @@
 
     @unless($hideHeader ?? false)
     <header class="bg-white border-b border-slate-100 px-4 h-14 flex items-center justify-between">
-        <a href="{{ route('home') }}" class="flex items-center gap-2">
-            <div class="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center">
+        <a href="{{ route('home') }}" class="flex items-center gap-2 text-decoration-none">
+            <div class="w-7 h-7 bg-[#5680d8] rounded-lg flex items-center justify-center">
                 <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
             </div>
-            <span class="font-extrabold text-blue-700 tracking-tight text-lg">NEAR JOB</span>
+            <span class="font-black text-black tracking-tight text-lg">NEAR JOB</span>
         </a>
-        <div class="flex items-center gap-2 text-sm text-slate-500">
-            <a href="{{ route('login') }}" class="font-semibold hover:text-blue-600 transition-colors">Masuk</a>
+        <div class="flex items-center gap-2 text-sm text-black">
+            <a href="{{ route('login') }}" class="font-bold text-black hover:opacity-80 transition-opacity text-decoration-none">Masuk</a>
         </div>
     </header>
     @endunless

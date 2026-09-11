@@ -51,7 +51,7 @@
                 {{-- Name & City --}}
                 <h1 class="text-xl sm:text-2xl font-black text-white leading-tight mb-1.5 drop-shadow-sm">{{ auth()->user()->name }}</h1>
                 <p class="text-white/90 text-xs sm:text-sm font-semibold mb-3.5 flex items-center justify-center gap-1.5">
-                    <i class='bx bx-map-pin text-sm text-blue-200'></i>
+                    <i class='bx bx-map-pin text-sm text-white'></i>
                     {{ auth()->user()->applicantProfile?->city ?? 'Lokasi belum diatur' }}
                 </p>
 
@@ -81,11 +81,11 @@
             {{-- Credits Card --}}
             <div class="rounded-3xl text-white relative overflow-hidden flex flex-col justify-between" 
                  style="background: linear-gradient(135deg, #24427b, #5680d8); box-shadow: 0 4px 20px rgba(37,67,155,.25); padding: 28px 24px;">
-                <div class="absolute -right-4 -bottom-4 text-7xl opacity-10">🎫</div>
+                <div class="absolute -right-4 -bottom-4 text-7xl opacity-10"><i class='bx bx-id-card'></i></div>
                 <div>
-                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-blue-200 block mb-1.5">KESEMPATAN MELAMAR</span>
-                    <p class="text-3xl font-black mb-2">{{ $credits }} <span class="text-xs font-bold text-blue-200">Kredit Tersisa</span></p>
-                    <p class="text-xs text-blue-100/90 font-medium leading-relaxed">1 kredit digunakan per lamaran yang dikirim.</p>
+                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-white block mb-1.5">KESEMPATAN MELAMAR</span>
+                    <p class="text-3xl font-black mb-2">{{ $credits }} <span class="text-xs font-bold text-white">Kredit Tersisa</span></p>
+                    <p class="text-xs text-white font-medium leading-relaxed">1 kredit digunakan per lamaran yang dikirim.</p>
                 </div>
                 <a href="{{ route('applicant.topup') }}"
                    class="mt-6 text-xs sm:text-sm font-extrabold px-4 py-3.5 rounded-xl w-full text-center transition-all shadow-sm flex items-center justify-center gap-2 hover:opacity-95 text-decoration-none"
@@ -97,17 +97,17 @@
             {{-- CV Card --}}
             <div class="bg-white rounded-3xl border flex flex-col justify-between shadow-sm" style="border-color: #e2e8f0; padding: 28px 24px;">
                 <div>
-                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 block mb-1.5">DOKUMEN CV ATS</span>
+                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-black block mb-1.5">DOKUMEN CV ATS</span>
                     @if($cv_generated)
-                        <div class="flex items-center gap-2 font-black text-sm" style="color: #2a9d8f;">
+                        <div class="flex items-center gap-2 font-black text-sm" style="color: #000000;">
                             <i class='bx bx-check-circle text-xl'></i> CV Tersedia
                         </div>
-                        <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">CV standar profesional siap dikirim ke pemberi kerja.</p>
+                        <p class="text-xs text-black font-medium mt-1 leading-relaxed">CV standar profesional siap dikirim ke pemberi kerja.</p>
                     @else
-                        <div class="flex items-center gap-2 text-orange-500 font-black text-sm">
+                        <div class="flex items-center gap-2 text-black font-black text-sm">
                             <i class='bx bx-time-five text-xl'></i> CV Belum Dibuat
                         </div>
-                        <p class="text-xs text-slate-400 font-medium mt-1 leading-relaxed">Buat CV profesional otomatis dalam 1 kali klik.</p>
+                        <p class="text-xs text-black font-medium mt-1 leading-relaxed">Buat CV profesional otomatis dalam 1 kali klik.</p>
                     @endif
                 </div>
                 <a href="https://cvatsplygrown.vercel.app" target="_blank" rel="noopener noreferrer"
@@ -122,8 +122,8 @@
         {{-- ===== PROFILE COMPLETENESS CHECKLIST ===== --}}
         <div class="bg-white rounded-3xl overflow-hidden border shadow-sm" style="border-color: #e2e8f0;">
             <div style="padding: 22px 26px; border-bottom: 1.5px solid #f1f5f9; background: #fafcff;">
-                <h3 class="font-black text-slate-800 text-sm">Kelengkapan Profil Anda</h3>
-                <p class="text-xs text-slate-500 mt-1 font-medium">Profil yang lengkap meningkatkan prioritas lamaran Anda</p>
+                <h3 class="font-black text-black text-sm">Kelengkapan Profil Anda</h3>
+                <p class="text-xs text-black mt-1 font-medium">Profil yang lengkap meningkatkan prioritas lamaran Anda</p>
             </div>
             @php
                 $profile = auth()->user()->applicantProfile;
@@ -137,14 +137,14 @@
             <div class="divide-y divide-slate-100">
                 @foreach($checks as [$label, $done])
                 <div class="flex items-center justify-between" style="padding: 18px 26px;">
-                    <span class="text-xs sm:text-sm {{ $done ? 'text-slate-800 font-extrabold' : 'text-slate-400 font-medium' }}">{{ $label }}</span>
+                    <span class="text-xs sm:text-sm {{ $done ? 'text-black font-extrabold' : 'text-black font-medium' }}">{{ $label }}</span>
                     @if($done)
                         <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0" style="background: #2a9d8f;">
                             <i class='bx bx-check text-white font-black text-sm'></i>
                         </div>
                     @else
                         <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 bg-slate-100">
-                            <i class='bx bx-minus text-slate-400 font-bold text-xs'></i>
+                            <i class='bx bx-minus text-black font-bold text-xs'></i>
                         </div>
                     @endif
                 </div>
@@ -155,8 +155,8 @@
         {{-- ===== EDIT PROFILE FORM ===== --}}
         <div id="profile-form-section" class="bg-white rounded-3xl overflow-hidden border shadow-sm" style="border-color: #e2e8f0;">
             <div style="padding: 22px 26px; border-bottom: 1.5px solid #f1f5f9; background: #fafcff;">
-                <h3 class="font-black text-slate-800 text-sm">Formulir Data Diri & Profil</h3>
-                <p class="text-xs text-slate-500 mt-1 font-medium">Lengkapi data agar pemberi kerja dapat menghubungi Anda</p>
+                <h3 class="font-black text-black text-sm">Formulir Data Diri & Profil</h3>
+                <p class="text-xs text-black mt-1 font-medium">Lengkapi data agar pemberi kerja dapat menghubungi Anda</p>
             </div>
             
             <div style="padding: 32px 26px 36px;">
@@ -170,7 +170,7 @@
 
                         <div style="display: flex; flex-direction: column; gap: 20px;">
                             <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-slate-700 mb-2">Nama Lengkap</label>
+                                <label class="block text-xs sm:text-sm font-extrabold text-black mb-2">Nama Lengkap</label>
                                 <input type="text" wire:model="name"
                                     class="w-full text-xs sm:text-sm transition-all focus:outline-none focus:ring-2"
                                     style="padding: 14px 18px; border-radius: 14px; border: 1.5px solid #e2e8f0; background: #f8faff;"
@@ -179,7 +179,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-slate-700 mb-2">Alamat Email (Akun)</label>
+                                <label class="block text-xs sm:text-sm font-extrabold text-black mb-2">Alamat Email (Akun)</label>
                                 <input type="email" wire:model="email" disabled
                                     class="w-full text-xs sm:text-sm cursor-not-allowed"
                                     style="padding: 14px 18px; border-radius: 14px; border: 1.5px solid #e2e8f0; background: #f1f5f9; color: #94a3b8;">
@@ -187,25 +187,25 @@
 
                             <div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <label class="block text-xs sm:text-sm font-extrabold text-slate-700">NIK (Nomor Induk Kependudukan)</label>
-                                    <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
+                                    <label class="block text-xs sm:text-sm font-extrabold text-black">NIK (Nomor Induk Kependudukan)</label>
+                                    <span class="text-[10px] font-bold text-black bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
                                         Terproteksi Masking
                                     </span>
                                 </div>
                                 <input type="text" value="{{ $masked_nik }}" disabled
                                     class="w-full text-xs sm:text-sm font-mono cursor-not-allowed"
                                     style="padding: 14px 18px; border-radius: 14px; border: 1.5px solid #e2e8f0; background: #f1f5f9; color: #64748b;">
-                                <p class="text-[11px] text-slate-400 mt-1">NIK lengkap Anda terlindungi dan disensor agar tidak disalahgunakan.</p>
+                                <p class="text-[11px] text-black mt-1">NIK lengkap Anda terlindungi dan disensor agar tidak disalahgunakan.</p>
                             </div>
 
                             {{-- KTP Verification Card --}}
                             <div style="background-color: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 18px; padding: 18px;">
                                 <div class="flex items-start justify-between gap-3 mb-2">
                                     <div>
-                                        <h5 class="text-xs sm:text-sm font-black text-slate-800 flex items-center gap-1.5 mb-1">
-                                            <i class='bx bx-id-card text-lg text-blue-600'></i> Verifikasi Identitas KTP Pelamar
+                                        <h5 class="text-xs sm:text-sm font-black text-black flex items-center gap-1.5 mb-1">
+                                            <i class='bx bx-id-card text-lg text-black'></i> Verifikasi Identitas KTP Pelamar
                                         </h5>
-                                        <p class="text-xs text-slate-500 leading-relaxed">
+                                        <p class="text-xs text-black leading-relaxed">
                                             Unggah foto KTP asli Anda untuk verifikasi identitas resmi. Sistem akan <strong>otomatis membubuhkan watermark "NEAR JOB"</strong> permanen sebelum disimpan di database demi keamanan Anda.
                                         </p>
                                     </div>
@@ -231,7 +231,7 @@
                                     <label class="block text-xs font-bold text-black mb-1.5">
                                         {{ $profile->ktp_path ? 'Perbarui Foto KTP:' : 'Pilih Foto KTP Anda:' }}
                                     </label>
-                                    <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:text-white cursor-pointer" style="--tw-file-bg: #5680d8;">
+                                    <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-black file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:text-white cursor-pointer" style="--tw-file-bg: #5680d8;">
                                     <div wire:loading wire:target="ktp_file" class="text-xs text-black font-bold mt-2">
                                         <i class='bx bx-loader-alt bx-spin text-sm text-black'></i> Memproses watermark "NEAR JOB" & menyimpan KTP...
                                     </div>
@@ -240,7 +240,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-slate-700 mb-2">Nomor WhatsApp (Aktif)</label>
+                                <label class="block text-xs sm:text-sm font-extrabold text-black mb-2">Nomor WhatsApp (Aktif)</label>
                                 <input type="tel" wire:model="whatsapp" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                     class="w-full text-xs sm:text-sm transition-all focus:outline-none focus:ring-2"
                                     style="padding: 14px 18px; border-radius: 14px; border: 1.5px solid #e2e8f0; background: #f8faff;"
@@ -249,7 +249,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-slate-700 mb-2">Kota Domisili</label>
+                                <label class="block text-xs sm:text-sm font-extrabold text-black mb-2">Kota Domisili</label>
                                 <select wire:model="city"
                                     class="w-full text-xs sm:text-sm font-semibold"
                                     style="padding: 14px 18px; border-radius: 14px; border: 1.5px solid #e2e8f0; background: #f8faff;">
@@ -271,7 +271,7 @@
 
                         <div style="display: flex; flex-direction: column; gap: 20px;">
                             <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-slate-700 mb-2">Pendidikan Terakhir</label>
+                                <label class="block text-xs sm:text-sm font-extrabold text-black mb-2">Pendidikan Terakhir</label>
                                 <select wire:model="education_level"
                                     class="w-full text-xs sm:text-sm font-semibold"
                                     style="padding: 14px 18px; border-radius: 14px; border: 1.5px solid #e2e8f0; background: #f8faff;">
@@ -282,7 +282,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-slate-700 mb-2">Nama Sekolah / Tempat Pendidikan</label>
+                                <label class="block text-xs sm:text-sm font-extrabold text-black mb-2">Nama Sekolah / Tempat Pendidikan</label>
                                 <input type="text" wire:model="education_institution"
                                     class="w-full text-xs sm:text-sm transition-all"
                                     style="padding: 14px 18px; border-radius: 14px; border: 1.5px solid #e2e8f0; background: #f8faff;"
@@ -291,7 +291,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-slate-700 mb-2">Jurusan (Opsional)</label>
+                                <label class="block text-xs sm:text-sm font-extrabold text-black mb-2">Jurusan (Opsional)</label>
                                 <input type="text" wire:model="field_of_study"
                                     class="w-full text-xs sm:text-sm transition-all"
                                     style="padding: 14px 18px; border-radius: 14px; border: 1.5px solid #e2e8f0; background: #f8faff;"
@@ -299,7 +299,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-slate-700 mb-2">Keahlian (Skills)</label>
+                                <label class="block text-xs sm:text-sm font-extrabold text-black mb-2">Keahlian (Skills)</label>
                                 <div style="display: flex; gap: 12px; margin-bottom: 16px;">
                                     <input type="text" wire:model="newSkill" wire:keydown.enter.prevent="addSkill"
                                         class="flex-grow text-xs sm:text-sm"
@@ -330,7 +330,7 @@
 
                         <div style="display: flex; flex-direction: column; gap: 20px;">
                             <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-slate-700 mb-2">Pengalaman Kerja Sebelumnya</label>
+                                <label class="block text-xs sm:text-sm font-extrabold text-black mb-2">Pengalaman Kerja Sebelumnya</label>
                                 <textarea wire:model="work_experience" rows="4"
                                     class="w-full text-xs sm:text-sm leading-relaxed resize-none"
                                     style="padding: 16px 18px; border-radius: 14px; border: 1.5px solid #e2e8f0; background: #f8faff;"
@@ -338,7 +338,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-slate-700 mb-2">Ekspektasi Gaji per Bulan (Opsional)</label>
+                                <label class="block text-xs sm:text-sm font-extrabold text-black mb-2">Ekspektasi Gaji per Bulan (Opsional)</label>
                                 <input type="text" wire:model="salary_expectation"
                                     class="w-full text-xs sm:text-sm transition-all"
                                     style="padding: 14px 18px; border-radius: 14px; border: 1.5px solid #e2e8f0; background: #f8faff;"
@@ -365,10 +365,10 @@
             
             <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-5">
                 <div>
-                    <h3 class="font-black text-base text-slate-800">Ubah Foto Sampul (Background)</h3>
-                    <p class="text-xs text-slate-500 font-medium mt-0.5">Upload dari galeri HP / komputer atau pilih gambar sampul</p>
+                    <h3 class="font-black text-base text-black">Ubah Foto Sampul (Background)</h3>
+                    <p class="text-xs text-black font-medium mt-0.5">Upload dari galeri HP / komputer atau pilih gambar sampul</p>
                 </div>
-                <button type="button" onclick="document.getElementById('cover-picker-modal').style.display='none'" class="text-slate-400 hover:text-slate-600 font-black text-2xl w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 cursor-pointer">×</button>
+                <button type="button" onclick="document.getElementById('cover-picker-modal').style.display='none'" class="text-black hover:text-black font-black text-2xl w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 cursor-pointer">×</button>
             </div>
 
             {{-- 1. UPLOAD DARI GALERI --}}
@@ -380,12 +380,12 @@
                          style="background: #5680d8; color: white;">
                         <i class='bx bx-cloud-upload'></i>
                     </div>
-                    <span class="text-sm font-black text-slate-800">Upload Foto dari Galeri / File</span>
-                    <span class="text-xs text-slate-500 font-medium mt-1">Mendukung format JPG, PNG, WEBP (Maks. 8MB)</span>
+                    <span class="text-sm font-black text-black">Upload Foto dari Galeri / File</span>
+                    <span class="text-xs text-black font-medium mt-1">Mendukung format JPG, PNG, WEBP (Maks. 8MB)</span>
                 </label>
                 <input type="file" id="cover-file-input" wire:model="coverFile" accept="image/*" class="hidden" onchange="document.getElementById('cover-picker-modal').style.display='none';">
                 
-                <div wire:loading wire:target="coverFile" class="text-center py-2 text-xs font-bold text-blue-600">
+                <div wire:loading wire:target="coverFile" class="text-center py-2 text-xs font-bold text-black">
                     <i class='bx bx-loader-alt bx-spin text-sm mr-1'></i> Mengunggah foto sampul dari galeri...
                 </div>
                 @error('coverFile')
@@ -396,7 +396,7 @@
             {{-- PEMBATAS --}}
             <div class="relative flex items-center justify-center mb-4">
                 <div class="border-t border-slate-200 w-full"></div>
-                <span class="bg-white px-3 text-xs font-bold text-slate-400 uppercase tracking-wider shrink-0">atau pilih rekomendasi</span>
+                <span class="bg-white px-3 text-xs font-bold text-black uppercase tracking-wider shrink-0">atau pilih rekomendasi</span>
                 <div class="border-t border-slate-200 w-full"></div>
             </div>
 
@@ -417,7 +417,7 @@
                     <img src="{{ $cov['url'] }}" alt="{{ $cov['name'] }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
                     <span class="absolute bottom-1 left-1.5 text-[10px] font-extrabold text-white bg-black/60 px-2 py-0.5 rounded-md backdrop-blur-sm">{{ $cov['name'] }}</span>
                     @if($cover_picture === $cov['url'])
-                        <span class="absolute top-1 right-1.5 w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">✓</span>
+                        <span class="absolute top-1 right-1.5 w-5 h-5 rounded-full bg-[#5680d8] text-white flex items-center justify-center text-xs font-bold"><i class='bx bx-check'></i></span>
                     @endif
                 </div>
                 @endforeach
@@ -427,12 +427,12 @@
             <div class="flex items-center gap-3">
                 @if($cover_picture)
                 <button type="button" wire:click="removeCover" onclick="document.getElementById('cover-picker-modal').style.display='none';" 
-                        class="flex-1 py-3 px-4 rounded-xl text-xs font-extrabold text-red-600 bg-red-50 hover:bg-red-100 transition-colors border border-red-200 cursor-pointer">
+                        class="flex-1 py-3 px-4 rounded-xl text-xs font-extrabold text-black bg-white hover:bg-black/5 transition-colors border border-black cursor-pointer">
                     <i class='bx bx-trash mr-1'></i> Reset Sampul Default
                 </button>
                 @endif
                 <button type="button" onclick="document.getElementById('cover-picker-modal').style.display='none'" 
-                        class="flex-1 py-3 px-4 rounded-xl text-xs font-extrabold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer">
+                        class="flex-1 py-3 px-4 rounded-xl text-xs font-extrabold text-black bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer">
                     Tutup
                 </button>
             </div>
@@ -446,10 +446,10 @@
             
             <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-5">
                 <div>
-                    <h3 class="font-black text-base text-slate-800">Ubah Foto Profil (Avatar)</h3>
-                    <p class="text-xs text-slate-500 font-medium mt-0.5">Upload foto diri Anda dari galeri atau pilih foto avatar</p>
+                    <h3 class="font-black text-base text-black">Ubah Foto Profil (Avatar)</h3>
+                    <p class="text-xs text-black font-medium mt-0.5">Upload foto diri Anda dari galeri atau pilih foto avatar</p>
                 </div>
-                <button type="button" onclick="document.getElementById('avatar-picker-modal').style.display='none'" class="text-slate-400 hover:text-slate-600 font-black text-2xl w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 cursor-pointer">×</button>
+                <button type="button" onclick="document.getElementById('avatar-picker-modal').style.display='none'" class="text-black hover:text-black font-black text-2xl w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 cursor-pointer">×</button>
             </div>
 
             {{-- 1. UPLOAD DARI GALERI --}}
@@ -461,12 +461,12 @@
                          style="background: #5680d8; color: white;">
                         <i class='bx bx-camera'></i>
                     </div>
-                    <span class="text-sm font-black text-slate-800">Upload Foto dari Galeri / Kamera</span>
-                    <span class="text-xs text-slate-500 font-medium mt-1">Mendukung format JPG, PNG, WEBP (Maks. 5MB)</span>
+                    <span class="text-sm font-black text-black">Upload Foto dari Galeri / Kamera</span>
+                    <span class="text-xs text-black font-medium mt-1">Mendukung format JPG, PNG, WEBP (Maks. 5MB)</span>
                 </label>
                 <input type="file" id="avatar-file-input" wire:model="avatarFile" accept="image/*" class="hidden" onchange="document.getElementById('avatar-picker-modal').style.display='none';">
                 
-                <div wire:loading wire:target="avatarFile" class="text-center py-2 text-xs font-bold text-blue-600">
+                <div wire:loading wire:target="avatarFile" class="text-center py-2 text-xs font-bold text-black">
                     <i class='bx bx-loader-alt bx-spin text-sm mr-1'></i> Mengunggah foto profil dari galeri...
                 </div>
                 @error('avatarFile')
@@ -477,7 +477,7 @@
             {{-- PEMBATAS --}}
             <div class="relative flex items-center justify-center mb-4">
                 <div class="border-t border-slate-200 w-full"></div>
-                <span class="bg-white px-3 text-xs font-bold text-slate-400 uppercase tracking-wider shrink-0">atau pilih avatar rekomendasi</span>
+                <span class="bg-white px-3 text-xs font-bold text-black uppercase tracking-wider shrink-0">atau pilih avatar rekomendasi</span>
                 <div class="border-t border-slate-200 w-full"></div>
             </div>
 
@@ -499,7 +499,7 @@
                      class="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden mx-auto cursor-pointer group border-2 transition-all shadow-sm relative {{ $profile_picture === $av ? 'border-blue-600 ring-2 ring-blue-300' : 'border-transparent hover:border-blue-400' }}">
                     <img src="{{ $av }}" alt="Avatar" class="w-full h-full object-cover group-hover:scale-110 transition-transform">
                     @if($profile_picture === $av)
-                        <span class="absolute inset-0 bg-blue-600/40 flex items-center justify-center text-white font-bold text-sm">✓</span>
+                        <span class="absolute inset-0 bg-[#5680d8]/40 flex items-center justify-center text-white font-bold text-sm"><i class='bx bx-check'></i></span>
                     @endif
                 </div>
                 @endforeach
@@ -509,12 +509,12 @@
             <div class="flex items-center gap-3">
                 @if($profile_picture)
                 <button type="button" wire:click="removeAvatar" onclick="document.getElementById('avatar-picker-modal').style.display='none';" 
-                        class="flex-1 py-3 px-4 rounded-xl text-xs font-extrabold text-red-600 bg-red-50 hover:bg-red-100 transition-colors border border-red-200 cursor-pointer">
+                        class="flex-1 py-3 px-4 rounded-xl text-xs font-extrabold text-black bg-white hover:bg-black/5 transition-colors border border-black cursor-pointer">
                     <i class='bx bx-user-x mr-1'></i> Gunakan Inisial Saja
                 </button>
                 @endif
                 <button type="button" onclick="document.getElementById('avatar-picker-modal').style.display='none'" 
-                        class="flex-1 py-3 px-4 rounded-xl text-xs font-extrabold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer">
+                        class="flex-1 py-3 px-4 rounded-xl text-xs font-extrabold text-black bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer">
                     Tutup
                 </button>
             </div>

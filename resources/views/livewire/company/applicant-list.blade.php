@@ -9,16 +9,16 @@
                 <i class='bx bx-arrow-back'></i>
             </a>
             <div>
-                <h1 class="text-xl font-extrabold text-slate-800">Daftar Pelamar</h1>
-                <p class="text-slate-400 text-sm truncate max-w-[240px]">{{ $job->position }}</p>
+                <h1 class="text-xl font-extrabold text-black">Daftar Pelamar</h1>
+                <p class="text-black text-sm truncate max-w-[240px]">{{ $job->position }}</p>
             </div>
         </div>
 
         @if($applications->isEmpty())
             <div class="text-center py-16 bg-white rounded-2xl" style="border: 1px dashed #c7d6f5;">
                 <i class='bx bx-group text-5xl mb-4' style="color: #c7d6f5;"></i>
-                <h3 class="font-extrabold text-slate-600 mb-1">Belum ada pelamar</h3>
-                <p class="text-sm text-slate-400 mt-1 max-w-[220px] mx-auto">Tetap bersabar menunggu kandidat yang tepat.</p>
+                <h3 class="font-extrabold text-black mb-1">Belum ada pelamar</h3>
+                <p class="text-sm text-black mt-1 max-w-[220px] mx-auto">Tetap bersabar menunggu kandidat yang tepat.</p>
             </div>
         @else
             <div class="space-y-4">
@@ -39,16 +39,16 @@
                                 @endif
                                 <div>
                                     <div class="flex items-center gap-1.5 flex-wrap">
-                                        <h3 class="font-extrabold text-lg text-slate-800">{{ $app->user->name }}</h3>
+                                        <h3 class="font-extrabold text-lg text-black">{{ $app->user->name }}</h3>
                                         @if($app->user->isIdentityVerified() || $profile?->is_verified)
                                             <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded border border-black text-black bg-white" title="Identitas KTP Pelamar Terverifikasi">
                                                 <i class='bx bxs-badge-check text-black'></i> KTP Terverifikasi
                                             </span>
                                         @endif
                                     </div>
-                                    <p class="text-xs text-slate-400 mt-0.5">
+                                    <p class="text-xs text-black mt-0.5">
                                         Usia: {{ $app->user->age }} thn &bull; Lulusan {{ strtoupper($profile?->education_level ?? '-') }}
-                                        &bull; <span class="font-mono text-slate-500">NIK: {{ $app->user->masked_nik }}</span>
+                                        &bull; <span class="font-mono text-black">NIK: {{ $app->user->masked_nik }}</span>
                                     </p>
                                 </div>
                             </div>
@@ -65,20 +65,20 @@
                         {{-- Profile Info --}}
                         <div class="grid grid-cols-2 gap-3 p-3 rounded-xl mb-3 bg-white border border-black/15">
                             <div>
-                                <p class="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">Pengalaman</p>
-                                <p class="text-xs font-semibold text-slate-700 line-clamp-2">{{ $profile?->work_experience ?: ($profile?->education_institution ?? '-') }}</p>
+                                <p class="text-[9px] font-bold uppercase tracking-wider text-black mb-0.5">Pengalaman</p>
+                                <p class="text-xs font-semibold text-black line-clamp-2">{{ $profile?->work_experience ?: ($profile?->education_institution ?? '-') }}</p>
                             </div>
                             <div>
-                                <p class="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">Domisili</p>
-                                <p class="text-xs font-semibold text-slate-700">{{ $profile?->city ?? '-' }}</p>
+                                <p class="text-[9px] font-bold uppercase tracking-wider text-black mb-0.5">Domisili</p>
+                                <p class="text-xs font-semibold text-black">{{ $profile?->city ?? '-' }}</p>
                             </div>
                             <div class="col-span-2">
-                                <p class="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">Keahlian</p>
+                                <p class="text-[9px] font-bold uppercase tracking-wider text-black mb-1">Keahlian</p>
                                 <div class="flex flex-wrap gap-1">
                                     @forelse($profile?->skills ?? [] as $skill)
                                         <span class="text-[9px] font-bold px-2 py-0.5 rounded border border-black/30 text-black bg-white">{{ $skill }}</span>
                                     @empty
-                                        <span class="text-xs text-slate-400">-</span>
+                                        <span class="text-xs text-black">-</span>
                                     @endforelse
                                 </div>
                             </div>
@@ -105,7 +105,7 @@
 
                         @if($profile?->cv_generated)
                             <a href="#" class="flex-1 py-2.5 text-center text-xs font-bold rounded-xl transition-all"
-                               style="background: #f8faff; color: #475569; border: 1px solid #e2e8f0;">
+                               style="background: #ffffff; color: #000000; border: 1px solid #000000;">
                                 <i class='bx bx-file'></i> Lihat CV
                             </a>
                         @endif

@@ -150,11 +150,11 @@
 
                 {{-- Row 2: Info Jarak, Kuota & Pendidikan (Wrap Garis Hitam & Tulisan Hitam) --}}
                 <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#000000;font-weight:600;margin-bottom:10px;background:#ffffff;padding:6px 10px;border-radius:10px;border:1px solid rgba(0,0,0,0.18);flex-wrap:wrap;">
-                    <span>📍 <b>{{ $job->distance }} km</b></span>
+                    <span style="display:inline-flex;align-items:center;gap:3px;"><i class='bx bx-map-pin' style="color:#5680d8;"></i> <b>{{ $job->distance }} km</b></span>
                     <span>•</span>
-                    <span style="color:#000000;font-weight:800;background:#ffffff;padding:1px 6px;border-radius:6px;border:1px solid rgba(0,0,0,0.3);">🎯 <b>{{ $job->quota ?? 1 }} Kuota</b></span>
+                    <span style="color:#000000;font-weight:800;background:#ffffff;padding:1px 6px;border-radius:6px;border:1px solid rgba(0,0,0,0.3);display:inline-flex;align-items:center;gap:3px;"><i class='bx bx-target-lock'></i> <b>{{ $job->quota ?? 1 }} Kuota</b></span>
                     <span>•</span>
-                    <span style="color:#000000;">🎓 Min. {{ strtoupper($job->min_education) }}</span>
+                    <span style="color:#000000;display:inline-flex;align-items:center;gap:3px;"><i class='bx bx-book'></i> Min. {{ strtoupper($job->min_education) }}</span>
                 </div>
 
                 {{-- Row 3: Tag WA/Email + Tombol Lamar --}}
@@ -518,14 +518,14 @@
             const j=CARDS.find(c=>String(c.id)===String(jobId)); if(!j) return;
             const html='<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">'
                 +'<div style="width:56px;height:56px;background:'+(j.categoryBg||'#eef2fb')+';color:'+(j.categoryColor||'#5680d8')+';border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1.5px solid '+(j.categoryColor||'#5680d8')+'33;flex-shrink:0;"><i class=\"'+(j.categoryIcon||'bx bx-briefcase')+'\"></i></div>'
-                +'<div><div style="font-size:16px;font-weight:800;color:#1e293b;line-height:1.3;">'+j.position+'</div><div style="display:flex;align-items:center;gap:6px;margin-top:4px;"><span style="font-size:12px;color:#5680d8;font-weight:700;">'+j.company+' <span style=\"color:#47bfae;\">✓</span></span><span style=\"font-size:9.5px;font-weight:800;background:'+(j.categoryBg||'#eef2fb')+';color:'+(j.categoryColor||'#5680d8')+';padding:1px 6px;border-radius:5px;\">'+(j.categoryName||'Lowongan')+'</span></div></div>'
+                +'<div><div style="font-size:16px;font-weight:800;color:#000000;line-height:1.3;">'+j.position+'</div><div style="display:flex;align-items:center;gap:6px;margin-top:4px;"><span style="font-size:12px;color:#000000;font-weight:700;">'+j.company+' <i class=\"bx bxs-badge-check\" style=\"color:#000000;font-size:12px;\"></i></span><span style=\"font-size:9.5px;font-weight:800;background:#ffffff;color:#000000;border:1px solid rgba(0,0,0,0.3);padding:1px 6px;border-radius:5px;\">'+(j.categoryName||'Lowongan')+'</span></div></div>'
                 +'</div>'
                 +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#f8faff;border-radius:14px;padding:14px;margin-bottom:16px;border:1px solid #e8edf5;">'
-                +'<div style="font-size:12px;color:#475569;font-weight:600;">📍 '+j.distance+' km dari Anda</div>'
-                +'<div style="font-size:12px;color:#475569;font-weight:600;">💰 '+j.salary+'</div>'
-                +'<div style="font-size:12px;color:#475569;font-weight:600;">🕐 '+j.workType+'</div>'
-                +'<div style="font-size:12px;color:#475569;font-weight:600;">🎓 Min. '+j.education+'</div>'
-                +'<div style="font-size:12px;color:#000000;font-weight:800;grid-column:span 2;background:#ffffff;padding:8px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.25);">🎯 Kuota: '+(j.quota||1)+' Lowongan Dibutuhkan</div>'
+                +'<div style="font-size:12px;color:#000000;font-weight:600;"><i class=\"bx bx-map-pin\" style=\"color:#5680d8;margin-right:4px;\"></i>'+j.distance+' km dari Anda</div>'
+                +'<div style="font-size:12px;color:#000000;font-weight:600;"><i class=\"bx bx-wallet\" style=\"color:#5680d8;margin-right:4px;\"></i>'+j.salary+'</div>'
+                +'<div style="font-size:12px;color:#000000;font-weight:600;"><i class=\"bx bx-time\" style=\"color:#5680d8;margin-right:4px;\"></i>'+j.workType+'</div>'
+                +'<div style="font-size:12px;color:#000000;font-weight:600;"><i class=\"bx bx-book\" style=\"color:#5680d8;margin-right:4px;\"></i>Min. '+j.education+'</div>'
+                +'<div style="font-size:12px;color:#000000;font-weight:800;grid-column:span 2;background:#ffffff;padding:8px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.25);"><i class=\"bx bx-target-lock\" style=\"margin-right:4px;\"></i>Kuota: '+(j.quota||1)+' Lowongan Dibutuhkan</div>'
                 +'</div>'
                 +'<div style="display:flex;gap:10px;">'
                 +(!IS_AUTH

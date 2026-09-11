@@ -40,7 +40,7 @@
         {{-- Close Button --}}
         <button type="button" 
                 @click="open = false" 
-                class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors text-lg font-bold">
+                class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-black hover:text-black flex items-center justify-center transition-colors text-lg font-bold">
             <i class='bx bx-x text-xl leading-none'></i>
         </button>
 
@@ -51,10 +51,10 @@
         </div>
 
         {{-- Titles --}}
-        <h3 class="text-xl sm:text-2xl font-black text-slate-900 leading-tight mb-2" x-text="title">
+        <h3 class="text-xl sm:text-2xl font-black text-black leading-tight mb-2" x-text="title">
             Masuk untuk Melamar Lowongan
         </h3>
-        <p class="text-slate-500 text-xs sm:text-sm mb-6 leading-relaxed" x-text="subtitle">
+        <p class="text-black text-xs sm:text-sm mb-6 leading-relaxed" x-text="subtitle">
             Masuk atau buat akun pencari kerja untuk langsung terhubung dengan perusahaan.
         </p>
 
@@ -62,23 +62,23 @@
         <div class="space-y-3">
             {{-- Tombol Masuk --}}
             <a :href="'{{ route('login') }}?redirect=' + encodeURIComponent(returnUrl)" 
-               class="w-full py-3.5 px-4 bg-blue-600 hover:bg-blue-700 active:scale-98 text-white font-extrabold rounded-2xl text-sm shadow-md shadow-blue-600/25 transition-all flex items-center justify-center gap-2 text-decoration-none">
+               style="background: #5680d8;" class="w-full py-3.5 px-4 font-extrabold rounded-2xl text-sm text-white shadow-md transition-all flex items-center justify-center gap-2 text-decoration-none">
                 <i class='bx bx-log-in text-lg'></i>
                 Masuk ke Akun Anda
             </a>
 
             {{-- Tombol Daftar Pelamar --}}
             <a :href="'{{ route('register.applicant') }}?redirect=' + encodeURIComponent(returnUrl)" 
-               class="w-full py-3.5 px-4 bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 text-slate-800 font-extrabold rounded-2xl text-sm transition-all flex items-center justify-center gap-2 text-decoration-none">
-                <i class='bx bx-user-plus text-lg text-blue-600'></i>
+               class="w-full py-3.5 px-4 bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 text-black font-extrabold rounded-2xl text-sm transition-all flex items-center justify-center gap-2 text-decoration-none">
+                <i class='bx bx-user-plus text-lg text-black'></i>
                 Daftar sebagai Pencari Kerja
             </a>
         </div>
 
         {{-- Footer Link --}}
         <div class="mt-6 pt-4 border-t border-slate-100 flex flex-col items-center gap-2 text-xs">
-            <span class="text-slate-400">Pemberi kerja atau perusahaan?</span>
-            <a href="{{ route('register.company') }}" class="font-extrabold text-blue-600 hover:underline">
+            <span class="text-black">Pemberi kerja atau perusahaan?</span>
+            <a href="{{ route('register.company') }}" class="font-extrabold text-black font-black hover:underline">
                 Daftar Akun Perusahaan & Pasang Lowongan →
             </a>
         </div>

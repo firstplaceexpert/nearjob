@@ -37,7 +37,7 @@
         .phone-notch-inner { width: 120px; height: 24px; background: #e8edf5; border-radius: 0 0 14px 14px; }
         .phone-statusbar {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 18px 4px; font-size: 9.5px; font-weight: 700; color: #475569;
+            padding: 8px 18px 4px; font-size: 9.5px; font-weight: 700; color: #000000;
             position: relative; z-index: 20;
         }
         .filter-chip {
@@ -71,7 +71,7 @@
         }
         .nav-mini-item i { font-size: 19px; line-height: 1; }
         .nav-mini-item.active { color: var(--primary); }
-        .nav-mini-item:not(.active) { color: #94a3b8; }
+        .nav-mini-item:not(.active) { color: #000000; }
 
         /* Section Layout Spacing */
         .sec { padding: 112px 24px; }
@@ -81,19 +81,19 @@
         .sec-label {
             display: inline-block; font-size: 12px; font-weight: 900;
             text-transform: uppercase; letter-spacing: .14em;
-            color: var(--primary); margin-bottom: 14px;
+            color: #000000; margin-bottom: 14px;
         }
         .sec-title {
             font-size: clamp(28px, 4vw, 42px); font-weight: 900;
-            color: #1e293b; line-height: 1.25; margin-bottom: 16px;
+            color: #000000; line-height: 1.25; margin-bottom: 16px;
         }
         .sec-desc {
-            font-size: 15px; font-weight: 500; color: #64748b;
+            font-size: 15px; font-weight: 500; color: #000000;
             max-width: 500px; margin: 0 auto; line-height: 1.8;
         }
     </style>
 </head>
-<body class="bg-white text-slate-800 antialiased">
+<body class="bg-white text-black antialiased">
 
 {{-- ===== HEADER ===== --}}
 <header style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#ffffff;border-bottom:2px solid #e8edf5;box-shadow:0 2px 14px rgba(36,66,123,.08);">
@@ -102,10 +102,10 @@
             <div class="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm" style="background:var(--primary);">
                 <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
             </div>
-            <span class="font-black text-xl tracking-tight" style="color:var(--primary-dark);">NEAR JOB</span>
+            <span class="font-black text-xl tracking-tight" style="color:#000000;">NEAR JOB</span>
         </div>
         <div class="flex items-center gap-3">
-            <a href="{{ route('login') }}" class="text-sm font-extrabold px-5 py-2.5 rounded-xl transition-colors hover:bg-slate-100" style="color:var(--primary-dark);text-decoration:none;">Masuk</a>
+            <a href="{{ route('login') }}" class="text-sm font-extrabold px-5 py-2.5 rounded-xl transition-colors hover:bg-slate-100" style="color:#000000;text-decoration:none;">Masuk</a>
             <a href="{{ route('register.applicant') }}" class="text-sm font-extrabold text-white px-6 py-2.5 rounded-xl shadow-md transition-all hover:opacity-95" style="background:var(--primary);text-decoration:none;">Daftar Gratis</a>
         </div>
     </div>
@@ -125,16 +125,16 @@
 
         <h1 style="font-size:clamp(36px,6vw,62px);font-weight:900;line-height:1.15;letter-spacing:-.02em;margin:0;">
             Pekerjaan yang Tepat<br>
-            <span style="color:#a8c7ff;">Mungkin Lebih Dekat</span><br>
+            <span style="color:#ffffff;">Mungkin Lebih Dekat</span><br>
             Dari yang Anda Kira.
         </h1>
 
-        <p style="color:#bfdbfe;font-size:16px;max-width:560px;line-height:1.8;font-weight:600;margin:0;">
+        <p style="color:#ffffff;font-size:16px;max-width:560px;line-height:1.8;font-weight:600;margin:0;">
             Near Job membantu Anda menemukan berbagai peluang lowongan pekerjaan lokal terdekat berdasarkan lokasi presisi dan keahlian Anda. Hubungi pemberi kerja langsung via WhatsApp.
         </p>
 
         <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:4px;">
-            <a href="{{ route('register.applicant') }}" style="display:inline-flex;align-items:center;gap:10px;background:#fff;color:var(--primary-dark);font-weight:900;font-size:16px;padding:16px 36px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.25);text-decoration:none;white-space:nowrap;">
+            <a href="{{ route('register.applicant') }}" style="display:inline-flex;align-items:center;gap:10px;background:#fff;color:#000000;font-weight:900;font-size:16px;padding:16px 36px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.25);text-decoration:none;white-space:nowrap;">
                 <i class='bx bx-search' style="font-size:20px;"></i> Cari Pekerjaan Sekarang
             </a>
             <a href="{{ route('register.company') }}" style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.12);color:#fff;font-weight:800;font-size:16px;padding:16px 36px;border-radius:18px;border:2px solid rgba(255,255,255,.35);text-decoration:none;white-space:nowrap;">
@@ -151,7 +151,7 @@
 
                 {{-- PHONE 1: Filter Panel --}}
                 <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
-                    <div style="padding:9px 20px;background:#fff;border-radius:99px;font-size:12px;font-weight:800;color:var(--primary-dark);box-shadow:0 4px 16px rgba(0,0,0,.12);display:flex;align-items:center;gap:6px;">
+                    <div style="padding:9px 20px;background:#fff;border-radius:99px;font-size:12px;font-weight:800;color:#000000;box-shadow:0 4px 16px rgba(0,0,0,.12);display:flex;align-items:center;gap:6px;">
                         <i class='bx bx-filter-alt' style="color:var(--primary);"></i> 1. Filter Peta &amp; Jarak
                     </div>
                     <div class="phone-frame">
@@ -198,7 +198,7 @@
 
                 {{-- PHONE 2: Job List --}}
                 <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
-                    <div style="padding:9px 20px;background:#fff;border-radius:99px;font-size:12px;font-weight:800;color:var(--primary-dark);box-shadow:0 4px 16px rgba(0,0,0,.12);display:flex;align-items:center;gap:6px;">
+                    <div style="padding:9px 20px;background:#fff;border-radius:99px;font-size:12px;font-weight:800;color:#000000;box-shadow:0 4px 16px rgba(0,0,0,.12);display:flex;align-items:center;gap:6px;">
                         <i class='bx bx-list-ul' style="color:var(--primary);"></i> 2. Kartu Lowongan Karusel
                     </div>
                     <div class="phone-frame" style="background:#f8faff;">
@@ -212,9 +212,9 @@
                                 <i class='bx bx-current-location' style="color:#94a3b8;font-size:15px;"></i>
                             </div>
                             <div style="display:flex;gap:8px;overflow-x:auto;" class="hide-scrollbar">
-                                <div class="filter-chip" style="background:var(--teal);color:#fff;"><i class='bx bx-filter-alt'></i> Filter</div>
-                                <div class="filter-chip" style="background:var(--teal);color:#fff;">Terdekat</div>
-                                <div class="filter-chip" style="background:#fff;color:#475569;border:1px solid #e2e8f0;">Part-time</div>
+                                <div class="filter-chip" style="background:#ffffff;color:#000000;border:1px solid #000000;"><i class='bx bx-filter-alt'></i> Filter</div>
+                                <div class="filter-chip" style="background:#ffffff;color:#000000;border:1px solid #000000;">Terdekat</div>
+                                <div class="filter-chip" style="background:#ffffff;color:#000000;border:1px solid #000000;">Part-time</div>
                             </div>
                         </div>
 
@@ -230,7 +230,7 @@
                                     <span style="font-size:10px;font-weight:800;color:#1e293b;flex-shrink:0;">{{ $sal }}</span>
                                 </div>
                                 <div style="display:flex;justify-content:space-between;align-items:center;">
-                                    <span style="font-size:9px;font-weight:800;padding:3px 8px;border-radius:6px;background:#eef2fb;color:var(--primary);">{{ $cat }}</span>
+                                    <span style="font-size:9px;font-weight:800;padding:3px 8px;border-radius:6px;background:#ffffff;color:#000000;border:1px solid #000000;">{{ $cat }}</span>
                                     <button class="apply-btn-mini">Lamar</button>
                                 </div>
                             </div>
@@ -247,7 +247,7 @@
 
                 {{-- PHONE 3: Map View --}}
                 <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
-                    <div style="padding:9px 20px;background:#fff;border-radius:99px;font-size:12px;font-weight:800;color:var(--primary-dark);box-shadow:0 4px 16px rgba(0,0,0,.12);display:flex;align-items:center;gap:6px;">
+                    <div style="padding:9px 20px;background:#fff;border-radius:99px;font-size:12px;font-weight:800;color:#000000;box-shadow:0 4px 16px rgba(0,0,0,.12);display:flex;align-items:center;gap:6px;">
                         <i class='bx bx-map-alt' style="color:var(--primary);"></i> 3. Pin Lokasi Peta Presisi
                     </div>
                     <div class="phone-frame" style="background:#d4e1f0;">
@@ -278,7 +278,7 @@
 
                 {{-- PHONE 4: Detail Card --}}
                 <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
-                    <div style="padding:9px 20px;background:#fff;border-radius:99px;font-size:12px;font-weight:800;color:var(--primary-dark);box-shadow:0 4px 16px rgba(0,0,0,.12);display:flex;align-items:center;gap:6px;">
+                    <div style="padding:9px 20px;background:#fff;border-radius:99px;font-size:12px;font-weight:800;color:#000000;box-shadow:0 4px 16px rgba(0,0,0,.12);display:flex;align-items:center;gap:6px;">
                         <i class='bx bx-detail' style="color:var(--primary);"></i> 4. Detail &amp; Kontak Langsung
                     </div>
                     <div class="phone-frame" style="background:#d4e1f0;">
@@ -296,7 +296,7 @@
                                     </div>
                                 </div>
                                 <div style="display:flex;justify-content:space-between;align-items:center;">
-                                    <span style="font-size:9px;font-weight:800;padding:3px 8px;border-radius:6px;background:#eef2fb;color:var(--primary);">F&B</span>
+                                    <span style="font-size:9px;font-weight:800;padding:3px 8px;border-radius:6px;background:#ffffff;color:#000000;border:1px solid #000000;">F&B</span>
                                     <button style="padding:6px 14px;background:var(--primary);color:#fff;border-radius:8px;font-size:9.5px;font-weight:800;border:none;">Lamar via WA</button>
                                 </div>
                             </div>
@@ -401,7 +401,7 @@
                         </div>
                         <div style="min-width:0;">
                             <h4 style="font-weight:900;color:#1e293b;font-size:16px;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ $pos }}</h4>
-                            <p style="font-size:13px;color:#64748b;font-weight:700;margin:0;">{{ $emp }} <span style="color:var(--teal);">✓</span></p>
+                            <p style="font-size:13px;color:#64748b;font-weight:700;margin:0;">{{ $emp }} <i class='bx bxs-badge-check' style="color:#000000;font-size:14px;vertical-align:middle;"></i></p>
                         </div>
                     </div>
 
@@ -413,7 +413,7 @@
                 </div>
 
                 <div style="padding-top:4px;">
-                    <span style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;padding:10px 18px;border-radius:12px;{{ $contact==='whatsapp'?'background:#dcfce7;color:#15803d;':'background:#dbeafe;color:#1d4ed8;' }}">
+                    <span style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;padding:10px 18px;border-radius:12px;background:#ffffff;color:#000000;border:1px solid #000000;">
                         {!! $contact==='whatsapp' ? "<i class='bx bxl-whatsapp' style='font-size:16px;'></i> Lamar via WhatsApp" : "<i class='bx bx-envelope' style='font-size:16px;'></i> Lamar via Email" !!}
                     </span>
                 </div>
@@ -446,7 +446,7 @@
                         <div style="width:66px;height:66px;border-radius:50%;margin:0 auto 10px;border:3px solid rgba(255,255,255,.8);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;background:rgba(255,255,255,.2);color:white;box-shadow:0 4px 14px rgba(0,0,0,.15);">B</div>
                         <p style="font-weight:900;font-size:15px;color:white;margin:0 0 3px;">Budi Santoso</p>
                         <p style="font-size:10.5px;color:rgba(255,255,255,.85);font-weight:600;margin:0 0 12px;">Kota Yogyakarta</p>
-                        <div style="display:inline-flex;align-items:center;gap:5px;background:var(--teal);color:white;padding:5px 16px;border-radius:99px;font-size:9.5px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.12);">✓ Aktif Cari Kerja</div>
+                        <div style="display:inline-flex;align-items:center;gap:5px;background:#ffffff;color:#000000;border:1px solid #000000;padding:5px 16px;border-radius:99px;font-size:9.5px;font-weight:800;"><i class='bx bx-check' style="color:#000000;font-size:12px;"></i> Aktif Cari Kerja</div>
                     </div>
 
                     <div style="padding:16px 20px;">
@@ -472,7 +472,7 @@
             {{-- Right Content --}}
             <div style="max-width:480px;display:flex;flex-direction:column;gap:28px;">
                 <div>
-                    <span class="sec-label" style="color:var(--teal);">Kemudahan Pelamar</span>
+                    <span class="sec-label" style="color:#000000;">Kemudahan Pelamar</span>
                     <h2 class="sec-title" style="margin-bottom:0;">Profil Anda<br>Adalah CV Anda</h2>
                 </div>
 
@@ -515,11 +515,11 @@
 
         <h2 style="font-size:clamp(28px,4vw,42px);font-weight:900;color:#fff;line-height:1.25;margin:0;">Butuh Tenaga Kerja<br>untuk Usaha Anda?</h2>
 
-        <p style="font-size:15px;color:#bfdbfe;line-height:1.8;font-weight:500;max-width:480px;margin:0;">
+        <p style="font-size:15px;color:#ffffff;line-height:1.8;font-weight:500;max-width:480px;margin:0;">
             Pasang lowongan pekerjaan Anda sekarang dan dapatkan calon karyawan lokal yang tinggal tepat di sekitar tempat usaha Anda.
         </p>
 
-        <a href="{{ route('register.company') }}" style="display:inline-flex;align-items:center;gap:10px;background:#fff;color:var(--primary-dark);font-weight:900;font-size:16px;padding:18px 44px;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.3);text-decoration:none;">
+        <a href="{{ route('register.company') }}" style="display:inline-flex;align-items:center;gap:10px;background:#fff;color:#000000;font-weight:900;font-size:16px;padding:18px 44px;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.3);text-decoration:none;">
             <i class='bx bx-rocket' style="font-size:22px;"></i> Pasang Lowongan — Gratis
         </a>
     </div>
