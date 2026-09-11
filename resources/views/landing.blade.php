@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEAR JOB — Temukan Pekerjaan di Sekitar Anda</title>
@@ -17,6 +17,7 @@
             --section-pad: 112px;
         }
         * { font-family: 'Plus Jakarta Sans', sans-serif; box-sizing: border-box; }
+        .bx, .bxs, .bxl, [class^="bx-"], [class*=" bx-"] { font-family: 'boxicons' !important; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .hero-gradient { background: linear-gradient(160deg, var(--primary-dark) 0%, var(--primary) 60%, #6b93e8 100%); }

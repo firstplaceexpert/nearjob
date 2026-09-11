@@ -66,7 +66,7 @@
     }
     </script>
 
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -131,7 +131,8 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* ── Leaflet ── */
-        .leaflet-container { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+        .leaflet-container { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .bx, .bxs, .bxl, [class^="bx-"], [class*=" bx-"], .leaflet-container .bx { font-family: 'boxicons' !important; }
         .leaflet-control-attribution { font-size: 9px !important; }
 
         /* ── Transitions ── */

@@ -7,11 +7,14 @@
     <meta name="description" content="Masuk atau daftar di NEAR JOB untuk menemukan lowongan kerja terdekat di sekitar tempat tinggal Anda.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ url()->current() }}">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <style>* { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .bx, .bxs, .bxl, [class^="bx-"], [class*=" bx-"] { font-family: 'boxicons' !important; }
+    </style>
     @livewireStyles
 </head>
 <body class="min-h-screen bg-slate-50 flex flex-col">
