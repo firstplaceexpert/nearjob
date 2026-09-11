@@ -4,6 +4,7 @@ namespace App\Livewire\Applicant;
 
 use App\Models\ApplicantProfile;
 use App\Models\City;
+use App\Services\KtpWatermarkService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -18,6 +19,7 @@ class ProfileForm extends Component
 
     // Form fields
     public string $name = '';
+    public string $masked_nik = '';
     public string $whatsapp = '';
     public string $email = '';
     public string $city = '';
@@ -32,6 +34,7 @@ class ProfileForm extends Component
     // File upload properties (dari Galeri / HP / Komputer)
     public $avatarFile = null;
     public $coverFile = null;
+    public $ktp_file = null;
 
     public array $skills = [];
     public string $newSkill = '';
@@ -42,6 +45,7 @@ class ProfileForm extends Component
         $this->profile = $user->applicantProfile ?? new ApplicantProfile();
 
         $this->name = $user->name;
+        $this->masked_nik = $user->masked_nik ?? '-';
         $this->email = $user->email;
         $this->whatsapp = $this->profile->whatsapp ?? $user->whatsapp ?? '';
         $this->city = $this->profile->city ?? '';
@@ -53,6 +57,35 @@ class ProfileForm extends Component
         $this->skills = $this->profile->skills ?? [];
         $this->profile_picture = $this->profile->photo_url ?? '';
         $this->cover_picture = $this->profile->cover_picture_url ?? '';
+    }
+
+    public function updatedKtpFile(): void
+    {
+        $this->validate([
+            'ktp_file' => 'image|max:6144',
+        ], [
+            'ktp_file.image' => 'File KTP harus berupa gambar (JPG, PNG, WEBP).',
+            'ktp_file.max'   => 'Ukuran foto KTP maksimal 6MB.',
+        ]);
+
+        $path = KtpWatermarkService::processAndSave($this->ktp_file, $this->name);
+
+        $this->profile->update([
+            'ktp_path'    => $path,
+            'is_verified' => true,
+        ]);
+
+        Auth::user()->update([
+            'is_verified' => true,
+        ]);
+
+        $this->ktp_file = null;
+        $this->profile->refresh();
+
+        $this->dispatch('notify', [
+            'message' => 'KTP berhasil diverifikasi dan disimpan dengan watermark resmi NEAR JOB!',
+            'type'    => 'success',
+        ]);
     }
 
     public function updatedAvatarFile(): void

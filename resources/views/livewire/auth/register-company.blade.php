@@ -299,6 +299,66 @@
                                     </div>
                                 </div>
 
+                                <!-- NIK Pemilik Usaha -->
+                                <div>
+                                    <label class="block text-sm font-semibold seek-navy mb-1">
+                                        NIK Pemilik Usaha <span class="text-red-500">*</span>
+                                    </label>
+                                    <p class="text-xs text-slate-500 mb-2" style="margin: 0 0 8px 0;">
+                                        16 digit NIK resmi pemilik usaha untuk verifikasi identitas (sama seperti pendaftaran pelamar). NIK Anda tersimpan aman dan tidak akan ditampilkan utuh secara publik.
+                                    </p>
+                                    <input type="text" wire:model.live="nik" maxlength="16" inputmode="numeric" pattern="[0-9]*"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                        class="w-full h-11 px-3.5 seek-field font-mono {{ $errors->has('nik') ? 'seek-field-error' : '' }}"
+                                        placeholder="16 digit NIK pemilik usaha">
+                                    @error('nik')
+                                        <div style="color: #dc2626; font-size: 12px; font-weight: 600; margin-top: 6px; display: flex; align-items: center; gap: 4px;">
+                                            <span style="font-size: 10px;">◇</span> {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+
+                                <!-- Upload Foto KTP untuk Verifikasi Akun Perusahaan -->
+                                <div style="background-color: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 12px; padding: 16px;">
+                                    <div class="flex items-start justify-between gap-3 mb-2">
+                                        <div>
+                                            <label class="block text-sm font-bold seek-navy mb-0.5">
+                                                <i class='bx bx-id-card text-base text-blue-600 align-middle'></i> Foto KTP Pemilik Usaha (Verifikasi Akun)
+                                            </label>
+                                            <p class="text-xs text-slate-500">
+                                                Unggah foto KTP pemilik usaha. Sistem kami akan <strong>otomatis menambahkan watermark permanen "NEAR JOB"</strong> pada gambar sebelum disimpan di database demi keamanan dan perlindungan data Anda.
+                                            </p>
+                                        </div>
+                                        <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 shrink-0">
+                                            Watermark Otomatis
+                                        </span>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#001b3a] file:text-white hover:file:bg-blue-900 cursor-pointer">
+                                    </div>
+
+                                    <div wire:loading wire:target="ktp_file" class="mt-2 text-xs text-blue-600 font-medium">
+                                        <i class='bx bx-loader-alt bx-spin'></i> Mengunggah & memproses KTP...
+                                    </div>
+
+                                    @if($ktp_file)
+                                        <div class="mt-3 p-2 bg-white rounded-lg border border-slate-200 flex items-center gap-3">
+                                            <img src="{{ $ktp_file->temporaryUrl() }}" class="w-16 h-12 object-cover rounded border border-slate-200 shadow-sm" alt="Preview KTP">
+                                            <div class="text-xs">
+                                                <p class="font-bold text-slate-800">Preview KTP terpilih</p>
+                                                <p class="text-[11px] text-emerald-600 font-semibold">✓ Siap di-watermark "NEAR JOB" saat disimpan</p>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    @error('ktp_file')
+                                        <div style="color: #dc2626; font-size: 12px; font-weight: 600; margin-top: 6px; display: flex; align-items: center; gap: 4px;">
+                                            <span style="font-size: 10px;">◇</span> {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+
                                 <!-- Kata Sandi Akun -->
                                 <div>
                                     <label class="block text-sm font-semibold seek-navy mb-1.5">Kata sandi</label>

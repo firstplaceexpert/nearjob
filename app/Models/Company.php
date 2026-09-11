@@ -9,6 +9,7 @@ class Company extends Model
     protected $fillable = [
         'user_id', 'owner_name', 'nik', 'whatsapp',
         'company_name', 'business_field', 'nib',
+        'ktp_path', 'is_verified',
         'address', 'city', 'latitude', 'longitude',
         'contact_email', 'contact_method', 'agreed_to_terms',
     ];
@@ -17,7 +18,23 @@ class Company extends Model
 
     protected $casts = [
         'agreed_to_terms' => 'boolean',
+        'is_verified'     => 'boolean',
     ];
+
+    public function getMaskedNikAttribute(): string
+    {
+        $nik = (string)($this->nik ?? ($this->user->nik ?? ''));
+        if (strlen($nik) < 8) {
+            return $nik ? '************' : '-';
+        }
+        return substr($nik, 0, 4) . '********' . substr($nik, -4);
+    }
+
+    public function getKtpUrlAttribute(): ?string
+    {
+        if (!$this->ktp_path) return null;
+        return asset('storage/' . $this->ktp_path);
+    }
 
     public function user()
     {
@@ -31,6 +48,6 @@ class Company extends Model
 
     public function isVerified(): bool
     {
-        return !empty($this->owner_name) && !empty($this->company_name) && $this->agreed_to_terms;
+        return (bool)$this->is_verified || (!empty($this->ktp_path) && !empty($this->owner_name));
     }
 }

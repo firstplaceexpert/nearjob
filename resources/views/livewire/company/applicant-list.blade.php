@@ -38,9 +38,17 @@
                                     </div>
                                 @endif
                                 <div>
-                                    <h3 class="font-extrabold text-lg text-slate-800">{{ $app->user->name }}</h3>
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <h3 class="font-extrabold text-lg text-slate-800">{{ $app->user->name }}</h3>
+                                        @if($app->user->isIdentityVerified() || $profile?->is_verified)
+                                            <span class="inline-flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200" title="Identitas KTP Pelamar Terverifikasi">
+                                                <i class='bx bxs-badge-check'></i> KTP Terverifikasi
+                                            </span>
+                                        @endif
+                                    </div>
                                     <p class="text-xs text-slate-400 mt-0.5">
                                         Usia: {{ $app->user->age }} thn &bull; Lulusan {{ strtoupper($profile?->education_level ?? '-') }}
+                                        &bull; <span class="font-mono text-slate-500">NIK: {{ $app->user->masked_nik }}</span>
                                     </p>
                                 </div>
                             </div>

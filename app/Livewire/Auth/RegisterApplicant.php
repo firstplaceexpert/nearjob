@@ -4,14 +4,18 @@ namespace App\Livewire\Auth;
 
 use App\Models\ApplicantProfile;
 use App\Models\User;
+use App\Services\KtpWatermarkService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('components.layouts.guest')]
 class RegisterApplicant extends Component
 {
+    use WithFileUploads;
+
     public int $step = 1;
     public ?string $redirectUrl = null;
 
@@ -23,6 +27,7 @@ class RegisterApplicant extends Component
     // Step 1 — Identitas
     public string $name = '';
     public string $nik = '';
+    public $ktp_file = null;
     public string $whatsapp = '';
     public string $date_of_birth = '';
     public string $email = '';
@@ -71,6 +76,7 @@ class RegisterApplicant extends Component
         $this->validate([
             'name'          => 'required|string|max:255',
             'nik'           => 'required|digits:16',
+            'ktp_file'      => 'nullable|image|max:6144',
             'whatsapp'      => 'required|regex:/^[0-9]+$/|min:10|max:15',
             'date_of_birth' => 'required|date',
             'email'         => 'required|email|unique:users,email',
@@ -79,6 +85,8 @@ class RegisterApplicant extends Component
             'name.required'          => 'Nama lengkap wajib diisi.',
             'nik.required'           => 'NIK wajib diisi.',
             'nik.digits'             => 'NIK harus 16 digit.',
+            'ktp_file.image'         => 'File KTP harus berupa gambar (JPG, PNG, WEBP).',
+            'ktp_file.max'           => 'Ukuran foto KTP maksimal 6MB.',
             'email.unique'           => 'Email ini sudah digunakan.',
             'password.min'           => 'Kata sandi minimal 6 karakter.',
         ]);
@@ -133,6 +141,13 @@ class RegisterApplicant extends Component
             'education_institution.required' => 'Nama sekolah/universitas wajib diisi.',
         ]);
 
+        $ktpPath = null;
+        $isVerified = false;
+        if ($this->ktp_file) {
+            $ktpPath = KtpWatermarkService::processAndSave($this->ktp_file, $this->name);
+            $isVerified = true;
+        }
+
         $user = User::create([
             'name'          => $this->name,
             'email'         => $this->email,
@@ -141,11 +156,14 @@ class RegisterApplicant extends Component
             'nik'           => $this->nik,
             'whatsapp'      => $this->whatsapp,
             'date_of_birth' => $this->date_of_birth,
+            'is_verified'   => $isVerified,
         ]);
 
         ApplicantProfile::create([
             'user_id'               => $user->id,
             'whatsapp'              => $this->whatsapp,
+            'ktp_path'              => $ktpPath,
+            'is_verified'           => $isVerified,
             'education_level'       => $this->education_level,
             'education_institution' => $this->education_institution,
             'field_of_study'        => $this->field_of_study,

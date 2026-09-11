@@ -4,16 +4,21 @@ namespace App\Livewire\Company;
 
 use App\Models\City;
 use App\Models\JobListing;
+use App\Services\KtpWatermarkService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('components.layouts.app')]
 class CompanyProfile extends Component
 {
+    use WithFileUploads;
+
     public $company;
 
     public string $owner_name = '';
+    public string $masked_nik = '';
     public string $whatsapp = '';
     public string $company_name = '';
     public string $business_field = '';
@@ -21,12 +26,14 @@ class CompanyProfile extends Component
     public string $address = '';
     public string $city = '';
     public string $contact_method = '';
+    public $ktp_file = null;
 
     public function mount()
     {
         $this->company = Auth::user()->company;
         
         $this->owner_name = $this->company->owner_name ?? '';
+        $this->masked_nik = $this->company->masked_nik ?? '-';
         $this->whatsapp = $this->company->whatsapp ?? '';
         $this->company_name = $this->company->company_name ?? '';
         $this->business_field = $this->company->business_field ?? '';
@@ -34,6 +41,35 @@ class CompanyProfile extends Component
         $this->address = $this->company->address ?? '';
         $this->city = $this->company->city ?? '';
         $this->contact_method = $this->company->contact_method ?? 'whatsapp';
+    }
+
+    public function updatedKtpFile(): void
+    {
+        $this->validate([
+            'ktp_file' => 'image|max:6144',
+        ], [
+            'ktp_file.image' => 'File KTP harus berupa gambar (JPG, PNG, WEBP).',
+            'ktp_file.max'   => 'Ukuran foto KTP maksimal 6MB.',
+        ]);
+
+        $path = KtpWatermarkService::processAndSave($this->ktp_file, $this->owner_name);
+
+        $this->company->update([
+            'ktp_path'    => $path,
+            'is_verified' => true,
+        ]);
+
+        $this->company->user->update([
+            'is_verified' => true,
+        ]);
+
+        $this->ktp_file = null;
+        $this->company->refresh();
+
+        $this->dispatch('notify', [
+            'message' => 'KTP berhasil diverifikasi dan disimpan dengan watermark resmi NEAR JOB!',
+            'type'    => 'success',
+        ]);
     }
 
     public function updatedWhatsapp($value): void

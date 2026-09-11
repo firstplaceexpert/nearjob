@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ApplicantProfile extends Model
 {
     protected $fillable = [
-        'user_id', 'photo', 'cover_picture', 'whatsapp',
+        'user_id', 'photo', 'cover_picture', 'ktp_path', 'is_verified', 'whatsapp',
         'education_level', 'education_institution', 'field_of_study',
         'work_experience', 'skills', 'salary_expectation',
         'contact_email', 'city', 'latitude', 'longitude',
@@ -15,11 +15,27 @@ class ApplicantProfile extends Model
     ];
 
     protected $casts = [
-        'skills'   => 'array',
-        'cv_data'  => 'array',
-        'is_active' => 'boolean',
+        'skills'       => 'array',
+        'cv_data'      => 'array',
+        'is_active'    => 'boolean',
         'cv_generated' => 'boolean',
+        'is_verified'  => 'boolean',
     ];
+
+    public function getMaskedNikAttribute(): string
+    {
+        $nik = (string)($this->user->nik ?? '');
+        if (strlen($nik) < 8) {
+            return $nik ? '************' : '-';
+        }
+        return substr($nik, 0, 4) . '********' . substr($nik, -4);
+    }
+
+    public function getKtpUrlAttribute(): ?string
+    {
+        if (!$this->ktp_path) return null;
+        return asset('storage/' . $this->ktp_path);
+    }
 
     public function getPhotoUrlAttribute(): string
     {

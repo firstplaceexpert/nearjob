@@ -12,7 +12,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name', 'email', 'password', 'role',
-        'nik', 'whatsapp', 'date_of_birth',
+        'nik', 'whatsapp', 'date_of_birth', 'is_verified',
     ];
 
     protected $hidden = ['password', 'remember_token', 'nik'];
@@ -21,7 +21,22 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'date_of_birth'     => 'date',
         'password'          => 'hashed',
+        'is_verified'       => 'boolean',
     ];
+
+    public function getMaskedNikAttribute(): string
+    {
+        $nik = (string)($this->nik ?? '');
+        if (strlen($nik) < 8) {
+            return $nik ? '************' : '-';
+        }
+        return substr($nik, 0, 4) . '********' . substr($nik, -4);
+    }
+
+    public function isIdentityVerified(): bool
+    {
+        return (bool)$this->is_verified || ($this->company?->is_verified ?? false) || ($this->applicantProfile?->is_verified ?? false);
+    }
 
     public function isApplicant(): bool { return $this->role === 'applicant'; }
     public function isCompany(): bool   { return $this->role === 'company'; }

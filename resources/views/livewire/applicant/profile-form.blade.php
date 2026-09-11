@@ -186,6 +186,60 @@
                             </div>
 
                             <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="block text-xs sm:text-sm font-extrabold text-slate-700">NIK (Nomor Induk Kependudukan)</label>
+                                    <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
+                                        Terproteksi Masking
+                                    </span>
+                                </div>
+                                <input type="text" value="{{ $masked_nik }}" disabled
+                                    class="w-full text-xs sm:text-sm font-mono cursor-not-allowed"
+                                    style="padding: 14px 18px; border-radius: 14px; border: 1.5px solid #e2e8f0; background: #f1f5f9; color: #64748b;">
+                                <p class="text-[11px] text-slate-400 mt-1">NIK lengkap Anda terlindungi dan disensor agar tidak disalahgunakan.</p>
+                            </div>
+
+                            {{-- KTP Verification Card --}}
+                            <div style="background-color: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 18px; padding: 18px;">
+                                <div class="flex items-start justify-between gap-3 mb-2">
+                                    <div>
+                                        <h5 class="text-xs sm:text-sm font-black text-slate-800 flex items-center gap-1.5 mb-1">
+                                            <i class='bx bx-id-card text-lg text-blue-600'></i> Verifikasi Identitas KTP Pelamar
+                                        </h5>
+                                        <p class="text-xs text-slate-500 leading-relaxed">
+                                            Unggah foto KTP asli Anda untuk verifikasi identitas resmi. Sistem akan <strong>otomatis membubuhkan watermark "NEAR JOB"</strong> permanen sebelum disimpan di database demi keamanan Anda.
+                                        </p>
+                                    </div>
+                                    @if($profile->is_verified || $profile->ktp_path)
+                                        <span class="inline-flex items-center gap-1 text-xs font-black px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full shrink-0">
+                                            <i class='bx bxs-badge-check text-sm'></i> Terverifikasi KTP
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full shrink-0">
+                                            <i class='bx bx-time-five text-sm'></i> Belum Verifikasi
+                                        </span>
+                                    @endif
+                                </div>
+
+                                @if($profile->ktp_path)
+                                    <div class="mt-3 p-3 bg-white rounded-xl border border-slate-200">
+                                        <p class="text-[11px] font-bold text-slate-600 mb-1.5">Foto KTP Resmi (Dengan Watermark Pengaman NEAR JOB):</p>
+                                        <img src="{{ $profile->ktp_url }}" alt="KTP Terverifikasi" class="w-full max-w-[280px] h-36 object-cover rounded-lg border border-slate-200 shadow-sm">
+                                    </div>
+                                @endif
+
+                                <div class="mt-3">
+                                    <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                                        {{ $profile->ktp_path ? 'Perbarui Foto KTP:' : 'Pilih Foto KTP Anda:' }}
+                                    </label>
+                                    <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
+                                    <div wire:loading wire:target="ktp_file" class="text-xs text-blue-600 font-bold mt-2">
+                                        <i class='bx bx-loader-alt bx-spin text-sm'></i> Memproses watermark "NEAR JOB" & menyimpan KTP...
+                                    </div>
+                                    @error('ktp_file') <span class="text-xs text-red-500 mt-1 block font-bold">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
+
+                            <div>
                                 <label class="block text-xs sm:text-sm font-extrabold text-slate-700 mb-2">Nomor WhatsApp (Aktif)</label>
                                 <input type="tel" wire:model="whatsapp" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                     class="w-full text-xs sm:text-sm transition-all focus:outline-none focus:ring-2"

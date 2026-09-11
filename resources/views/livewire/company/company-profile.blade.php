@@ -13,6 +13,52 @@
                 </div>
 
                 <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-bold text-slate-700">NIK Pemilik Usaha</label>
+                        <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
+                            Terproteksi Masking
+                        </span>
+                    </div>
+                    <input type="text" value="{{ $masked_nik }}" disabled class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm bg-slate-100 text-slate-600 font-mono cursor-not-allowed">
+                    <p class="text-[11px] text-slate-400 mt-1">NIK lengkap tersimpan aman dan tidak dipublikasikan.</p>
+                </div>
+
+                <!-- Verifikasi KTP Section -->
+                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-700">Status Verifikasi KTP</span>
+                        @if($company->is_verified || $company->ktp_path)
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md">
+                                <i class='bx bxs-badge-check text-sm'></i> Terverifikasi (Watermark NEAR JOB)
+                            </span>
+                        @else
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-md">
+                                <i class='bx bx-time-five text-sm'></i> Belum Verifikasi
+                            </span>
+                        @endif
+                    </div>
+
+                    @if($company->ktp_path)
+                        <div>
+                            <p class="text-[11px] text-slate-500 mb-1">Foto KTP Resmi (Dengan Watermark Keamanan):</p>
+                            <img src="{{ $company->ktp_url }}" alt="KTP Pemilik Usaha" class="w-full max-w-[260px] h-32 object-cover rounded-lg border border-slate-200 shadow-sm">
+                        </div>
+                    @endif
+
+                    <div class="pt-1">
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">
+                            {{ $company->ktp_path ? 'Perbarui Foto KTP Pemilik Usaha:' : 'Unggah Foto KTP Pemilik Usaha:' }}
+                        </label>
+                        <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#001b3a] file:text-white hover:file:bg-blue-900 cursor-pointer">
+                        <p class="text-[10px] text-slate-400 mt-1">Foto otomatis diberi watermark pengaman "NEAR JOB" sebelum disimpan.</p>
+                        
+                        <div wire:loading wire:target="ktp_file" class="text-xs text-blue-600 font-medium mt-1">
+                            <i class='bx bx-loader-alt bx-spin'></i> Memproses watermark & menyimpan KTP...
+                        </div>
+                    </div>
+                </div>
+
+                <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp</label>
                     <input type="tel" wire:model="whatsapp" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="08xxxxxxxxxx">
                 </div>

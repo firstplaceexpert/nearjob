@@ -39,7 +39,30 @@
                 <input type="text" wire:model="nik" maxlength="16" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white font-mono" placeholder="16 digit NIK Anda">
                 @error('nik') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 @if($nikError) <p class="text-xs text-red-500 mt-1">{{ $nikError }}</p> @endif
-                <p class="text-xs text-slate-400 mt-1">NIK digunakan hanya sebagai pengidentifikasi akun unik. Tidak ditampilkan secara publik.</p>
+                <p class="text-xs text-slate-400 mt-1">NIK digunakan sebagai verifikasi identitas unik. NIK disensor di profil publik demi menjaga keamanan data.</p>
+            </div>
+
+            <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
+                <div class="flex items-start justify-between gap-2 mb-1.5">
+                    <label class="block text-xs font-bold text-slate-700">
+                        <i class='bx bx-id-card text-blue-600 align-middle'></i> Foto KTP (Verifikasi Identitas Akun)
+                    </label>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+                        Watermark Otomatis
+                    </span>
+                </div>
+                <p class="text-[11px] text-slate-500 mb-2">Unggah foto KTP Anda. Sistem otomatis memberi <strong>watermark permanen "NEAR JOB"</strong> sebelum disimpan di database demi keamanan dan privasi Anda.</p>
+                <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#24427b] file:text-white hover:file:bg-blue-900 cursor-pointer">
+                <div wire:loading wire:target="ktp_file" class="text-xs text-blue-600 font-bold mt-1.5">
+                    <i class='bx bx-loader-alt bx-spin'></i> Memproses KTP & watermark...
+                </div>
+                @if($ktp_file)
+                    <div class="mt-2 p-2 bg-white rounded-lg border border-slate-200 flex items-center gap-2">
+                        <img src="{{ $ktp_file->temporaryUrl() }}" class="w-12 h-9 object-cover rounded border" alt="Preview KTP">
+                        <p class="text-[11px] text-emerald-600 font-bold">✓ KTP siap di-watermark "NEAR JOB"</p>
+                    </div>
+                @endif
+                @error('ktp_file') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div>
