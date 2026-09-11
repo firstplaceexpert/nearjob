@@ -1,91 +1,24 @@
-<div class="min-h-screen bg-[#fcfdfd] flex flex-col font-sans text-slate-800" style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
-    <style>
-        .seek-navy { color: #001b3a; }
-        .seek-bg-navy { background-color: #001b3a; }
-        .seek-btn-pink {
-            background-color: #e60067 !important;
-            color: #ffffff !important;
-            font-weight: 700;
-            border-radius: 8px;
-            transition: background-color 0.15s ease-in-out, transform 0.05s ease;
-            cursor: pointer;
-            border: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .seek-btn-pink:hover {
-            background-color: #c2005a !important;
-        }
-        .seek-btn-pink:active {
-            transform: scale(0.99);
-        }
-        .seek-field {
-            border: 1px solid #94a3b8;
-            border-radius: 8px;
-            background-color: #ffffff;
-            color: #0f172a;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.15s ease, box-shadow 0.15s ease;
-        }
-        .seek-field:focus {
-            border-color: #001b3a;
-            box-shadow: 0 0 0 1px #001b3a;
-        }
-        .seek-field-error {
-            border-color: #dc2626 !important;
-            box-shadow: 0 0 0 1px #dc2626 !important;
-            background-color: #fef2f2 !important;
-        }
-        .seek-select {
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23475569' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 12px center;
-            background-repeat: no-repeat;
-            background-size: 16px 16px;
-            padding-right: 36px;
-        }
-    </style>
+<div class="min-h-screen flex flex-col font-sans text-slate-800" style="background: #f0f4f9; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
 
-    <!-- Header SEEK Perusahaan -->
-    <header class="bg-white border-b border-slate-200/75 px-6 sm:px-12 h-16 flex items-center justify-between sticky top-0 z-30 shadow-none">
+    <!-- Header Resmi NEAR JOB Pemberi Kerja -->
+    <header class="bg-white border-b border-slate-200/80 px-4 sm:px-10 h-16 flex items-center justify-between sticky top-0 z-30 shadow-sm">
         <a href="{{ route('home') }}" class="flex items-center gap-2.5 text-decoration-none">
-            <!-- SEEK style circle dot icon -->
-            <div class="w-8 h-8 rounded-full seek-bg-navy flex items-center justify-center p-1.5 shadow-sm">
-                <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                    <circle cx="12" cy="12" r="2.2" />
-                    <circle cx="12" cy="5" r="1.5" />
-                    <circle cx="12" cy="19" r="1.5" />
-                    <circle cx="5" cy="12" r="1.5" />
-                    <circle cx="19" cy="12" r="1.5" />
-                    <circle cx="7" cy="7" r="1.5" />
-                    <circle cx="17" cy="17" r="1.5" />
-                    <circle cx="7" cy="17" r="1.5" />
-                    <circle cx="17" cy="7" r="1.5" />
-                    <circle cx="12" cy="8.5" r="1.5" />
-                    <circle cx="12" cy="15.5" r="1.5" />
-                    <circle cx="8.5" cy="12" r="1.5" />
-                    <circle cx="15.5" cy="12" r="1.5" />
+            <!-- NEAR JOB Logo Pin -->
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-blue-600 shadow-md shadow-blue-600/30 text-white">
+                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                 </svg>
             </div>
-            <div class="flex items-baseline gap-1.5">
-                <span class="text-xl font-extrabold tracking-tight seek-navy">nearjob</span>
-                <span class="text-base font-normal text-slate-700">perusahaan</span>
+            <div class="flex items-center gap-2">
+                <span class="text-xl font-black tracking-tight text-slate-900">NEAR JOB</span>
+                <span class="text-[11px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200">
+                    Pemberi Kerja
+                </span>
             </div>
         </a>
 
-        <div class="flex items-center gap-5 text-sm">
-            @if($mode === 'register')
-                <div class="hidden sm:flex items-center gap-1.5 text-slate-700 text-xs font-semibold px-2 py-1 rounded cursor-pointer hover:bg-slate-100 transition-colors">
-                    <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-                    </svg>
-                    <i class='bx bx-chevron-down text-slate-500'></i>
-                </div>
-            @endif
-            <a href="{{ route('applicant.map') }}" class="font-medium seek-navy underline hover:text-[#e60067] text-xs sm:text-sm transition-colors">
+        <div class="flex items-center gap-4 text-sm">
+            <a href="{{ route('applicant.map') }}" class="font-bold text-blue-600 hover:text-blue-800 underline text-xs sm:text-sm transition-colors">
                 Sedang mencari kerja?
             </a>
         </div>
@@ -95,66 +28,76 @@
     <main class="flex-grow flex flex-col justify-center px-4 py-8 sm:py-12">
         @if($mode === 'login')
             <!-- ========================================== -->
-            <!-- TAMPILAN MASUK PERUSAHAAN (Screenshot 1)  -->
+            <!-- TAMPILAN MASUK PERUSAHAAN (NEAR JOB THEME) -->
             <!-- ========================================== -->
-            <div class="w-full flex justify-center items-center my-auto">
-                <div style="max-width: 480px; width: 100%; border: 1px solid #cbd5e1; border-radius: 16px; background-color: #ffffff; box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); padding: 32px 36px;">
-                    
+            <div class="max-w-[440px] mx-auto w-full my-auto">
+                <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xl shadow-slate-900/5 p-7 sm:p-9 relative overflow-hidden">
+                    <!-- Accent Gradient Bar NearJob -->
+                    <div class="h-1.5 w-full bg-gradient-to-r from-blue-600 via-blue-500 to-teal-500 absolute top-0 left-0"></div>
+
                     @if($login_error)
-                        <div style="background-color: #fffbeb; border: 1px solid #fef3c7; border-radius: 10px; padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px; margin-bottom: 24px;">
-                            <svg style="width: 20px; height: 20px; color: #b45309; flex-shrink: 0; margin-top: 1px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                            </svg>
-                            <p style="font-size: 13px; color: #92400e; line-height: 1.45; font-weight: 500; margin: 0;">
+                        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 mb-6 flex items-start gap-2.5">
+                            <i class='bx bx-error-circle text-amber-600 text-xl shrink-0 mt-0.5'></i>
+                            <p class="text-xs text-amber-900 leading-relaxed font-semibold">
                                 {{ $login_error }}
                             </p>
                         </div>
                     @endif
 
-                    <h1 class="text-3xl font-extrabold seek-navy tracking-tight" style="margin: 0 0 28px 0;">Masuk</h1>
+                    <div class="mb-7 text-center sm:text-left">
+                        <div class="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl mb-3 shadow-inner">
+                            <i class='bx bx-buildings'></i>
+                        </div>
+                        <h1 class="text-2xl font-black text-slate-900 tracking-tight">Masuk sebagai Pemberi Kerja</h1>
+                        <p class="text-xs sm:text-sm text-slate-500 mt-1 font-medium">Kelola lowongan dan temukan kandidat terbaik di sekitar Anda</p>
+                    </div>
 
-                    <form wire:submit.prevent="companyLogin" class="space-y-5">
+                    <form wire:submit.prevent="companyLogin" class="space-y-4">
                         <!-- Alamat Email -->
                         <div>
-                            <label class="block text-sm font-semibold seek-navy mb-1.5">Alamat email</label>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Alamat Email</label>
                             <input type="email" wire:model="login_email"
-                                class="w-full h-11 px-3.5 seek-field {{ $errors->has('login_email') ? 'seek-field-error' : '' }}"
-                                autocomplete="email">
+                                class="w-full px-4 py-3 rounded-xl border {{ $errors->has('login_email') ? 'border-red-500 ring-2 ring-red-100 bg-red-50/20' : 'border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-100' }} text-sm text-slate-800 bg-slate-50 focus:bg-white outline-none transition-all"
+                                placeholder="email@perusahaan.com" autocomplete="email">
                             @error('login_email')
-                                <div style="color: #dc2626; font-size: 12px; font-weight: 600; margin-top: 6px; display: flex; align-items: center; gap: 4px;">
-                                    <span style="font-size: 10px;">◇</span> {{ $message }}
-                                </div>
+                                <p class="text-red-500 text-xs font-bold mt-1.5 flex items-center gap-1">
+                                    <i class='bx bx-error-circle'></i> {{ $message }}
+                                </p>
                             @enderror
                         </div>
 
                         <!-- Kata Sandi -->
                         <div>
                             <div class="flex items-center justify-between mb-1.5">
-                                <label class="block text-sm font-semibold seek-navy">Kata sandi</label>
-                                <a href="javascript:void(0)" class="text-xs sm:text-sm font-semibold seek-navy underline hover:text-[#e60067] transition-colors">
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Kata Sandi</label>
+                                <a href="javascript:void(0)" class="text-xs font-bold text-blue-600 hover:underline">
                                     Lupa kata sandi?
                                 </a>
                             </div>
                             <div class="relative">
                                 <input type="{{ $login_show_password ? 'text' : 'password' }}" wire:model="login_password"
-                                    class="w-full h-11 px-3.5 pr-11 seek-field {{ $errors->has('login_password') ? 'seek-field-error' : '' }}"
-                                    autocomplete="current-password">
+                                    class="w-full px-4 py-3 pr-11 rounded-xl border {{ $errors->has('login_password') ? 'border-red-500 ring-2 ring-red-100 bg-red-50/20' : 'border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-100' }} text-sm text-slate-800 bg-slate-50 focus:bg-white outline-none transition-all"
+                                    placeholder="••••••••" autocomplete="current-password">
                                 <button type="button" wire:click="toggleLoginPassword" 
-                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800 p-1 bg-transparent border-none cursor-pointer">
-                                    <i class="bx {{ $login_show_password ? 'bx-show' : 'bx-hide' }}" style="font-size: 20px;"></i>
+                                    class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1">
+                                    <i class="bx {{ $login_show_password ? 'bx-show' : 'bx-hide' }} text-lg"></i>
                                 </button>
                             </div>
                             @error('login_password')
-                                <div style="color: #dc2626; font-size: 12px; font-weight: 600; margin-top: 6px; display: flex; align-items: center; gap: 4px;">
-                                    <span style="font-size: 10px;">◇</span> {{ $message }}
-                                </div>
+                                <p class="text-red-500 text-xs font-bold mt-1.5 flex items-center gap-1">
+                                    <i class='bx bx-error-circle'></i> {{ $message }}
+                                </p>
                             @enderror
                         </div>
 
-                        <!-- Tombol Masuk Pink (SEEK) -->
-                        <div class="pt-2">
-                            <button type="submit" class="w-full h-11 seek-btn-pink text-sm font-bold shadow-sm">
-                                <span wire:loading.remove wire:target="companyLogin">Masuk</span>
+                        <!-- Tombol Masuk Biru NearJob -->
+                        <div class="pt-3">
+                            <button type="submit"
+                                class="w-full py-3.5 text-white font-extrabold rounded-xl text-sm transition-all shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2 hover:opacity-95 cursor-pointer"
+                                style="background: linear-gradient(135deg, #2563eb, #1d4ed8);">
+                                <span wire:loading.remove wire:target="companyLogin" class="flex items-center gap-1.5">
+                                    <i class='bx bx-log-in text-lg'></i> Masuk ke Dashboard
+                                </span>
                                 <span wire:loading wire:target="companyLogin" class="flex items-center gap-2">
                                     <i class='bx bx-loader-alt bx-spin text-base'></i> Masuk...
                                 </span>
@@ -163,60 +106,76 @@
                     </form>
 
                     <!-- Footer Link Daftar -->
-                    <div class="mt-6 text-sm text-slate-700">
-                        Tidak punya akun? 
-                        <button type="button" wire:click="setMode('register')" class="text-sm font-bold seek-navy underline hover:text-[#e60067] transition-colors bg-transparent border-none p-0 cursor-pointer">
-                            Daftar
+                    <div class="mt-6 pt-5 border-t border-slate-100 text-center text-xs text-slate-600 font-medium">
+                        Belum memiliki akun perusahaan? 
+                        <button type="button" wire:click="setMode('register')" class="text-blue-600 font-extrabold hover:underline ml-1 cursor-pointer">
+                            Daftar Sekarang
                         </button>
                     </div>
                 </div>
             </div>
 
         @else
-            <!-- ========================================================= -->
-            <!-- TAMPILAN BUAT AKUN PERUSAHAAN (Screenshot 2 & Screenshot 3) -->
-            <!-- ========================================================= -->
-            <div class="w-full flex justify-center">
-                <div style="max-width: 620px; width: 100%;">
-                    <h1 class="text-2xl sm:text-[28px] font-extrabold seek-navy tracking-tight" style="margin: 0 0 6px 0;">Buat akun perusahaan</h1>
-                    <p class="text-slate-600 text-sm" style="margin: 0 0 32px 0;">Lengkapi informasi berikut untuk membuat akun Anda.</p>
+            <!-- ============================================================== -->
+            <!-- TAMPILAN BUAT AKUN PERUSAHAAN (NEAR JOB THEME)                  -->
+            <!-- ============================================================== -->
+            <div class="max-w-[660px] mx-auto w-full">
+                <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xl shadow-slate-900/5 p-7 sm:p-10 relative overflow-hidden">
+                    <!-- Accent Gradient Bar NearJob -->
+                    <div class="h-1.5 w-full bg-gradient-to-r from-blue-600 via-blue-500 to-teal-500 absolute top-0 left-0"></div>
+
+                    <div class="mb-8">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold mb-3 border border-blue-100">
+                            <i class='bx bx-shield-quarter text-sm'></i> Registrasi Akun Resmi Pemberi Kerja
+                        </div>
+                        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Daftar Akun Perusahaan</h1>
+                        <p class="text-slate-500 text-xs sm:text-sm mt-1.5 leading-relaxed font-medium">
+                            Lengkapi data usaha dan identitas pemilik untuk mulai membuka lowongan kerja terdekat di NEAR JOB.
+                        </p>
+                    </div>
 
                     <form wire:submit.prevent="register" class="space-y-8">
-                        <!-- SECTION 1: DETAIL PERUSAHAAN (Screenshot 2) -->
+                        
+                        <!-- ============================================== -->
+                        <!-- BAGIAN 1: INFORMASI USAHA / PERUSAHAAN        -->
+                        <!-- ============================================== -->
                         <div>
-                            <h2 class="text-lg font-bold seek-navy mb-5" style="margin: 0 0 20px 0;">Detail perusahaaan</h2>
+                            <div class="pb-2.5 border-b border-slate-100 mb-5 flex items-center gap-2">
+                                <i class='bx bx-buildings text-blue-600 text-lg'></i>
+                                <h2 class="text-xs sm:text-sm font-black uppercase tracking-wider text-blue-700">1. Data Perusahaan / Tempat Usaha</h2>
+                            </div>
 
-                            <div class="space-y-5">
+                            <div class="space-y-4">
                                 <!-- Nama Perusahaan -->
                                 <div>
-                                    <label class="block text-sm font-semibold seek-navy mb-1">Nama perusahaan</label>
-                                    <p class="text-xs text-slate-500 mb-2" style="margin: 0 0 8px 0;">Nama bisnis yang terdaftar atau resmi digunakan untuk kami verifikasi.</p>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                                        Nama Usaha / Perusahaan <span class="text-red-500">*</span>
+                                    </label>
+                                    <p class="text-[11px] text-slate-400 mb-1.5">Nama bisnis atau outlet yang resmi digunakan dan dikenal calon pelamar.</p>
                                     <input type="text" wire:model="company_name"
-                                        class="w-full h-11 px-3.5 seek-field {{ $errors->has('company_name') ? 'seek-field-error' : '' }}">
+                                        class="w-full px-4 py-3 rounded-xl border {{ $errors->has('company_name') ? 'border-red-500 ring-2 ring-red-100 bg-red-50/20' : 'border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-100' }} text-sm text-slate-800 bg-slate-50 focus:bg-white outline-none transition-all"
+                                        placeholder="Contoh: PT Solusi Maju Bersama / Resto ABC">
                                     @error('company_name')
-                                        <div style="color: #dc2626; font-size: 12px; font-weight: 600; margin-top: 6px; display: flex; align-items: center; gap: 4px;">
-                                            <span style="font-size: 10px;">◇</span> {{ $message }}
-                                        </div>
+                                        <p class="text-red-500 text-xs font-bold mt-1 flex items-center gap-1">
+                                            <i class='bx bx-error-circle'></i> {{ $message }}
+                                        </p>
                                     @enderror
                                 </div>
 
-                                <!-- Negara -->
-                                <div>
-                                    <label class="block text-sm font-semibold seek-navy mb-1">Negara</label>
-                                    <p class="text-xs text-slate-500 mb-2" style="margin: 0 0 8px 0;">Lokasi di mana perusahaan Anda terdaftar.</p>
-                                    <div class="relative">
-                                        <select wire:model="country" class="w-full h-11 px-3.5 seek-field seek-select cursor-pointer">
-                                            <option value="Indonesia">Indonesia</option>
-                                        </select>
+                                <!-- Negara & Kota (2 Kolom) -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Negara</label>
+                                        <input type="text" value="Indonesia" disabled
+                                            class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-500 bg-slate-100 cursor-not-allowed">
                                     </div>
-                                </div>
 
-                                <!-- Kota Penempatan / Domisili Kantor -->
-                                <div>
-                                    <label class="block text-sm font-semibold seek-navy mb-1">Kota Penempatan / Usaha</label>
-                                    <p class="text-xs text-slate-500 mb-2" style="margin: 0 0 8px 0;">Pilih kota domisili kantor tempat lowongan Anda dibuka.</p>
-                                    <div class="relative">
-                                        <select wire:model="city" class="w-full h-11 px-3.5 seek-field seek-select cursor-pointer">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                                            Kota Domisili Usaha <span class="text-red-500">*</span>
+                                        </label>
+                                        <select wire:model="city"
+                                            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 text-sm text-slate-800 bg-slate-50 focus:bg-white outline-none cursor-pointer">
                                             @foreach($cities as $c)
                                                 <option value="{{ $c->name }}">{{ $c->name }}</option>
                                             @endforeach
@@ -224,175 +183,195 @@
                                     </div>
                                 </div>
 
-                                <!-- Nomor Telepon (SEEK Dual Field) -->
+                                <!-- Nomor Telepon / WhatsApp -->
                                 <div>
-                                    <label class="block text-sm font-semibold seek-navy mb-1">Nomor telepon</label>
-                                    <p class="text-xs text-slate-500 mb-2" style="margin: 0 0 8px 0;">Ini akan jadi nomor utama untuk menghubungi Anda. Tidak akan dibagikan ke kandidat.</p>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                                        Nomor WhatsApp / Telepon Utama <span class="text-red-500">*</span>
+                                    </label>
+                                    <p class="text-[11px] text-slate-400 mb-1.5">Nomor utama untuk komunikasi dan notifikasi sistem (hanya angka).</p>
                                     
-                                    <div class="flex gap-2.5">
-                                        <!-- Dropdown Kode Negara -->
-                                        <div style="width: 44%; max-width: 220px; flex-shrink: 0;" class="relative">
-                                            <select wire:model="phone_code" class="w-full h-11 px-3 seek-field seek-select text-xs sm:text-sm cursor-pointer">
-                                                <option value="+62">Indonesia ( +62 )</option>
-                                            </select>
+                                    <div class="flex items-center rounded-xl border {{ $errors->has('phone_number') ? 'border-red-500 ring-2 ring-red-100' : 'border-slate-200 focus-within:border-blue-600 focus-within:ring-2 focus-within:ring-blue-100' }} bg-slate-50 overflow-hidden">
+                                        <div class="px-4 py-3 bg-slate-100 border-r border-slate-200 text-xs sm:text-sm font-bold text-slate-700 flex items-center gap-1 select-none">
+                                            <span>🇮🇩 +62</span>
                                         </div>
-                                        
-                                        <!-- Input Nomor Telepon (Hanya Angka) -->
-                                        <div class="flex-grow">
-                                            <div class="flex items-center h-11 seek-field {{ $errors->has('phone_number') ? 'seek-field-error' : '' }} overflow-hidden">
-                                                <span class="pl-3.5 pr-2.5 text-xs sm:text-sm text-slate-600 font-medium select-none" style="border-right: 1px solid #cbd5e1;">
-                                                    +62
-                                                </span>
-                                                <input type="tel" wire:model.live="phone_number" inputmode="numeric" pattern="[0-9]*"
-                                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                                                    placeholder="812345678"
-                                                    class="w-full h-full px-3 text-sm text-slate-800 outline-none bg-transparent border-none">
-                                            </div>
-                                        </div>
+                                        <input type="tel" wire:model.live="phone_number" inputmode="numeric" pattern="[0-9]*"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                            placeholder="81234567890"
+                                            class="w-full py-3 px-3.5 text-sm text-slate-800 bg-transparent outline-none">
                                     </div>
                                     @error('phone_number')
-                                        <div style="color: #dc2626; font-size: 12px; font-weight: 600; margin-top: 6px; display: flex; align-items: center; gap: 4px;">
-                                            <span style="font-size: 10px;">◇</span> {{ $message }}
-                                        </div>
+                                        <p class="text-red-500 text-xs font-bold mt-1 flex items-center gap-1">
+                                            <i class='bx bx-error-circle'></i> {{ $message }}
+                                        </p>
                                     @enderror
                                 </div>
                             </div>
                         </div>
 
-                        <!-- SECTION 2: DETAIL PRIBADI (Screenshot 3) -->
-                        <div style="padding-top: 24px; border-top: 1px solid #e2e8f0;">
-                            <h2 class="text-lg font-bold seek-navy" style="margin: 0 0 4px 0;">Detail pribadi</h2>
-                            <p class="text-xs text-slate-500" style="margin: 0 0 20px 0;">Masukkan informasi Anda sebagai pembuat akun ini.</p>
+                        <!-- ============================================== -->
+                        <!-- BAGIAN 2: DATA PEMILIK USAHA & VERIFIKASI KTP -->
+                        <!-- ============================================== -->
+                        <div>
+                            <div class="pb-2.5 border-b border-slate-100 mb-5 flex items-center gap-2">
+                                <i class='bx bx-id-card text-blue-600 text-lg'></i>
+                                <h2 class="text-xs sm:text-sm font-black uppercase tracking-wider text-blue-700">2. Identitas Pemilik Usaha & Verifikasi</h2>
+                            </div>
 
-                            <div class="space-y-5">
-                                <!-- Email -->
-                                <div>
-                                    <label class="block text-sm font-semibold seek-navy mb-1.5">Email</label>
-                                    <input type="email" wire:model="email"
-                                        class="w-full h-11 px-3.5 seek-field {{ $errors->has('email') ? 'seek-field-error' : '' }}"
-                                        placeholder="nama@email.com">
-                                    @error('email')
-                                        <div style="color: #dc2626; font-size: 12px; font-weight: 600; margin-top: 6px; display: flex; align-items: center; gap: 4px;">
-                                            <span style="font-size: 10px;">◇</span> {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-
-                                <!-- Nama Depan & Nama Belakang (2 Kolom Sejajar) -->
+                            <div class="space-y-4">
+                                <!-- Nama Depan & Belakang -->
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-semibold seek-navy mb-1.5">Nama depan</label>
+                                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                                            Nama Depan <span class="text-red-500">*</span>
+                                        </label>
                                         <input type="text" wire:model="first_name"
-                                            class="w-full h-11 px-3.5 seek-field {{ $errors->has('first_name') ? 'seek-field-error' : '' }}"
-                                            placeholder="Masukkan nama depan">
+                                            class="w-full px-4 py-3 rounded-xl border {{ $errors->has('first_name') ? 'border-red-500 ring-2 ring-red-100 bg-red-50/20' : 'border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-100' }} text-sm text-slate-800 bg-slate-50 focus:bg-white outline-none transition-all"
+                                            placeholder="Nama depan">
                                         @error('first_name')
-                                            <div style="color: #dc2626; font-size: 12px; font-weight: 600; margin-top: 6px; display: flex; align-items: center; gap: 4px;">
-                                                <span style="font-size: 10px;">◇</span> {{ $message }}
-                                            </div>
+                                            <p class="text-red-500 text-xs font-bold mt-1 flex items-center gap-1">
+                                                <i class='bx bx-error-circle'></i> {{ $message }}
+                                            </p>
                                         @enderror
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold seek-navy mb-1.5">Nama belakang</label>
+                                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                                            Nama Belakang
+                                        </label>
                                         <input type="text" wire:model="last_name"
-                                            class="w-full h-11 px-3.5 seek-field"
-                                            placeholder="Masukkan nama belakang">
+                                            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 text-sm text-slate-800 bg-slate-50 focus:bg-white outline-none transition-all"
+                                            placeholder="Nama belakang">
                                     </div>
                                 </div>
 
                                 <!-- NIK Pemilik Usaha -->
                                 <div>
-                                    <label class="block text-sm font-semibold seek-navy mb-1">
-                                        NIK Pemilik Usaha <span class="text-red-500">*</span>
-                                    </label>
-                                    <p class="text-xs text-slate-500 mb-2" style="margin: 0 0 8px 0;">
-                                        16 digit NIK resmi pemilik usaha untuk verifikasi identitas (sama seperti pendaftaran pelamar). NIK Anda tersimpan aman dan tidak akan ditampilkan utuh secara publik.
+                                    <div class="flex items-center justify-between mb-1">
+                                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                            NIK Pemilik Usaha <span class="text-red-500">*</span>
+                                        </label>
+                                        <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
+                                            Privasi Terproteksi
+                                        </span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-400 mb-1.5">
+                                        16 digit NIK pemilik usaha (hanya angka). Data NIK disensor di profil publik dan tidak dibocorkan.
                                     </p>
                                     <input type="text" wire:model.live="nik" maxlength="16" inputmode="numeric" pattern="[0-9]*"
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                                        class="w-full h-11 px-3.5 seek-field font-mono {{ $errors->has('nik') ? 'seek-field-error' : '' }}"
+                                        class="w-full px-4 py-3 rounded-xl border font-mono {{ $errors->has('nik') ? 'border-red-500 ring-2 ring-red-100 bg-red-50/20' : 'border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-100' }} text-sm text-slate-800 bg-slate-50 focus:bg-white outline-none transition-all"
                                         placeholder="16 digit NIK pemilik usaha">
                                     @error('nik')
-                                        <div style="color: #dc2626; font-size: 12px; font-weight: 600; margin-top: 6px; display: flex; align-items: center; gap: 4px;">
-                                            <span style="font-size: 10px;">◇</span> {{ $message }}
-                                        </div>
+                                        <p class="text-red-500 text-xs font-bold mt-1 flex items-center gap-1">
+                                            <i class='bx bx-error-circle'></i> {{ $message }}
+                                        </p>
                                     @enderror
                                 </div>
 
-                                <!-- Upload Foto KTP untuk Verifikasi Akun Perusahaan -->
-                                <div style="background-color: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 12px; padding: 16px;">
-                                    <div class="flex items-start justify-between gap-3 mb-2">
-                                        <div>
-                                            <label class="block text-sm font-bold seek-navy mb-0.5">
-                                                <i class='bx bx-id-card text-base text-blue-600 align-middle'></i> Foto KTP Pemilik Usaha (Verifikasi Akun)
-                                            </label>
-                                            <p class="text-xs text-slate-500">
-                                                Unggah foto KTP pemilik usaha. Sistem kami akan <strong>otomatis menambahkan watermark permanen "NEAR JOB"</strong> pada gambar sebelum disimpan di database demi keamanan dan perlindungan data Anda.
-                                            </p>
-                                        </div>
-                                        <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 shrink-0">
-                                            Watermark Otomatis
+                                <!-- Upload Foto KTP Pemilik Usaha (Watermark NEAR JOB) -->
+                                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                                    <div class="flex items-start justify-between gap-3 mb-1.5">
+                                        <label class="block text-xs font-bold text-slate-700">
+                                            <i class='bx bx-id-card text-blue-600 align-middle'></i> Foto KTP Pemilik Usaha (Verifikasi Akun)
+                                        </label>
+                                        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-200 shrink-0">
+                                            Watermark NEAR JOB
                                         </span>
                                     </div>
+                                    <p class="text-[11px] text-slate-500 leading-relaxed mb-3">
+                                        Unggah foto KTP Anda. Gambar yang tersimpan di database <strong>otomatis distempel watermark resmi "NEAR JOB"</strong> permanen agar data Anda aman dari penyalahgunaan.
+                                    </p>
 
-                                    <div class="mt-3">
-                                        <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#001b3a] file:text-white hover:file:bg-blue-900 cursor-pointer">
-                                    </div>
+                                    <input type="file" wire:model="ktp_file" accept="image/*"
+                                        class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
 
-                                    <div wire:loading wire:target="ktp_file" class="mt-2 text-xs text-blue-600 font-medium">
-                                        <i class='bx bx-loader-alt bx-spin'></i> Mengunggah & memproses KTP...
+                                    <div wire:loading wire:target="ktp_file" class="text-xs text-blue-600 font-bold mt-2">
+                                        <i class='bx bx-loader-alt bx-spin'></i> Memproses KTP & watermark otomatis...
                                     </div>
 
                                     @if($ktp_file)
-                                        <div class="mt-3 p-2 bg-white rounded-lg border border-slate-200 flex items-center gap-3">
-                                            <img src="{{ $ktp_file->temporaryUrl() }}" class="w-16 h-12 object-cover rounded border border-slate-200 shadow-sm" alt="Preview KTP">
+                                        <div class="mt-3 p-2 bg-white rounded-xl border border-slate-200 flex items-center gap-3">
+                                            <img src="{{ $ktp_file->temporaryUrl() }}" class="w-14 h-10 object-cover rounded-lg border border-slate-200 shadow-sm" alt="Preview KTP">
                                             <div class="text-xs">
                                                 <p class="font-bold text-slate-800">Preview KTP terpilih</p>
-                                                <p class="text-[11px] text-emerald-600 font-semibold">✓ Siap di-watermark "NEAR JOB" saat disimpan</p>
+                                                <p class="text-[11px] text-emerald-600 font-bold">✓ KTP siap di-watermark "NEAR JOB" saat disimpan</p>
                                             </div>
                                         </div>
                                     @endif
 
                                     @error('ktp_file')
-                                        <div style="color: #dc2626; font-size: 12px; font-weight: 600; margin-top: 6px; display: flex; align-items: center; gap: 4px;">
-                                            <span style="font-size: 10px;">◇</span> {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-
-                                <!-- Kata Sandi Akun -->
-                                <div>
-                                    <label class="block text-sm font-semibold seek-navy mb-1.5">Kata sandi</label>
-                                    <div class="relative">
-                                        <input type="{{ $showPassword ? 'text' : 'password' }}" wire:model="password"
-                                            class="w-full h-11 px-3.5 pr-11 seek-field {{ $errors->has('password') ? 'seek-field-error' : '' }}"
-                                            placeholder="Minimal 6 karakter">
-                                        <button type="button" wire:click="togglePassword" 
-                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800 p-1 bg-transparent border-none cursor-pointer">
-                                            <i class="bx {{ $showPassword ? 'bx-show' : 'bx-hide' }}" style="font-size: 20px;"></i>
-                                        </button>
-                                    </div>
-                                    @error('password')
-                                        <div style="color: #dc2626; font-size: 12px; font-weight: 600; margin-top: 6px; display: flex; align-items: center; gap: 4px;">
-                                            <span style="font-size: 10px;">◇</span> {{ $message }}
-                                        </div>
+                                        <p class="text-red-500 text-xs font-bold mt-1.5 flex items-center gap-1">
+                                            <i class='bx bx-error-circle'></i> {{ $message }}
+                                        </p>
                                     @enderror
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Tombol Buat Akun Baru (Pink SEEK) -->
+                        <!-- ============================================== -->
+                        <!-- BAGIAN 3: INFORMASI AKUN & KATA SANDI         -->
+                        <!-- ============================================== -->
+                        <div>
+                            <div class="pb-2.5 border-b border-slate-100 mb-5 flex items-center gap-2">
+                                <i class='bx bx-lock-alt text-blue-600 text-lg'></i>
+                                <h2 class="text-xs sm:text-sm font-black uppercase tracking-wider text-blue-700">3. Akun & Keamanan</h2>
+                            </div>
+
+                            <div class="space-y-4">
+                                <!-- Email Akun -->
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Alamat Email Perusahaan <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="email" wire:model="email"
+                                        class="w-full px-4 py-3 rounded-xl border {{ $errors->has('email') ? 'border-red-500 ring-2 ring-red-100 bg-red-50/20' : 'border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-100' }} text-sm text-slate-800 bg-slate-50 focus:bg-white outline-none transition-all"
+                                        placeholder="nama@perusahaan.com">
+                                    @error('email')
+                                        <p class="text-red-500 text-xs font-bold mt-1 flex items-center gap-1">
+                                            <i class='bx bx-error-circle'></i> {{ $message }}
+                                        </p>
+                                    @enderror
+                                </div>
+
+                                <!-- Kata Sandi -->
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Kata Sandi <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="relative">
+                                        <input type="{{ $showPassword ? 'text' : 'password' }}" wire:model="password"
+                                            class="w-full px-4 py-3 pr-11 rounded-xl border {{ $errors->has('password') ? 'border-red-500 ring-2 ring-red-100 bg-red-50/20' : 'border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-100' }} text-sm text-slate-800 bg-slate-50 focus:bg-white outline-none transition-all"
+                                            placeholder="Minimal 6 karakter">
+                                        <button type="button" wire:click="togglePassword" 
+                                            class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1">
+                                            <i class="bx {{ $showPassword ? 'bx-show' : 'bx-hide' }} text-lg"></i>
+                                        </button>
+                                    </div>
+                                    @error('password')
+                                        <p class="text-red-500 text-xs font-bold mt-1 flex items-center gap-1">
+                                            <i class='bx bx-error-circle'></i> {{ $message }}
+                                        </p>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tombol Submit Pendaftaran Biru NEAR JOB -->
                         <div class="pt-2">
-                            <button type="submit" class="seek-btn-pink text-sm font-bold shadow-sm" style="padding: 12px 32px; height: 46px;">
-                                <span wire:loading.remove wire:target="register">Buat akun baru</span>
+                            <button type="submit"
+                                class="w-full py-4 text-white font-extrabold rounded-xl text-sm transition-all shadow-xl shadow-blue-600/30 flex items-center justify-center gap-2 hover:opacity-95 cursor-pointer"
+                                style="background: linear-gradient(135deg, #2563eb, #1d4ed8);">
+                                <span wire:loading.remove wire:target="register" class="flex items-center gap-1.5">
+                                    <i class='bx bx-check-shield text-lg'></i> Buat Akun Perusahaan & Mulai Pasang Loker
+                                </span>
                                 <span wire:loading wire:target="register" class="flex items-center gap-2">
-                                    <i class='bx bx-loader-alt bx-spin text-base'></i> Menyimpan...
+                                    <i class='bx bx-loader-alt bx-spin text-base'></i> Menyimpan data & watermark KTP...
                                 </span>
                             </button>
-                            
-                            <p class="mt-4 text-sm text-slate-600">
-                                Sudah punya akun? 
-                                <button type="button" wire:click="setMode('login')" class="text-sm font-bold seek-navy underline hover:text-[#e60067] transition-colors bg-transparent border-none p-0 cursor-pointer">
-                                    Masuk
+
+                            <p class="mt-5 text-center text-xs text-slate-500 font-medium">
+                                Sudah memiliki akun perusahaan? 
+                                <button type="button" wire:click="setMode('login')" class="text-blue-600 font-extrabold hover:underline ml-1 cursor-pointer">
+                                    Masuk di sini
                                 </button>
                             </p>
                         </div>
