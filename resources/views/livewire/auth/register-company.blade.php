@@ -4,11 +4,7 @@
     <header class="bg-white border-b border-black/10 px-4 sm:px-10 h-16 flex items-center justify-between sticky top-0 z-30">
         <a href="{{ route('home') }}" class="flex items-center gap-2.5 text-decoration-none">
             <!-- NEAR JOB Logo Pin -->
-            <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-sm" style="background: #5680d8;">
-                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                </svg>
-            </div>
+            <img src="{{ asset('logo.png') }}" alt="NEAR JOB" class="w-9 h-9 rounded-xl object-contain shadow-xs border border-black/10">
             <div class="flex items-center gap-2">
                 <span class="text-xl font-black tracking-tight text-black">NEAR JOB</span>
                 <span class="text-[11px] font-bold uppercase px-2 py-0.5 rounded border border-black/30 text-black">
@@ -138,7 +134,7 @@
                                 <label class="block text-xs font-bold text-black uppercase tracking-wider mb-1">
                                     Nama Usaha / Perusahaan *
                                 </label>
-                                <p class="text-[11px] text-black mb-1.5 font-medium">Nama bisnis atau outlet yang resmi digunakan dan dikenal calon pelamar.</p>
+                                <p class="text-[11px] text-black/60 mb-1.5 font-normal">Nama bisnis atau outlet yang resmi digunakan dan dikenal calon pelamar.</p>
                                 <input type="text" wire:model="company_name"
                                     class="w-full px-4 py-3 rounded-xl border {{ $errors->has('company_name') ? 'border-black ring-2 ring-black' : 'border-black/20 focus:border-black focus:ring-1 focus:ring-black' }} text-sm text-black bg-white outline-none transition-all placeholder:text-black/40"
                                     placeholder="Contoh: PT Solusi Maju Bersama / Resto ABC">
@@ -175,7 +171,7 @@
                                 <label class="block text-xs font-bold text-black uppercase tracking-wider mb-1">
                                     Nomor WhatsApp / Telepon Utama *
                                 </label>
-                                <p class="text-[11px] text-black mb-1.5 font-medium">Nomor utama untuk komunikasi dan notifikasi sistem (hanya angka).</p>
+                                <p class="text-[11px] text-black/60 mb-1.5 font-normal">Nomor utama untuk komunikasi dan notifikasi sistem (hanya angka).</p>
                                 
                                 <div class="flex items-center rounded-xl border {{ $errors->has('phone_number') ? 'border-black ring-2 ring-black' : 'border-black/20 focus-within:border-black focus-within:ring-1 focus-within:ring-black' }} bg-white overflow-hidden">
                                     <div class="px-4 py-3 bg-black/5 border-r border-black/20 text-xs sm:text-sm font-bold text-black flex items-center gap-1 select-none">
@@ -240,7 +236,7 @@
                                         Privasi Terproteksi
                                     </span>
                                 </div>
-                                <p class="text-[11px] text-black mb-1.5 font-medium">
+                                <p class="text-[11px] text-black/60 mb-1.5 font-normal">
                                     16 digit NIK pemilik usaha (hanya angka). Data NIK disensor di profil publik dan tidak dibocorkan.
                                 </p>
                                 <input type="text" wire:model.live="nik" maxlength="16" inputmode="numeric" pattern="[0-9]*"

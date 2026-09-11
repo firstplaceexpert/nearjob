@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
     <link href='https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -88,8 +89,8 @@
             color: #000000; line-height: 1.25; margin-bottom: 16px;
         }
         .sec-desc {
-            font-size: 15px; font-weight: 500; color: #000000;
-            max-width: 500px; margin: 0 auto; line-height: 1.8;
+            font-size: 15px; font-weight: 400; color: rgba(0,0,0,0.65);
+            max-width: 520px; margin: 0 auto; line-height: 1.8;
         }
     </style>
 </head>
@@ -99,9 +100,7 @@
 <header style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#ffffff;border-bottom:2px solid #e8edf5;box-shadow:0 2px 14px rgba(36,66,123,.08);">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm" style="background:var(--primary);">
-                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-            </div>
+            <img src="{{ asset('logo.png') }}" alt="NEAR JOB" class="w-10 h-10 rounded-xl object-contain shadow-sm border border-black/10">
             <span class="font-black text-xl tracking-tight" style="color:#000000;">NEAR JOB</span>
         </div>
         <div class="flex items-center gap-3">
@@ -530,9 +529,7 @@
     <div style="max-w-5xl mx-auto" style="max-width:1024px;margin:0 auto;">
         <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:24px;padding-bottom:36px;border-bottom:1px solid #1e293b;margin-bottom:36px;">
             <div style="display:flex;align-items:center;gap:10px;">
-                <div style="width:38px;height:38px;border-radius:11px;background:var(--primary);display:flex;align-items:center;justify-content:center;">
-                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                </div>
+                <img src="{{ asset('logo.png') }}" alt="NEAR JOB" style="width:38px;height:38px;border-radius:11px;object-fit:contain;box-shadow:0 2px 8px rgba(0,0,0,.2);">
                 <span style="font-weight:900;color:#fff;font-size:20px;letter-spacing:-.02em;">NEAR JOB</span>
             </div>
             <div style="display:flex;gap:32px;">

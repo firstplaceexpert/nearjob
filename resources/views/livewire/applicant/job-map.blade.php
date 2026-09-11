@@ -39,12 +39,10 @@
         <div id="njob-search-expanded" style="pointer-events:auto;background:rgba(255,255,255,0.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:18px;padding:8px 12px;box-shadow:0 8px 30px rgba(15,23,42,0.16),0 1px 3px rgba(0,0,0,0.06);border:1px solid rgba(226,232,240,0.85);transition:all .25s ease;">
             {{-- Search Bar Row --}}
             <div style="display:flex;align-items:center;gap:8px;">
-                <div style="display:flex;align-items:center;justify-content:center;color:#5680d8;font-size:20px;width:24px;">
-                    <i class='bx bx-search'></i>
-                </div>
+                <img src="{{ asset('logo.png') }}" alt="NEAR JOB" style="width:26px;height:26px;border-radius:8px;object-fit:contain;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,0.12);">
                 <input type="text" wire:model.live.debounce.300ms="searchQuery" 
                        placeholder="Cari lowongan, posisi, atau perusahaan..." 
-                       style="flex:1;border:none;outline:none;font-size:13px;font-weight:700;color:#1e293b;background:transparent;padding:6px 0;">
+                       style="flex:1;border:none;outline:none;font-size:13px;font-weight:700;color:#000000;background:transparent;padding:6px 0;">
                 
                 @if($searchQuery)
                     <button wire:click="$set('searchQuery', '')" style="border:none;background:none;color:#94a3b8;cursor:pointer;padding:4px;display:flex;align-items:center;">
@@ -61,21 +59,21 @@
 
             {{-- Filter Chips Row --}}
             <div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-top:8px;margin-top:4px;border-top:1px solid #f1f5f9;align-items:center;">
-                <button onclick="njobToggleFilter()" style="flex-shrink:0;display:flex;align-items:center;gap:5px;background:{{ ($filterCategory || $filterWorkType) ? '#5680d8' : '#f8fafc' }};color:{{ ($filterCategory || $filterWorkType) ? 'white' : '#334155' }};border:1.5px solid {{ ($filterCategory || $filterWorkType) ? '#5680d8' : '#e2e8f0' }};border-radius:16px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;">
+                <button onclick="njobToggleFilter()" style="flex-shrink:0;display:flex;align-items:center;gap:5px;background:{{ ($filterCategory || $filterWorkType) ? '#5680d8' : '#ffffff' }};color:{{ ($filterCategory || $filterWorkType) ? '#ffffff' : '#000000' }};border:{{ ($filterCategory || $filterWorkType) ? '2px solid #5680d8' : '1px solid rgba(0,0,0,0.25)' }};border-radius:16px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;">
                     <i class='bx bx-filter-alt'></i> Filter
-                    @if($filterCategory || $filterWorkType)<span style="width:6px;height:6px;background:#fbbf24;border-radius:50%;"></span>@endif
+                    @if($filterCategory || $filterWorkType)<span style="width:6px;height:6px;background:#ffffff;border-radius:50%;"></span>@endif
                 </button>
-                <button onclick="njobSetWT('');njobSetCat('')" style="flex-shrink:0;background:{{ !$filterWorkType && !$filterCategory ? '#e0f2fe' : '#f8fafc' }};color:{{ !$filterWorkType && !$filterCategory ? '#0284c7' : '#64748b' }};border:1px solid {{ !$filterWorkType && !$filterCategory ? '#bae6fd' : '#e2e8f0' }};border-radius:16px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;">Semua</button>
-                <button onclick="njobSetWT('part_time')" style="flex-shrink:0;background:{{ $filterWorkType === 'part_time' ? '#e0f2fe' : '#f8fafc' }};color:{{ $filterWorkType === 'part_time' ? '#0284c7' : '#64748b' }};border:1px solid {{ $filterWorkType === 'part_time' ? '#bae6fd' : '#e2e8f0' }};border-radius:16px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;">Part Time</button>
-                <button onclick="njobSetWT('full_time')" style="flex-shrink:0;background:{{ $filterWorkType === 'full_time' ? '#e0f2fe' : '#f8fafc' }};color:{{ $filterWorkType === 'full_time' ? '#0284c7' : '#64748b' }};border:1px solid {{ $filterWorkType === 'full_time' ? '#bae6fd' : '#e2e8f0' }};border-radius:16px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;">Full Time</button>
-                <button onclick="njobSetRadius(5)" style="flex-shrink:0;background:{{ $filterRadius <= 5 ? '#e0f2fe' : '#f8fafc' }};color:{{ $filterRadius <= 5 ? '#0284c7' : '#64748b' }};border:1px solid {{ $filterRadius <= 5 ? '#bae6fd' : '#e2e8f0' }};border-radius:16px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;">&le; 5 km</button>
+                <button onclick="njobSetWT('');njobSetCat('')" style="flex-shrink:0;background:{{ !$filterWorkType && !$filterCategory ? '#5680d8' : '#ffffff' }};color:{{ !$filterWorkType && !$filterCategory ? '#ffffff' : '#000000' }};border:{{ !$filterWorkType && !$filterCategory ? '2px solid #5680d8' : '1px solid rgba(0,0,0,0.2)' }};border-radius:16px;padding:4px 10px;font-size:11px;font-weight:{{ !$filterWorkType && !$filterCategory ? '800' : '600' }};cursor:pointer;">Semua</button>
+                <button onclick="njobSetWT('part_time')" style="flex-shrink:0;background:{{ $filterWorkType === 'part_time' ? '#5680d8' : '#ffffff' }};color:{{ $filterWorkType === 'part_time' ? '#ffffff' : '#000000' }};border:{{ $filterWorkType === 'part_time' ? '2px solid #5680d8' : '1px solid rgba(0,0,0,0.2)' }};border-radius:16px;padding:4px 10px;font-size:11px;font-weight:{{ $filterWorkType === 'part_time' ? '800' : '600' }};cursor:pointer;">Part Time</button>
+                <button onclick="njobSetWT('full_time')" style="flex-shrink:0;background:{{ $filterWorkType === 'full_time' ? '#5680d8' : '#ffffff' }};color:{{ $filterWorkType === 'full_time' ? '#ffffff' : '#000000' }};border:{{ $filterWorkType === 'full_time' ? '2px solid #5680d8' : '1px solid rgba(0,0,0,0.2)' }};border-radius:16px;padding:4px 10px;font-size:11px;font-weight:{{ $filterWorkType === 'full_time' ? '800' : '600' }};cursor:pointer;">Full Time</button>
+                <button onclick="njobSetRadius(5)" style="flex-shrink:0;background:{{ $filterRadius <= 5 ? '#5680d8' : '#ffffff' }};color:{{ $filterRadius <= 5 ? '#ffffff' : '#000000' }};border:{{ $filterRadius <= 5 ? '2px solid #5680d8' : '1px solid rgba(0,0,0,0.2)' }};border-radius:16px;padding:4px 10px;font-size:11px;font-weight:{{ $filterRadius <= 5 ? '800' : '600' }};cursor:pointer;">&le; 5 km</button>
             </div>
         </div>
 
         {{-- Minimized State: Sleek Floating Pill (Google Maps Vibe) --}}
         <div id="njob-search-minimized" style="display:none;pointer-events:auto;justify-content:center;">
             <button onclick="njobToggleSearchCard(true)"
-                    style="background:rgba(255,255,255,0.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(226,232,240,0.9);box-shadow:0 6px 24px rgba(15,23,42,0.14);border-radius:30px;padding:8px 16px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all .2s;color:#1e293b;">
+                    style="background:rgba(255,255,255,0.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(226,232,240,0.9);box-shadow:0 6px 24px rgba(15,23,42,0.14);border-radius:30px;padding:8px 16px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all .2s;color:#000000;">
                 <i class='bx bx-search' style="color:#5680d8;font-size:16px;"></i>
                 <span style="font-size:12px;font-weight:800;color:#334155;">
                     {{ $searchQuery ? 'Cari: "'.$searchQuery.'"' : 'Cari & Filter Lowongan' }}
@@ -135,14 +133,14 @@
                         <i class='{{ $job->category_icon }}'></i>
                     </div>
                     <div style="flex:1;min-width:0;">
-                        <h3 style="font-size:13px;font-weight:800;color:#1e293b;line-height:1.3;margin:0 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                        <h3 style="font-size:13px;font-weight:800;color:#000000;line-height:1.3;margin:0 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                             {{ $job->position }}
                         </h3>
                         <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#64748b;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                             <span style="color:#5680d8;overflow:hidden;text-overflow:ellipsis;">{{ $job->company->company_name }}</span>
                             <span style="font-size:9.5px;font-weight:800;background:{{ $job->category_bg }};color:{{ $job->category_color }};padding:1px 6px;border-radius:5px;flex-shrink:0;">{{ $job->category_name }}</span>
                         </div>
-                        <div style="font-size:12px;font-weight:800;color:#1e293b;margin-top:2px;">
+                        <div style="font-size:12px;font-weight:800;color:#000000;margin-top:2px;">
                             {{ $job->salary_range }}
                         </div>
                     </div>
@@ -207,7 +205,7 @@
             <div style="width:64px;height:64px;background:#eff6ff;color:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:32px;border:3px solid #bfdbfe;">
                 <i class='bx bx-current-location'></i>
             </div>
-            <h3 style="font-size:16px;font-weight:900;color:#1e293b;margin:0 0 8px;">Aktifkan Lokasi / GPS Anda</h3>
+            <h3 style="font-size:16px;font-weight:900;color:#000000;margin:0 0 8px;">Aktifkan Lokasi / GPS Anda</h3>
             <p style="font-size:12px;color:#64748b;line-height:1.6;margin:0 0 20px;font-weight:600;">
                 Aplikasi <b>NEAR JOB</b> menggunakan GPS untuk mendeteksi posisi Anda secara otomatis dan menyajikan lowongan kerja terdekat di sekitar lokasi Anda.
             </p>
@@ -223,7 +221,7 @@
          style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.5);align-items:flex-end;">
         <div style="background:white;border-radius:24px 24px 0 0;width:100%;max-height:80vh;overflow-y:auto;padding:20px;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f1f5f9;">
-                <span style="font-size:15px;font-weight:800;color:#1e293b;">Filter Lowongan</span>
+                <span style="font-size:15px;font-weight:800;color:#000000;">Filter Lowongan</span>
                 <button onclick="njobToggleFilter()" style="background:#f1f5f9;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:18px;color:#64748b;font-weight:700;">×</button>
             </div>
             <div style="margin-bottom:18px;">
