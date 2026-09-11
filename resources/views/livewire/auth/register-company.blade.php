@@ -253,18 +253,18 @@
                                 @enderror
                             </div>
 
-                            <!-- Upload Foto KTP Pemilik Usaha (Watermark NEAR JOB) -->
+                            <!-- Upload Foto KTP Pemilik Usaha (Opsional - Tanda Verify) -->
                             <div class="p-4 rounded-xl border border-black/20 bg-white">
                                 <div class="flex items-start justify-between gap-3 mb-1.5">
                                     <label class="block text-xs font-bold text-black">
-                                        <i class='bx bx-id-card text-black align-middle'></i> Foto KTP Pemilik Usaha (Verifikasi Akun)
+                                        <i class='bx bx-id-card text-black align-middle'></i> Foto KTP Pemilik Usaha (Opsional)
                                     </label>
                                     <span class="text-[10px] font-bold px-2 py-0.5 rounded border border-black/30 text-black shrink-0">
-                                        Watermark NEAR JOB
+                                        Opsional — Untuk Tanda Verify
                                     </span>
                                 </div>
                                 <p class="text-[11px] text-black leading-relaxed mb-3 font-medium">
-                                    Unggah foto KTP Anda. Gambar yang tersimpan di database otomatis distempel watermark resmi "NEAR JOB" permanen agar data Anda aman dari penyalahgunaan.
+                                    Unggah foto KTP bersifat <strong>opsional</strong>. Unggah jika Anda ingin profil perusahaan memiliki tanda verifikasi resmi (Verify). Foto yang diunggah otomatis distempel watermark permanen "NEAR JOB" agar aman dari penyalahgunaan.
                                 </p>
 
                                 <input type="file" wire:model="ktp_file" accept="image/*"
@@ -279,7 +279,7 @@
                                         <img src="{{ $ktp_file->temporaryUrl() }}" class="w-14 h-10 object-cover rounded border border-black/20" alt="Preview KTP">
                                         <div class="text-xs">
                                             <p class="font-bold text-black">Preview KTP terpilih</p>
-                                            <p class="text-[11px] text-black font-medium">✓ KTP siap distempel watermark "NEAR JOB" saat disimpan</p>
+                                            <p class="text-[11px] text-black font-medium">✓ Akun akan otomatis mendapatkan tanda verifikasi resmi</p>
                                         </div>
                                     </div>
                                 @endif

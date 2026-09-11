@@ -62,9 +62,11 @@
                         <span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-full" style="background: {{ $job->category_bg }}; color: {{ $job->category_color }};">
                             <i class='{{ $job->category_icon }} text-sm'></i> {{ $job->category_name }}
                         </span>
+                        @if($job->company->is_verified || $job->company->ktp_path)
                         <span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-full" style="background: #e6f8f6; color: #2a9d8f;">
-                            <i class='bx bx-check-circle text-sm'></i> Terverifikasi
+                            <i class='bx bxs-badge-check text-sm'></i> Terverifikasi
                         </span>
+                        @endif
                     </div>
                     
                     {{-- Badges Lokasi, Kategori & Kuota Lowongan --}}

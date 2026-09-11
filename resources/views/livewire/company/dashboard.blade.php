@@ -7,11 +7,24 @@
                 {{ substr($company->company_name, 0, 1) }}
             </div>
             <div>
-                <h1 class="text-lg font-extrabold text-slate-800">{{ $company->company_name }}</h1>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <h1 class="text-lg font-extrabold text-slate-800">{{ $company->company_name }}</h1>
+                    @if($company->is_verified || $company->ktp_path)
+                        <span class="inline-flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            <i class='bx bxs-badge-check text-xs text-emerald-600'></i> Terverifikasi
+                        </span>
+                    @endif
+                </div>
                 <p class="text-xs text-slate-400 mt-0.5">{{ $company->owner_name }}</p>
-                <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full mt-1" style="background: #e6f8f6; color: #2a9d8f;">
-                    <i class='bx bx-check-circle'></i> Pemberi Kerja Terdaftar
-                </span>
+                @if($company->is_verified || $company->ktp_path)
+                    <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full mt-1" style="background: #e6f8f6; color: #2a9d8f;">
+                        <i class='bx bxs-badge-check'></i> Akun Terverifikasi Resmi
+                    </span>
+                @else
+                    <a href="{{ route('company.profile') }}" class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100 transition-colors">
+                        <i class='bx bx-id-card'></i> Upload KTP untuk Tanda Verify
+                    </a>
+                @endif
             </div>
         </div>
 
