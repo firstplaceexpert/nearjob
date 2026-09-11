@@ -63,21 +63,21 @@
                             <i class='{{ $job->category_icon }} text-sm'></i> {{ $job->category_name }}
                         </span>
                         @if($job->company->is_verified || $job->company->ktp_path)
-                        <span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-full" style="background: #e6f8f6; color: #2a9d8f;">
-                            <i class='bx bxs-badge-check text-sm'></i> Terverifikasi
+                        <span class="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded border border-black text-black bg-white">
+                            <i class='bx bxs-badge-check text-sm text-black'></i> Terverifikasi
                         </span>
                         @endif
                     </div>
                     
-                    {{-- Badges Lokasi, Kategori & Kuota Lowongan --}}
-                    <div class="flex items-center gap-2.5 flex-wrap text-xs font-bold text-slate-500">
-                        <span class="inline-flex items-center gap-1.5 bg-slate-100 px-3 py-1.5 rounded-lg text-slate-700">
+                    {{-- Badges Lokasi, Kategori & Kuota Lowongan (Wrap Garis Hitam & Tulisan Hitam) --}}
+                    <div class="flex items-center gap-2 flex-wrap text-xs font-bold text-black">
+                        <span class="inline-flex items-center gap-1.5 bg-white border border-black/25 px-2.5 py-1 rounded-md text-black">
                             📍 {{ $job->company->city }}
                         </span>
-                        <span class="inline-flex items-center gap-1.5 bg-blue-50 px-3 py-1.5 rounded-lg text-blue-700">
+                        <span class="inline-flex items-center gap-1.5 bg-white border border-black/25 px-2.5 py-1 rounded-md text-black">
                             🏢 {{ $job->company->business_field ?? 'Usaha Lokal' }}
                         </span>
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-extrabold" style="background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe;">
+                        <span class="inline-flex items-center gap-1.5 bg-white border border-black/25 px-2.5 py-1 rounded-md text-black font-extrabold">
                             🎯 Kuota: {{ $job->quota ?? 1 }} Orang Dibutuhkan
                         </span>
                     </div>
@@ -241,8 +241,7 @@
          style="bottom: 64px; z-index: 45; border-color: #e2e8f0; box-shadow: 0 -6px 20px rgba(0,0,0,.08);">
         <div class="max-w-2xl mx-auto">
             @if($hasApplied)
-                <div class="w-full py-4 rounded-2xl text-center font-black text-sm flex items-center justify-center gap-2" 
-                     style="background: #e6f8f6; color: #2a9d8f; border: 2px solid #47bfae;">
+                <div class="w-full py-3.5 rounded-xl text-center font-bold text-sm flex items-center justify-center gap-2 bg-white text-black border-2 border-black">
                     <i class='bx bx-check-circle text-xl'></i> Anda Sudah Melamar Lowongan Ini
                 </div>
             @else
@@ -252,12 +251,12 @@
                 @endphp
                 <button wire:click="applyForJob"
                     class="w-full py-4 text-white font-black rounded-2xl text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:opacity-95 cursor-pointer"
-                    style="{{ $canApply ? ($hasWa ? 'background: #16a34a; box-shadow: 0 6px 25px rgba(22,163,74,.4);' : 'background: #2563eb; box-shadow: 0 6px 25px rgba(37,99,235,.4);') : 'background: #cbd5e1; cursor: not-allowed;' }}">
+                    style="{{ $canApply ? ($hasWa ? 'background: #5680d8; box-shadow: 0 6px 25px rgba(86,128,216,.35);' : 'background: #5680d8; box-shadow: 0 6px 25px rgba(86,128,216,.35);') : 'background: #cbd5e1; cursor: not-allowed;' }}">
                     @if($canApply)
                         <i class='bx {{ $hasWa ? "bxl-whatsapp" : "bx-envelope" }} text-xl'></i>
                         {{ $hasWa ? 'LAMAR VIA WHATSAPP' : 'LAMAR VIA EMAIL' }}
                         @auth
-                            <span class="text-xs px-2.5 py-0.5 rounded-full font-bold" style="background: rgba(255,255,255,.25);">-1 Kuota</span>
+                            <span class="text-xs px-2.5 py-0.5 rounded-full font-bold border border-white/40 text-white">-1 Kuota</span>
                         @endauth
                     @else
                         <i class='bx bx-lock text-lg'></i> Kuota Melamar Habis
@@ -266,9 +265,9 @@
 
                 @auth
                     @if($credits <= 0)
-                    <div class="mt-2.5 p-3 rounded-xl flex items-center justify-between" style="background: #fff5f5; border: 1px solid #fecaca;">
-                        <p class="text-xs font-bold text-red-600">Kuota lamaran Anda habis (0 kuota)</p>
-                        <a href="{{ route('applicant.topup') }}" class="text-xs font-bold text-white px-3.5 py-1.5 rounded-lg shadow-sm hover:opacity-95 text-decoration-none" style="background: #ef4444;">
+                    <div class="mt-2.5 p-3 rounded-xl flex items-center justify-between border border-black/20 bg-white">
+                        <p class="text-xs font-bold text-black">Kuota lamaran Anda habis (0 kuota)</p>
+                        <a href="{{ route('applicant.topup') }}" class="text-xs font-bold text-white px-3.5 py-1.5 rounded-lg shadow-sm hover:opacity-95 text-decoration-none cursor-pointer" style="background: #5680d8;">
                             <i class='bx bx-plus-circle'></i> Isi Kuota
                         </a>
                     </div>

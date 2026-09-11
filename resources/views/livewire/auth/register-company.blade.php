@@ -4,7 +4,7 @@
     <header class="bg-white border-b border-black/10 px-4 sm:px-10 h-16 flex items-center justify-between sticky top-0 z-30">
         <a href="{{ route('home') }}" class="flex items-center gap-2.5 text-decoration-none">
             <!-- NEAR JOB Logo Pin -->
-            <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-blue-600 text-white shadow-sm">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-sm" style="background: #5680d8;">
                 <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                 </svg>
@@ -86,7 +86,8 @@
                     <!-- Tombol Masuk -->
                     <div class="pt-3">
                         <button type="submit"
-                            class="w-full py-3.5 text-white font-extrabold rounded-xl text-sm transition-all flex items-center justify-center gap-2 hover:opacity-90 cursor-pointer bg-blue-600">
+                            class="w-full py-3.5 text-white font-extrabold rounded-xl text-sm transition-all flex items-center justify-center gap-2 hover:opacity-90 cursor-pointer"
+                            style="background: #5680d8;">
                             <span wire:loading.remove wire:target="companyLogin" class="flex items-center gap-1.5 text-white">
                                 <i class='bx bx-log-in text-lg text-white'></i> Masuk ke Dashboard
                             </span>
@@ -344,7 +345,8 @@
                     <!-- Tombol Submit Pendaftaran -->
                     <div class="pt-2">
                         <button type="submit"
-                            class="w-full py-4 text-white font-extrabold rounded-xl text-sm transition-all flex items-center justify-center gap-2 hover:opacity-90 cursor-pointer bg-blue-600">
+                            class="w-full py-4 text-white font-extrabold rounded-xl text-sm transition-all flex items-center justify-center gap-2 hover:opacity-90 cursor-pointer"
+                            style="background: #5680d8;">
                             <span wire:loading.remove wire:target="register" class="flex items-center gap-1.5 text-white">
                                 <i class='bx bx-check-shield text-lg text-white'></i> Buat Akun Perusahaan & Mulai Pasang Loker
                             </span>

@@ -10,19 +10,19 @@
                 <div class="flex items-center gap-2 flex-wrap">
                     <h1 class="text-lg font-extrabold text-slate-800">{{ $company->company_name }}</h1>
                     @if($company->is_verified || $company->ktp_path)
-                        <span class="inline-flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
-                            <i class='bx bxs-badge-check text-xs text-emerald-600'></i> Terverifikasi
+                        <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded border border-black text-black bg-white">
+                            <i class='bx bxs-badge-check text-xs text-black'></i> Terverifikasi
                         </span>
                     @endif
                 </div>
                 <p class="text-xs text-slate-400 mt-0.5">{{ $company->owner_name }}</p>
                 @if($company->is_verified || $company->ktp_path)
-                    <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full mt-1" style="background: #e6f8f6; color: #2a9d8f;">
-                        <i class='bx bxs-badge-check'></i> Akun Terverifikasi Resmi
+                    <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded border border-black text-black mt-1 bg-white">
+                        <i class='bx bxs-badge-check text-black'></i> Akun Terverifikasi Resmi
                     </span>
                 @else
-                    <a href="{{ route('company.profile') }}" class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100 transition-colors">
-                        <i class='bx bx-id-card'></i> Upload KTP untuk Tanda Verify
+                    <a href="{{ route('company.profile') }}" class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded border border-black text-black mt-1 bg-white hover:opacity-75 transition-opacity">
+                        <i class='bx bx-id-card text-black'></i> Upload KTP untuk Tanda Verify
                     </a>
                 @endif
             </div>
@@ -83,25 +83,22 @@
                             <p class="text-xs text-slate-400 mt-0.5">{{ $job->created_at->diffForHumans() }}</p>
                         </div>
                         @php
-                            $statusColor = $job->status === 'active' ? '#47bfae' : ($job->status === 'filled' ? '#5680d8' : '#94a3b8');
-                            $statusBg = $job->status === 'active' ? '#e6f8f6' : ($job->status === 'filled' ? '#eef2fb' : '#f1f5f9');
                             $statusLabel = $job->status === 'active' ? 'Aktif' : ($job->status === 'filled' ? 'Terisi' : 'Ditutup');
                         @endphp
-                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider"
-                              style="background: {{ $statusBg }}; color: {{ $statusColor }};">
+                        <span class="text-[10px] font-bold px-2.5 py-0.5 rounded border border-black text-black uppercase tracking-wider bg-white">
                             {{ $statusLabel }}
                         </span>
                     </div>
 
-                    <div class="flex items-center gap-4 text-xs font-semibold text-slate-500 mb-4 p-2.5 rounded-xl" style="background: #f8faff; border: 1px solid #e8edf5;">
+                    <div class="flex items-center gap-4 text-xs font-semibold text-slate-500 mb-4 p-2.5 rounded-xl bg-white border border-black/15">
                         <span class="flex items-center gap-1.5"><i class='bx bx-group' style="color:#5680d8"></i> {{ $job->applications_count }} Pelamar</span>
                         <span class="flex items-center gap-1.5"><i class='bx bx-map' style="color:#5680d8"></i> {{ $job->city }}</span>
                         <span class="flex items-center gap-1.5"><i class='bx bx-category' style="color:#5680d8"></i> {{ \App\Models\JobListing::jobCategories()[$job->job_category] ?? '-' }}</span>
                     </div>
 
                     <a href="{{ route('company.jobs.applicants', $job->id) }}"
-                       class="block w-full py-2.5 font-bold rounded-xl text-center text-sm transition-all"
-                       style="background: #eef2fb; color: #5680d8; border: 1px solid #c7d6f5;">
+                       class="block w-full py-2.5 font-bold rounded-xl text-center text-sm transition-all text-white cursor-pointer"
+                       style="background: #5680d8; box-shadow: 0 4px 12px rgba(86,128,216,.3);">
                         Kelola {{ $job->applications_count }} Pelamar →
                     </a>
                 </div>

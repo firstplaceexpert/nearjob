@@ -55,8 +55,8 @@
                     {{ auth()->user()->applicantProfile?->city ?? 'Lokasi belum diatur' }}
                 </p>
 
-                {{-- Status Badge --}}
-                <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-extrabold text-white shadow-sm mb-6" style="background: #2a9d8f;">
+                {{-- Status Badge (Wrap Garis & Tulisan) --}}
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-extrabold border border-white text-white mb-6 bg-black/30">
                     <i class='bx bx-check-circle text-sm'></i> Status: Aktif Cari Kerja
                 </div>
 
@@ -210,32 +210,32 @@
                                         </p>
                                     </div>
                                     @if($profile->is_verified || $profile->ktp_path)
-                                        <span class="inline-flex items-center gap-1 text-xs font-black px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full shrink-0">
-                                            <i class='bx bxs-badge-check text-sm'></i> Terverifikasi KTP
+                                        <span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 border border-black text-black rounded bg-white shrink-0">
+                                            <i class='bx bxs-badge-check text-sm text-black'></i> Terverifikasi KTP
                                         </span>
                                     @else
-                                        <span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full shrink-0">
-                                            <i class='bx bx-time-five text-sm'></i> Belum Verifikasi
+                                        <span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 border border-black/40 text-black rounded bg-white shrink-0">
+                                            <i class='bx bx-time-five text-sm text-black'></i> Belum Verifikasi
                                         </span>
                                     @endif
                                 </div>
 
                                 @if($profile->ktp_path)
-                                    <div class="mt-3 p-3 bg-white rounded-xl border border-slate-200">
-                                        <p class="text-[11px] font-bold text-slate-600 mb-1.5">Foto KTP Resmi (Dengan Watermark Pengaman NEAR JOB):</p>
-                                        <img src="{{ $profile->ktp_url }}" alt="KTP Terverifikasi" class="w-full max-w-[280px] h-36 object-cover rounded-lg border border-slate-200 shadow-sm">
+                                    <div class="mt-3 p-3 bg-white rounded-xl border border-black/20">
+                                        <p class="text-[11px] font-bold text-black mb-1.5">Foto KTP Resmi (Dengan Watermark Pengaman NEAR JOB):</p>
+                                        <img src="{{ $profile->ktp_url }}" alt="KTP Terverifikasi" class="w-full max-w-[280px] h-36 object-cover rounded-lg border border-black/20 shadow-sm">
                                     </div>
                                 @endif
 
                                 <div class="mt-3">
-                                    <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                                    <label class="block text-xs font-bold text-black mb-1.5">
                                         {{ $profile->ktp_path ? 'Perbarui Foto KTP:' : 'Pilih Foto KTP Anda:' }}
                                     </label>
-                                    <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
-                                    <div wire:loading wire:target="ktp_file" class="text-xs text-blue-600 font-bold mt-2">
-                                        <i class='bx bx-loader-alt bx-spin text-sm'></i> Memproses watermark "NEAR JOB" & menyimpan KTP...
+                                    <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:text-white cursor-pointer" style="--tw-file-bg: #5680d8;">
+                                    <div wire:loading wire:target="ktp_file" class="text-xs text-black font-bold mt-2">
+                                        <i class='bx bx-loader-alt bx-spin text-sm text-black'></i> Memproses watermark "NEAR JOB" & menyimpan KTP...
                                     </div>
-                                    @error('ktp_file') <span class="text-xs text-red-500 mt-1 block font-bold">{{ $message }}</span> @enderror
+                                    @error('ktp_file') <span class="text-xs text-black mt-1 block font-bold">{{ $message }}</span> @enderror
                                 </div>
                             </div>
 
@@ -309,12 +309,12 @@
                                         class="text-white font-extrabold text-xs shrink-0 hover:opacity-95"
                                         style="padding: 13px 22px; border-radius: 14px; background: #5680d8;">Tambah</button>
                                 </div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                                     @foreach($skills as $i => $sk)
                                         <span class="inline-flex items-center gap-1.5 text-xs font-bold"
-                                              style="padding: 8px 14px; border-radius: 12px; background: #eef2fb; color: #5680d8; border: 1px solid #c7d6f5;">
+                                              style="padding: 6px 12px; border-radius: 8px; background: #ffffff; color: #000000; border: 1px solid rgba(0,0,0,0.3);">
                                             {{ $sk }}
-                                            <button type="button" wire:click="removeSkill({{ $i }})" class="hover:text-red-500 font-bold ml-1 text-sm">×</button>
+                                            <button type="button" wire:click="removeSkill({{ $i }})" class="hover:opacity-75 font-bold ml-1 text-sm text-black">×</button>
                                         </span>
                                     @endforeach
                                 </div>

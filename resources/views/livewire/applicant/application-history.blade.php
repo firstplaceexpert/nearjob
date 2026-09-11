@@ -33,27 +33,24 @@
                 @foreach($applications as $app)
                 @php
                     $statusConfig = match($app->status) {
-                        'menunggu'    => ['bg' => '#fffbeb', 'text' => '#d97706', 'border' => '#fde68a', 'label' => 'Menunggu Respons', 'icon' => 'bx-time-five'],
-                        'dihubungi'   => ['bg' => '#eef2fb', 'text' => '#5680d8', 'border' => '#c7d6f5', 'label' => 'Dihubungi Pemberi Kerja', 'icon' => 'bxl-whatsapp'],
-                        'interview'   => ['bg' => '#f5f0ff', 'text' => '#7c3aed', 'border' => '#ddd6fe', 'label' => 'Tahap Interview', 'icon' => 'bx-user-voice'],
-                        'diterima'    => ['bg' => '#e6f8f6', 'text' => '#2a9d8f', 'border' => '#99f6e4', 'label' => 'Diterima Bekerja!', 'icon' => 'bx-check-circle'],
-                        'tidak_lolos' => ['bg' => '#fff5f5', 'text' => '#ef4444', 'border' => '#fecaca', 'label' => 'Belum Sesuai', 'icon' => 'bx-x-circle'],
-                        default       => ['bg' => '#f8faff', 'text' => '#5680d8', 'border' => '#e8edf5', 'label' => 'Diproses', 'icon' => 'bx-loader'],
+                        'menunggu'    => ['label' => 'Menunggu Respons', 'icon' => 'bx-time-five'],
+                        'dihubungi'   => ['label' => 'Dihubungi Pemberi Kerja', 'icon' => 'bxl-whatsapp'],
+                        'interview'   => ['label' => 'Tahap Interview', 'icon' => 'bx-user-voice'],
+                        'diterima'    => ['label' => 'Diterima Bekerja!', 'icon' => 'bx-check-circle'],
+                        'tidak_lolos' => ['label' => 'Belum Sesuai', 'icon' => 'bx-x-circle'],
+                        default       => ['label' => 'Diproses', 'icon' => 'bx-loader'],
                     };
                 @endphp
 
-                <div class="bg-white rounded-3xl overflow-hidden transition-all duration-200 border" style="border-color: #e2e8f0; box-shadow: 0 6px 20px rgba(0,0,0,.04);">
+                <div class="bg-white rounded-3xl overflow-hidden transition-all duration-200 border border-black/15 shadow-sm">
                     
-                    {{-- Status Bar Top (Sangat Jelas & Berjarak) --}}
-                    <div class="px-6 py-4 flex items-center justify-between gap-3"
-                         style="background: {{ $statusConfig['bg'] }}; border-bottom: 1.5px solid {{ $statusConfig['border'] }};">
-                        <div class="flex items-center gap-2.5">
-                            <i class='bx {{ $statusConfig['icon'] }} text-lg' style="color: {{ $statusConfig['text'] }};"></i>
-                            <span class="text-xs font-black tracking-wide" style="color: {{ $statusConfig['text'] }};">
-                                {{ $statusConfig['label'] }}
-                            </span>
+                    {{-- Status Bar Top (Wrap Garis Hitam & Tulisan Hitam) --}}
+                    <div class="px-6 py-3.5 flex items-center justify-between gap-3 bg-white border-b border-black/15">
+                        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md border border-black text-black text-xs font-bold bg-white">
+                            <i class='bx {{ $statusConfig['icon'] }} text-sm'></i>
+                            <span>{{ $statusConfig['label'] }}</span>
                         </div>
-                        <span class="text-xs font-bold text-slate-400">
+                        <span class="text-xs font-bold text-black/60">
                             {{ $app->application_date ? $app->application_date->format('d M Y') : $app->created_at->format('d M Y') }}
                         </span>
                     </div>
@@ -67,57 +64,57 @@
                                 <i class='{{ $app->jobListing->category_icon }} text-2xl'></i>
                             </div>
                             <div class="min-w-0 flex-1">
-                                <h3 class="font-black text-base text-slate-800 leading-snug mb-1.5 truncate">
-                                    <a href="{{ route('applicant.job.detail', $app->job_listing_id) }}" class="hover:underline" style="color: #24427b;">
+                                <h3 class="font-black text-base text-black leading-snug mb-1.5 truncate">
+                                    <a href="{{ route('applicant.job.detail', $app->job_listing_id) }}" class="hover:underline text-black">
                                         {{ $app->jobListing->position }}
                                     </a>
                                 </h3>
-                                <p class="text-xs text-slate-600 font-extrabold mb-2 truncate">{{ $app->jobListing->company->company_name }}</p>
+                                <p class="text-xs text-black font-extrabold mb-2 truncate">{{ $app->jobListing->company->company_name }}</p>
                                 
-                                {{-- Kota & Gaji Dipisah dengan Berjarak Nyaman --}}
-                                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 6px;">
-                                    <span style="display: inline-flex; align-items: center; gap: 6px; background: #f1f5f9; color: #334155; padding: 6px 14px; border-radius: 10px; font-size: 11.5px; font-weight: 700; border: 1px solid #e2e8f0;">
+                                {{-- Kota & Gaji Wrap Garis Hitam & Tulisan Hitam --}}
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 6px;">
+                                    <span style="display: inline-flex; align-items: center; gap: 5px; background: #ffffff; color: #000000; padding: 4px 12px; border-radius: 8px; font-size: 11.5px; font-weight: 700; border: 1px solid rgba(0,0,0,0.25);">
                                         📍 {{ $app->jobListing->company->city }}
                                     </span>
-                                    <span style="display: inline-flex; align-items: center; gap: 6px; background: #eef2fb; color: #24427b; padding: 6px 14px; border-radius: 10px; font-size: 11.5px; font-weight: 800; border: 1px solid #c7d6f5;">
+                                    <span style="display: inline-flex; align-items: center; gap: 5px; background: #ffffff; color: #000000; padding: 4px 12px; border-radius: 8px; font-size: 11.5px; font-weight: 800; border: 1px solid rgba(0,0,0,0.25);">
                                         💰 {{ $app->jobListing->salary_range }}
                                     </span>
                                 </div>
                             </div>
                         </div>
 
-                        {{-- Details Box (Wrap 1 - Spasial & Lega) --}}
+                        {{-- Details Box (Wrap Garis Hitam & Tulisan Hitam) --}}
                         <div class="grid grid-cols-2 gap-4 rounded-2xl text-xs" 
-                             style="background: #f8faff; border: 1.5px solid #e8edf5; padding: 20px 22px; margin-bottom: 20px;">
+                             style="background: #ffffff; border: 1px solid rgba(0,0,0,0.15); padding: 18px 20px; margin-bottom: 20px;">
                             <div>
-                                <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 block mb-1">JENIS KERJA</span>
-                                <span class="font-black text-slate-800 text-xs sm:text-sm">{{ $app->jobListing->work_type_label }}</span>
+                                <span class="text-[10px] font-extrabold uppercase tracking-widest text-black/60 block mb-1">JENIS KERJA</span>
+                                <span class="font-black text-black text-xs sm:text-sm">{{ $app->jobListing->work_type_label }}</span>
                             </div>
                             <div>
-                                <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 block mb-1">KONTAK LAMAR</span>
-                                <span class="font-extrabold text-xs sm:text-sm inline-flex items-center gap-1.5 {{ $app->contact_method === 'whatsapp' ? 'text-green-600' : 'text-blue-600' }}">
+                                <span class="text-[10px] font-extrabold uppercase tracking-widest text-black/60 block mb-1">KONTAK LAMAR</span>
+                                <span class="font-extrabold text-xs sm:text-sm text-black inline-flex items-center gap-1.5">
                                     {!! $app->contact_method === 'whatsapp' ? "<i class='bx bxl-whatsapp text-base'></i> WhatsApp" : "<i class='bx bx-envelope text-base'></i> Email" !!}
                                 </span>
                             </div>
                         </div>
 
-                        {{-- Status Message Banner (Wrap 2 - Berjarak Nyaman dari Wrap 1) --}}
+                        {{-- Status Message Banner (Wrap Garis Hitam & Tulisan Hitam) --}}
                         @if($app->status === 'menunggu')
-                            <div class="rounded-2xl text-center bg-slate-50 border border-slate-200" style="padding: 18px 22px;">
-                                <p class="text-xs text-slate-500 font-bold italic">Menunggu respons & verifikasi dari pihak pemberi kerja...</p>
+                            <div class="rounded-xl text-center bg-white border border-black/20" style="padding: 14px 18px;">
+                                <p class="text-xs text-black font-medium italic">Menunggu respons & verifikasi dari pihak pemberi kerja...</p>
                             </div>
                         @elseif($app->status === 'dihubungi')
-                            <div class="rounded-2xl flex items-center gap-3.5" style="background: #eef2fb; border: 1.5px solid #c7d6f5; padding: 18px 22px;">
-                                <i class='bx bxl-whatsapp text-2xl shrink-0' style="color: #16a34a;"></i>
-                                <span class="text-xs font-bold text-slate-700 leading-relaxed">Pemberi kerja akan segera menghubungi Anda via WhatsApp. Harap pastikan nomor HP aktif.</span>
+                            <div class="rounded-xl flex items-center gap-3 bg-white border border-black/20" style="padding: 14px 18px;">
+                                <i class='bx bxl-whatsapp text-2xl shrink-0 text-black'></i>
+                                <span class="text-xs font-bold text-black leading-relaxed">Pemberi kerja akan segera menghubungi Anda via WhatsApp. Harap pastikan nomor HP aktif.</span>
                             </div>
                         @elseif($app->status === 'diterima')
-                            <div class="rounded-2xl text-center" style="background: #e6f8f6; border: 1.5px solid #99f6e4; padding: 18px 22px;">
-                                <p class="text-xs font-black" style="color: #2a9d8f;">🎉 Selamat! Anda telah diterima bekerja di tempat ini!</p>
+                            <div class="rounded-xl text-center bg-white border-2 border-black" style="padding: 14px 18px;">
+                                <p class="text-xs font-black text-black">🎉 Selamat! Anda telah diterima bekerja di tempat ini!</p>
                             </div>
                         @elseif($app->status === 'tidak_lolos')
-                            <div class="rounded-2xl text-center" style="background: #fff5f5; border: 1.5px solid #fecaca; padding: 18px 22px;">
-                                <p class="text-xs font-bold text-red-500">Tetap semangat! Masih banyak peluang lowongan lain di Near Job.</p>
+                            <div class="rounded-xl text-center bg-white border border-black/20" style="padding: 14px 18px;">
+                                <p class="text-xs font-bold text-black">Tetap semangat! Masih banyak peluang lowongan lain di Near Job.</p>
                             </div>
                         @endif
                     </div>

@@ -47,19 +47,19 @@
                     <label class="block text-xs font-bold text-slate-700">
                         <i class='bx bx-id-card text-blue-600 align-middle'></i> Foto KTP (Opsional)
                     </label>
-                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded border border-black/30 text-black">
                         Opsional — Untuk Tanda Verify
                     </span>
                 </div>
                 <p class="text-[11px] text-slate-500 mb-2">Unggah foto KTP bersifat <strong>opsional</strong> jika Anda ingin profil memiliki tanda verifikasi resmi (Verify). Sistem otomatis memberi <strong>watermark permanen "NEAR JOB"</strong> sebelum disimpan di database demi keamanan data Anda.</p>
-                <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#24427b] file:text-white hover:file:bg-blue-900 cursor-pointer">
+                <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:text-white cursor-pointer" style="--tw-file-bg: #5680d8;">
                 <div wire:loading wire:target="ktp_file" class="text-xs text-blue-600 font-bold mt-1.5">
                     <i class='bx bx-loader-alt bx-spin'></i> Memproses KTP & watermark...
                 </div>
                 @if($ktp_file)
                     <div class="mt-2 p-2 bg-white rounded-lg border border-slate-200 flex items-center gap-2">
                         <img src="{{ $ktp_file->temporaryUrl() }}" class="w-12 h-9 object-cover rounded border" alt="Preview KTP">
-                        <p class="text-[11px] text-emerald-600 font-bold">✓ Akun akan otomatis mendapatkan tanda verifikasi resmi</p>
+                        <p class="text-[11px] text-black font-bold">✓ Akun akan otomatis mendapatkan tanda verifikasi resmi</p>
                     </div>
                 @endif
                 @error('ktp_file') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
@@ -142,12 +142,12 @@
                     <input type="text" wire:model="newSkill" wire:keydown.enter.prevent="addSkill"
                         class="flex-grow px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white"
                         placeholder="Memasak, kasir, MS Excel...">
-                    <button type="button" wire:click="addSkill" class="px-4 py-2.5 bg-blue-600 text-white font-bold text-sm rounded-xl hover:bg-blue-700 shrink-0">+</button>
+                    <button type="button" wire:click="addSkill" class="px-4 py-2.5 text-white font-bold text-sm rounded-xl shrink-0 cursor-pointer" style="background: #5680d8;">+</button>
                 </div>
                 <div class="flex flex-wrap gap-2">
                     @foreach($skills as $i => $sk)
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-semibold rounded-lg border border-blue-100">
-                            {{ $sk }}<button type="button" wire:click="removeSkill({{ $i }})" class="hover:text-red-500 font-bold">×</button>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-black/30 text-black text-xs font-semibold rounded-lg bg-white">
+                            {{ $sk }}<button type="button" wire:click="removeSkill({{ $i }})" class="hover:opacity-75 font-bold text-black cursor-pointer">×</button>
                         </span>
                     @endforeach
                 </div>
@@ -163,8 +163,8 @@
                 <input type="text" wire:model="salary_expectation" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="Rp2.500.000 – Rp3.000.000">
             </div>
 
-            <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3 text-xs text-emerald-700">
-                <i class='bx bx-gift'></i> Akun baru mendapatkan <strong>3 kesempatan melamar gratis!</strong>
+            <div class="border border-black/20 rounded-xl p-3 text-xs text-black font-medium bg-white">
+                <i class='bx bx-gift text-black'></i> Akun baru mendapatkan <strong>3 kesempatan melamar gratis!</strong>
             </div>
 
             <div class="flex gap-3">

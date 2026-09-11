@@ -3,7 +3,7 @@
         {{-- Logo --}}
         <div style="text-align: center; margin-bottom: 24px;">
             <a href="{{ route('home') }}" style="display: inline-flex; align-items: center; gap: 10px; text-decoration: none;">
-                <div style="width: 44px; height: 44px; border-radius: 16px; display: flex; align-items: center; justify-content: center; background: #2563eb; box-shadow: 0 8px 20px rgba(37,99,235,0.3);">
+                <div style="width: 44px; height: 44px; border-radius: 16px; display: flex; align-items: center; justify-content: center; background: #5680d8; box-shadow: 0 8px 20px rgba(86,128,216,0.3);">
                     <svg style="width: 22px; height: 22px; color: white;" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                 </div>
                 <span style="font-size: 24px; font-weight: 900; color: #0f172a; letter-spacing: -0.02em;">NEAR JOB</span>
@@ -12,7 +12,7 @@
 
         {{-- Distinctive NearJob Card --}}
         <div style="background: #ffffff; border-radius: 28px; padding: 32px 28px; box-shadow: 0 20px 50px rgba(15,23,42,0.1); border: 1px solid #e2e8f0; position: relative; overflow: hidden;">
-            <div style="height: 5px; width: 100%; background: linear-gradient(90deg, #2563eb, #3b82f6, #10b981); position: absolute; top: 0; left: 0;"></div>
+            <div style="height: 5px; width: 100%; background: #5680d8; position: absolute; top: 0; left: 0;"></div>
 
             <div style="text-align: center; margin-bottom: 24px;">
                 <h1 style="font-size: 22px; font-weight: 900; color: #0f172a; line-height: 1.3; margin: 0 0 6px;">
@@ -61,7 +61,7 @@
                     @error('password') <p style="font-size: 11px; color: #ef4444; font-weight: bold; margin: 4px 0 0;">{{ $message }}</p> @enderror
                 </div>
                 <button type="submit"
-                    style="width: 100%; padding: 13px; background: #2563eb; color: white; font-weight: 800; border-radius: 12px; font-size: 13.5px; border: none; cursor: pointer; box-shadow: 0 4px 14px rgba(37,99,235,0.3); display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    style="width: 100%; padding: 13px; background: #5680d8; color: white; font-weight: 800; border-radius: 12px; font-size: 13.5px; border: none; cursor: pointer; box-shadow: 0 4px 14px rgba(86,128,216,0.3); display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <i class='bx bx-log-in' style="font-size: 18px;"></i> Masuk
                 </button>
             </form>
@@ -70,11 +70,11 @@
             <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #f1f5f9; text-align: center; display: flex; flex-direction: column; gap: 8px;">
                 <div style="font-size: 13px; color: #64748b; font-weight: 600;">
                     Belum punya akun? 
-                    <a href="{{ route('register.applicant') }}" style="font-weight: 900; color: #2563eb; text-decoration: underline;">
+                    <a href="{{ route('register.applicant') }}" style="font-weight: 900; color: #5680d8; text-decoration: underline;">
                         Daftar
                     </a>
                     ·
-                    <a href="{{ route('register.company') }}" style="font-weight: 800; color: #e60067; text-decoration: underline;">
+                    <a href="{{ route('register.company') }}" style="font-weight: 800; color: #000000; text-decoration: underline;">
                         Untuk Perusahaan
                     </a>
                 </div>

@@ -15,7 +15,7 @@
                 <div>
                     <div class="flex items-center justify-between mb-1">
                         <label class="block text-xs font-bold text-slate-700">NIK Pemilik Usaha</label>
-                        <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
+                        <span class="text-[10px] font-bold text-black border border-black/30 px-2 py-0.5 rounded bg-white">
                             Terproteksi Masking
                         </span>
                     </div>
@@ -23,37 +23,37 @@
                     <p class="text-[11px] text-slate-400 mt-1">NIK lengkap tersimpan aman dan tidak dipublikasikan.</p>
                 </div>
 
-                <!-- Verifikasi KTP Section -->
-                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5">
+                <!-- Verifikasi KTP Section (Wrap Garis Hitam & Tulisan Hitam) -->
+                <div class="p-3.5 bg-white rounded-xl border border-black/20 space-y-2.5">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-slate-700">Status Verifikasi KTP</span>
+                        <span class="text-xs font-bold text-black">Status Verifikasi KTP</span>
                         @if($company->is_verified || $company->ktp_path)
-                            <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md">
-                                <i class='bx bxs-badge-check text-sm'></i> Terverifikasi (Watermark NEAR JOB)
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 border border-black text-black rounded bg-white">
+                                <i class='bx bxs-badge-check text-sm text-black'></i> Terverifikasi (Watermark NEAR JOB)
                             </span>
                         @else
-                            <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-md">
-                                <i class='bx bx-time-five text-sm'></i> Belum Verifikasi
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 border border-black/40 text-black rounded bg-white">
+                                <i class='bx bx-time-five text-sm text-black'></i> Belum Verifikasi
                             </span>
                         @endif
                     </div>
 
                     @if($company->ktp_path)
                         <div>
-                            <p class="text-[11px] text-slate-500 mb-1">Foto KTP Resmi (Dengan Watermark Keamanan):</p>
-                            <img src="{{ $company->ktp_url }}" alt="KTP Pemilik Usaha" class="w-full max-w-[260px] h-32 object-cover rounded-lg border border-slate-200 shadow-sm">
+                            <p class="text-[11px] text-black mb-1 font-medium">Foto KTP Resmi (Dengan Watermark Keamanan):</p>
+                            <img src="{{ $company->ktp_url }}" alt="KTP Pemilik Usaha" class="w-full max-w-[260px] h-32 object-cover rounded-lg border border-black/20 shadow-sm">
                         </div>
                     @endif
 
                     <div class="pt-1">
-                        <label class="block text-[11px] font-bold text-slate-600 mb-1">
+                        <label class="block text-[11px] font-bold text-black mb-1">
                             {{ $company->ktp_path ? 'Perbarui Foto KTP Pemilik Usaha:' : 'Unggah Foto KTP Pemilik Usaha:' }}
                         </label>
-                        <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#001b3a] file:text-white hover:file:bg-blue-900 cursor-pointer">
+                        <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:text-white cursor-pointer" style="--tw-file-bg: #5680d8;">
                         <p class="text-[10px] text-slate-400 mt-1">Foto otomatis diberi watermark pengaman "NEAR JOB" sebelum disimpan.</p>
                         
-                        <div wire:loading wire:target="ktp_file" class="text-xs text-blue-600 font-medium mt-1">
-                            <i class='bx bx-loader-alt bx-spin'></i> Memproses watermark & menyimpan KTP...
+                        <div wire:loading wire:target="ktp_file" class="text-xs text-black font-medium mt-1">
+                            <i class='bx bx-loader-alt bx-spin text-black'></i> Memproses watermark & menyimpan KTP...
                         </div>
                     </div>
                 </div>

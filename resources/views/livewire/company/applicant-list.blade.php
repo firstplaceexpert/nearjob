@@ -41,8 +41,8 @@
                                     <div class="flex items-center gap-1.5 flex-wrap">
                                         <h3 class="font-extrabold text-lg text-slate-800">{{ $app->user->name }}</h3>
                                         @if($app->user->isIdentityVerified() || $profile?->is_verified)
-                                            <span class="inline-flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200" title="Identitas KTP Pelamar Terverifikasi">
-                                                <i class='bx bxs-badge-check'></i> KTP Terverifikasi
+                                            <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded border border-black text-black bg-white" title="Identitas KTP Pelamar Terverifikasi">
+                                                <i class='bx bxs-badge-check text-black'></i> KTP Terverifikasi
                                             </span>
                                         @endif
                                     </div>
@@ -53,16 +53,9 @@
                                 </div>
                             </div>
 
-                            {{-- Status dropdown --}}
+                            {{-- Status dropdown (Wrap Garis Hitam & Tulisan Hitam) --}}
                             <select wire:change="updateStatus({{ $app->id }}, $event.target.value)"
-                                class="text-[10px] font-bold uppercase tracking-wider rounded-xl border-2 appearance-none px-2.5 py-2 focus:ring-0 focus:outline-none cursor-pointer"
-                                style="
-                                    {{ $app->status === 'menunggu' ? 'border-color: #fde68a; background: #fffbeb; color: #d97706;' : '' }}
-                                    {{ $app->status === 'dihubungi' ? 'border-color: #c7d6f5; background: #eef2fb; color: #5680d8;' : '' }}
-                                    {{ $app->status === 'interview' ? 'border-color: #ddd6fe; background: #f5f0ff; color: #7c3aed;' : '' }}
-                                    {{ $app->status === 'diterima' ? 'border-color: #99f6e4; background: #e6f8f6; color: #2a9d8f;' : '' }}
-                                    {{ $app->status === 'tidak_lolos' ? 'border-color: #fecaca; background: #fff5f5; color: #ef4444;' : '' }}
-                                ">
+                                class="text-[10px] font-bold uppercase tracking-wider rounded-xl border border-black bg-white text-black appearance-none px-3 py-2 focus:ring-0 focus:outline-none cursor-pointer">
                                 @foreach($statuses as $val => $label)
                                     <option value="{{ $val }}" {{ $app->status === $val ? 'selected' : '' }}>{{ $label }}</option>
                                 @endforeach
@@ -70,7 +63,7 @@
                         </div>
 
                         {{-- Profile Info --}}
-                        <div class="grid grid-cols-2 gap-3 p-3 rounded-xl mb-3" style="background: #f8faff; border: 1px solid #e8edf5;">
+                        <div class="grid grid-cols-2 gap-3 p-3 rounded-xl mb-3 bg-white border border-black/15">
                             <div>
                                 <p class="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">Pengalaman</p>
                                 <p class="text-xs font-semibold text-slate-700 line-clamp-2">{{ $profile?->work_experience ?: ($profile?->education_institution ?? '-') }}</p>
@@ -83,7 +76,7 @@
                                 <p class="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">Keahlian</p>
                                 <div class="flex flex-wrap gap-1">
                                     @forelse($profile?->skills ?? [] as $skill)
-                                        <span class="text-[9px] font-bold px-2 py-0.5 rounded-md" style="background: #eef2fb; color: #5680d8;">{{ $skill }}</span>
+                                        <span class="text-[9px] font-bold px-2 py-0.5 rounded border border-black/30 text-black bg-white">{{ $skill }}</span>
                                     @empty
                                         <span class="text-xs text-slate-400">-</span>
                                     @endforelse
@@ -92,21 +85,21 @@
                         </div>
                     </div>
 
-                    {{-- Contact Actions --}}
+                    {{-- Contact Actions (Tombol Biru Anchor) --}}
                     <div class="flex gap-2 px-4 pb-4 pt-0">
                         @if($app->contact_method === 'whatsapp')
                             <a href="https://wa.me/{{ preg_replace('/^0/', '62', preg_replace('/[^0-9]/', '', $app->user->whatsapp)) }}"
                                target="_blank"
-                               class="flex-1 py-2.5 text-center text-xs font-bold rounded-xl transition-all"
-                               style="background: #e6f8f6; color: #2a9d8f; border: 1px solid #99f6e4;">
-                                <i class='bx bxl-whatsapp'></i> Hubungi WA
+                               class="flex-1 py-2.5 text-center text-xs font-extrabold rounded-xl transition-all text-white shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"
+                               style="background: #5680d8; box-shadow: 0 4px 12px rgba(86,128,216,.3);">
+                                <i class='bx bxl-whatsapp text-sm'></i> Hubungi WA
                             </a>
                         @else
                             <a href="mailto:{{ $app->user->email }}"
                                target="_blank"
-                               class="flex-1 py-2.5 text-center text-xs font-bold rounded-xl transition-all"
-                               style="background: #eef2fb; color: #5680d8; border: 1px solid #c7d6f5;">
-                                <i class='bx bx-envelope'></i> Hubungi Email
+                               class="flex-1 py-2.5 text-center text-xs font-extrabold rounded-xl transition-all text-white shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"
+                               style="background: #5680d8; box-shadow: 0 4px 12px rgba(86,128,216,.3);">
+                                <i class='bx bx-envelope text-sm'></i> Hubungi Email
                             </a>
                         @endif
 

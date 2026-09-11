@@ -29,11 +29,10 @@
             <div class="space-y-4">
                 @foreach($jobs as $job)
                 <div class="bg-white rounded-2xl p-4 relative" style="border: 1px solid #e8edf5; box-shadow: 0 2px 10px rgba(0,0,0,.04);">
-                    {{-- Edit button --}}
+                    {{-- Edit button (Wrap Garis Hitam & Tulisan Hitam) --}}
                     <div class="absolute top-4 right-4">
                         <a href="{{ route('company.jobs.edit', $job->id) }}"
-                           class="flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-lg transition-all"
-                           style="background: #eef2fb; color: #5680d8;">
+                           class="flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-lg transition-all border border-black text-black bg-white hover:opacity-75">
                             <i class='bx bx-edit-alt'></i> Edit
                         </a>
                     </div>
@@ -42,40 +41,37 @@
                         <h3 class="font-extrabold text-lg text-slate-800">{{ $job->position }}</h3>
                         <div class="flex items-center gap-2 mt-1">
                             @php
-                                $statusColor = $job->status === 'active' ? '#2a9d8f' : ($job->status === 'filled' ? '#5680d8' : '#94a3b8');
-                                $statusBg = $job->status === 'active' ? '#e6f8f6' : ($job->status === 'filled' ? '#eef2fb' : '#f1f5f9');
                                 $statusLabel = $job->status === 'active' ? 'Aktif' : ($job->status === 'filled' ? 'Terisi' : 'Ditutup');
                             @endphp
-                            <span class="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider"
-                                  style="background: {{ $statusBg }}; color: {{ $statusColor }};">
+                            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded border border-black text-black uppercase tracking-wider bg-white">
                                 {{ $statusLabel }}
                             </span>
                             <span class="text-xs text-slate-400">{{ $job->created_at->format('d M Y') }}</span>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-4 gap-2 p-3 rounded-xl mb-3 text-center" style="background: #f8faff; border: 1px solid #e8edf5;">
+                    <div class="grid grid-cols-4 gap-2 p-3 rounded-xl mb-3 text-center bg-white border border-black/15">
                         <div>
                             <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Pelamar</p>
-                            <p class="text-base font-black" style="color: #5680d8;">{{ $job->applications_count }}</p>
+                            <p class="text-base font-black text-black">{{ $job->applications_count }}</p>
                         </div>
                         <div>
                             <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Kuota</p>
-                            <p class="text-base font-black text-indigo-600">{{ $job->quota ?? 1 }} Org</p>
+                            <p class="text-base font-black text-black">{{ $job->quota ?? 1 }} Org</p>
                         </div>
                         <div>
                             <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Bidang</p>
-                            <p class="text-xs font-bold text-slate-600 truncate">{{ \App\Models\JobListing::jobCategories()[$job->job_category] ?? '-' }}</p>
+                            <p class="text-xs font-bold text-black truncate">{{ \App\Models\JobListing::jobCategories()[$job->job_category] ?? '-' }}</p>
                         </div>
                         <div>
                             <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Jenis</p>
-                            <p class="text-xs font-bold text-slate-600">{{ \App\Models\JobListing::workTypes()[$job->work_type] ?? '-' }}</p>
+                            <p class="text-xs font-bold text-black">{{ \App\Models\JobListing::workTypes()[$job->work_type] ?? '-' }}</p>
                         </div>
                     </div>
 
                     <a href="{{ route('company.jobs.applicants', $job->id) }}"
-                       class="block w-full py-3 font-bold rounded-xl text-center text-sm transition-all"
-                       style="background: #eef2fb; color: #5680d8; border: 1px solid #c7d6f5;">
+                       class="block w-full py-3 font-bold rounded-xl text-center text-sm transition-all text-white cursor-pointer"
+                       style="background: #5680d8; box-shadow: 0 4px 12px rgba(86,128,216,.3);">
                         Lihat {{ $job->applications_count }} Pelamar →
                     </a>
                 </div>

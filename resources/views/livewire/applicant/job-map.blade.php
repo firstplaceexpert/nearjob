@@ -148,13 +148,13 @@
                     </div>
                 </div>
 
-                {{-- Row 2: Info Jarak, Kuota & Pendidikan --}}
-                <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#64748b;font-weight:600;margin-bottom:10px;background:#f8faff;padding:6px 10px;border-radius:10px;flex-wrap:wrap;">
+                {{-- Row 2: Info Jarak, Kuota & Pendidikan (Wrap Garis Hitam & Tulisan Hitam) --}}
+                <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#000000;font-weight:600;margin-bottom:10px;background:#ffffff;padding:6px 10px;border-radius:10px;border:1px solid rgba(0,0,0,0.18);flex-wrap:wrap;">
                     <span>📍 <b>{{ $job->distance }} km</b></span>
                     <span>•</span>
-                    <span style="color:#2563eb;font-weight:800;background:#eff6ff;padding:1px 6px;border-radius:6px;border:1px solid #bfdbfe;">🎯 <b>{{ $job->quota ?? 1 }} Kuota</b></span>
+                    <span style="color:#000000;font-weight:800;background:#ffffff;padding:1px 6px;border-radius:6px;border:1px solid rgba(0,0,0,0.3);">🎯 <b>{{ $job->quota ?? 1 }} Kuota</b></span>
                     <span>•</span>
-                    <span style="color:#ef6c00;">🎓 Min. {{ strtoupper($job->min_education) }}</span>
+                    <span style="color:#000000;">🎓 Min. {{ strtoupper($job->min_education) }}</span>
                 </div>
 
                 {{-- Row 3: Tag WA/Email + Tombol Lamar --}}
@@ -165,15 +165,15 @@
                             $cardHasMail = !empty(trim($job->contact_email ?? ''));
                         @endphp
                         @if($cardHasWa && $cardHasMail)
-                            <span style="font-size:10px;font-weight:700;background:#dcfce7;color:#16a34a;padding:4px 9px;border-radius:8px;display:inline-flex;align-items:center;gap:3px;" title="Tersedia WhatsApp & Email (Prioritas Direct ke WA)">
+                            <span style="font-size:10px;font-weight:700;background:#ffffff;color:#000000;border:1px solid rgba(0,0,0,0.3);padding:4px 9px;border-radius:8px;display:inline-flex;align-items:center;gap:3px;" title="Tersedia WhatsApp & Email">
                                 <i class='bx bxl-whatsapp'></i> WA & Email
                             </span>
                         @elseif($cardHasWa)
-                            <span style="font-size:10px;font-weight:700;background:#dcfce7;color:#16a34a;padding:4px 9px;border-radius:8px;display:inline-flex;align-items:center;gap:3px;">
-                                <i class='bx bxl-whatsapp'></i> WA
+                            <span style="font-size:10px;font-weight:700;background:#ffffff;color:#000000;border:1px solid rgba(0,0,0,0.3);padding:4px 9px;border-radius:8px;display:inline-flex;align-items:center;gap:3px;">
+                                <i class='bx bxl-whatsapp'></i> WhatsApp
                             </span>
                         @elseif($cardHasMail)
-                            <span style="font-size:10px;font-weight:700;background:#eef2fb;color:#5680d8;padding:4px 9px;border-radius:8px;display:inline-flex;align-items:center;gap:3px;">
+                            <span style="font-size:10px;font-weight:700;background:#ffffff;color:#000000;border:1px solid rgba(0,0,0,0.3);padding:4px 9px;border-radius:8px;display:inline-flex;align-items:center;gap:3px;">
                                 <i class='bx bx-envelope'></i> Email
                             </span>
                         @endif
@@ -525,22 +525,22 @@
                 +'<div style="font-size:12px;color:#475569;font-weight:600;">💰 '+j.salary+'</div>'
                 +'<div style="font-size:12px;color:#475569;font-weight:600;">🕐 '+j.workType+'</div>'
                 +'<div style="font-size:12px;color:#475569;font-weight:600;">🎓 Min. '+j.education+'</div>'
-                +'<div style="font-size:12px;color:#2563eb;font-weight:800;grid-column:span 2;background:#eff6ff;padding:8px 12px;border-radius:10px;border:1px solid #bfdbfe;">🎯 Kuota: '+(j.quota||1)+' Lowongan Dibutuhkan</div>'
+                +'<div style="font-size:12px;color:#000000;font-weight:800;grid-column:span 2;background:#ffffff;padding:8px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.25);">🎯 Kuota: '+(j.quota||1)+' Lowongan Dibutuhkan</div>'
                 +'</div>'
                 +'<div style="display:flex;gap:10px;">'
                 +(!IS_AUTH
-                    ? '<button onclick="window.Livewire.dispatch(\'open-quick-auth-modal\', {jobId: '+j.id+', title: \'Masuk / Buat Akun untuk Melamar\', subtitle: \'Lamar lowongan '+j.position.replace(/'/g, "\\'")+' di '+j.company.replace(/'/g, "\\'")+'\'})" style="flex:1;padding:14px;text-align:center;font-size:13px;font-weight:700;color:#2563eb;background:#eff6ff;border:2px solid #bfdbfe;border-radius:14px;cursor:pointer;">Lihat Detail</button>'
-                    : '<a href="'+j.applyRoute+'" style="flex:1;padding:14px;text-align:center;font-size:13px;font-weight:700;color:#475569;background:white;border:2px solid #e2e8f0;border-radius:14px;text-decoration:none;">Detail</a>'
+                    ? '<button onclick="window.Livewire.dispatch(\'open-quick-auth-modal\', {jobId: '+j.id+', title: \'Masuk / Buat Akun untuk Melamar\', subtitle: \'Lamar lowongan '+j.position.replace(/'/g, "\\'")+' di '+j.company.replace(/'/g, "\\'")+'\'})" style="flex:1;padding:14px;text-align:center;font-size:13px;font-weight:700;color:#000000;background:white;border:2px solid #000000;border-radius:14px;cursor:pointer;">Lihat Detail</button>'
+                    : '<a href="'+j.applyRoute+'" style="flex:1;padding:14px;text-align:center;font-size:13px;font-weight:700;color:#000000;background:white;border:2px solid #000000;border-radius:14px;text-decoration:none;">Detail</a>'
                 )
                 +(!IS_AUTH
-                    ? '<button onclick="window.Livewire.dispatch(\'open-quick-auth-modal\', {jobId: '+j.id+', title: \'Masuk / Buat Akun untuk Melamar\', subtitle: \'Lamar lowongan '+j.position.replace(/'/g, "\\'")+' di '+j.company.replace(/'/g, "\\'")+'\'})" style="flex:2;padding:14px;font-size:13px;font-weight:800;color:white;background:'+(j.hasWa?'#16a34a':'#2563eb')+';border:none;border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px '+(j.hasWa?'rgba(22,163,74,.4)':'rgba(37,99,235,.4)')+';"><i class=\'bx '+(j.hasWa?'bxl-whatsapp':'bx-envelope')+'\'></i> '+(j.hasWa?'Lamar via WhatsApp':'Lamar via Email')+'</button>'
+                    ? '<button onclick="window.Livewire.dispatch(\'open-quick-auth-modal\', {jobId: '+j.id+', title: \'Masuk / Buat Akun untuk Melamar\', subtitle: \'Lamar lowongan '+j.position.replace(/'/g, "\\'")+' di '+j.company.replace(/'/g, "\\'")+'\'})" style="flex:2;padding:14px;font-size:13px;font-weight:800;color:white;background:#5680d8;border:none;border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px rgba(86,128,216,.4);"><i class=\'bx '+(j.hasWa?'bxl-whatsapp':'bx-envelope')+'\'></i> '+(j.hasWa?'Lamar via WhatsApp':'Lamar via Email')+'</button>'
                     : (CRED>0
-                        ? '<button onclick="njobApply('+j.id+')" style="flex:2;padding:14px;font-size:13px;font-weight:800;color:white;background:'+(j.hasWa?'#16a34a':'#2563eb')+';border:none;border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px '+(j.hasWa?'rgba(22,163,74,.4)':'rgba(37,99,235,.4)')+';"><i class=\'bx '+(j.hasWa?'bxl-whatsapp':'bx-envelope')+'\'></i> '+(j.hasWa?'Lamar via WhatsApp':'Lamar via Email')+' <span style="background:rgba(255,255,255,.25);padding:2px 8px;border-radius:20px;font-size:10px;">-1 Kuota</span></button>'
+                        ? '<button onclick="njobApply('+j.id+')" style="flex:2;padding:14px;font-size:13px;font-weight:800;color:white;background:#5680d8;border:none;border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px rgba(86,128,216,.4);"><i class=\'bx '+(j.hasWa?'bxl-whatsapp':'bx-envelope')+'\'></i> '+(j.hasWa?'Lamar via WhatsApp':'Lamar via Email')+' <span style="background:rgba(255,255,255,.25);padding:2px 8px;border-radius:20px;font-size:10px;">-1 Kuota</span></button>'
                         : '<button style="flex:2;padding:14px;font-size:13px;font-weight:800;background:#cbd5e1;color:white;border:none;border-radius:14px;cursor:not-allowed;display:flex;align-items:center;justify-content:center;">Kuota Habis</button>'
                     )
                 )
                 +'</div>'
-                +(IS_AUTH && CRED<=0?'<div style="margin-top:12px;padding:12px;background:#fff5f5;border:1px solid #fecaca;border-radius:12px;text-align:center;font-size:12px;font-weight:700;color:#dc2626;">Kuota lamaran habis · <a href="'+j.topupRoute+'" style="color:#5680d8;font-weight:800;text-decoration:underline;">Isi Ulang Kuota Lamaran</a></div>':'');
+                +(IS_AUTH && CRED<=0?'<div style="margin-top:12px;padding:12px;background:#ffffff;border:1px solid rgba(0,0,0,0.3);border-radius:12px;text-align:center;font-size:12px;font-weight:700;color:#000000;">Kuota lamaran habis · <a href="'+j.topupRoute+'" style="color:#5680d8;font-weight:800;text-decoration:underline;">Isi Ulang Kuota Lamaran</a></div>':'');
             document.getElementById('njob-sheet-body').innerHTML=html;
             const sheet = document.getElementById('njob-sheet');
             sheet.style.display = 'block';
