@@ -5,6 +5,7 @@ namespace App\Livewire\Applicant;
 use App\Models\JobListing;
 use App\Models\Application;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -21,9 +22,27 @@ class JobMap extends Component
     public int $filterRadius = 25; // km
     public ?int $filterMinSalary = null;
 
-    // Lokasi pengguna (dari profil, default Yogyakarta)
-    protected float $userLat = -7.7956;
-    protected float $userLon = 110.3695;
+    // Lokasi pengguna (default Yogyakarta, dapat diupdate otomatis via GPS browser)
+    public float $userLat = -7.7956;
+    public float $userLon = 110.3695;
+    public bool $hasGpsLocation = false;
+
+    public function setLocation(float $lat, float $lon): void
+    {
+        $this->userLat = $lat;
+        $this->userLon = $lon;
+        $this->hasGpsLocation = true;
+
+        if (Auth::check() && Auth::user()->isApplicant()) {
+            $profile = Auth::user()->applicantProfile;
+            if ($profile) {
+                $profile->update([
+                    'latitude' => $lat,
+                    'longitude' => $lon,
+                ]);
+            }
+        }
+    }
 
     public function selectJob(int $id): void
     {
@@ -150,7 +169,8 @@ class JobMap extends Component
         }
     }
 
-    public function getFilteredJobsProperty()
+    #[Computed]
+    public function filteredJobs()
     {
         $query = JobListing::with('company')->where('status', 'active');
 
@@ -194,7 +214,8 @@ class JobMap extends Component
         })->sortBy('distance')->values();
     }
     
-    public function getSelectedJobProperty()
+    #[Computed]
+    public function selectedJob()
     {
         if (!$this->selectedJobId) return null;
         return $this->filteredJobs->firstWhere('id', $this->selectedJobId);
@@ -224,7 +245,8 @@ class JobMap extends Component
 
     public function render()
     {
-        $jobsMapData = $this->filteredJobs->map(function ($j) {
+        $jobsList = $this->filteredJobs;
+        $jobsMapData = $jobsList->map(function ($j) {
             return [
                 'id' => $j->id,
                 'position' => $j->position,
@@ -235,7 +257,7 @@ class JobMap extends Component
         })->values()->all();
 
         return view('livewire.applicant.job-map', [
-            'jobs' => $this->filteredJobs,
+            'jobs' => $jobsList,
             'jobsMapData' => json_encode($jobsMapData),
             'jobsMapDataArray' => $jobsMapData,
             'selectedJob' => $this->selectedJob,

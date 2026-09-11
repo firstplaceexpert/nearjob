@@ -41,6 +41,16 @@ class RegisterApplicant extends Component
     public string $nikError = '';
     public string $ageError = '';
 
+    public function updatedNik($value): void
+    {
+        $this->nik = preg_replace('/[^0-9]/', '', (string)$value);
+    }
+
+    public function updatedWhatsapp($value): void
+    {
+        $this->whatsapp = preg_replace('/[^0-9]/', '', (string)$value);
+    }
+
     public function nextStep(): void
     {
         if ($this->step === 1) {
@@ -55,11 +65,13 @@ class RegisterApplicant extends Component
     {
         $this->nikError = '';
         $this->ageError = '';
+        $this->nik = preg_replace('/[^0-9]/', '', $this->nik);
+        $this->whatsapp = preg_replace('/[^0-9]/', '', $this->whatsapp);
 
         $this->validate([
             'name'          => 'required|string|max:255',
             'nik'           => 'required|digits:16',
-            'whatsapp'      => 'required|min:10|max:15',
+            'whatsapp'      => 'required|regex:/^[0-9]+$/|min:10|max:15',
             'date_of_birth' => 'required|date',
             'email'         => 'required|email|unique:users,email',
             'password'      => 'required|min:6',

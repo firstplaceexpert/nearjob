@@ -29,3 +29,5 @@ Thumbs.db
 # Database SQLite lokal & session / order lokal
 database/*.sqlite
 database/*.sqlite-journal
+.vercel
+.env*

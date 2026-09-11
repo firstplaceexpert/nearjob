@@ -377,6 +377,9 @@
                         <input type="text" 
                                wire:model="nik" 
                                maxlength="16"
+                               inputmode="numeric"
+                               pattern="[0-9]*"
+                               oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                placeholder="16 digit nomor KTP (Contoh: 347101...)" 
                                required
                                style="width: 100%; padding: 8px 10px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 9px; font-size: 12px; font-weight: bold; color: #0f172a; outline: none; box-sizing: border-box;">
@@ -417,6 +420,9 @@
                         </label>
                         <input type="tel" 
                                wire:model="whatsapp" 
+                               inputmode="numeric"
+                               pattern="[0-9]*"
+                               oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                placeholder="081234567890" 
                                style="width: 100%; padding: 8px 10px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 9px; font-size: 12px; font-weight: bold; color: #0f172a; outline: none; box-sizing: border-box;">
                     </div>

@@ -96,8 +96,27 @@ class JobListingForm extends Component
         $this->required_skills = array_values($this->required_skills);
     }
 
+    public function updatedContactWhatsapp($value): void
+    {
+        $this->contact_whatsapp = preg_replace('/[^0-9]/', '', (string)$value);
+    }
+
+    public function updatedSalaryMin($value): void
+    {
+        $this->salary_min = preg_replace('/[^0-9]/', '', (string)$value);
+    }
+
+    public function updatedSalaryMax($value): void
+    {
+        $this->salary_max = preg_replace('/[^0-9]/', '', (string)$value);
+    }
+
     public function save()
     {
+        $this->contact_whatsapp = preg_replace('/[^0-9]/', '', $this->contact_whatsapp);
+        $this->salary_min = preg_replace('/[^0-9]/', '', $this->salary_min);
+        $this->salary_max = preg_replace('/[^0-9]/', '', $this->salary_max);
+
         $this->validate([
             'position' => 'required|string|max:255',
             'job_category' => 'required|string',
@@ -108,7 +127,7 @@ class JobListingForm extends Component
             'qualifications' => 'required|string',
             'quota' => 'required|integer|min:1|max:999',
             'status' => 'required|in:active,filled,closed',
-            'contact_whatsapp' => 'nullable|string|max:25',
+            'contact_whatsapp' => 'nullable|regex:/^[0-9]+$/|max:25',
             'contact_email' => 'nullable|email|max:255',
         ]);
 

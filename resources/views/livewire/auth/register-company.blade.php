@@ -18,13 +18,13 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">NIK *</label>
-                        <input type="text" wire:model="nik" maxlength="16" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white font-mono" placeholder="16 digit NIK">
+                        <input type="text" wire:model="nik" maxlength="16" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white font-mono" placeholder="16 digit NIK">
                         @error('nik') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                         @if($nikError) <p class="text-xs text-red-500 mt-1">{{ $nikError }}</p> @endif
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp *</label>
-                        <input type="tel" wire:model="whatsapp" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="08xxxxxxxxxx">
+                        <input type="tel" wire:model="whatsapp" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="08xxxxxxxxxx">
                         @error('whatsapp') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div>
@@ -58,7 +58,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">NIB (opsional)</label>
-                        <input type="text" wire:model="nib" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="Nomor Induk Berusaha">
+                        <input type="text" wire:model="nib" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="Nomor Induk Berusaha (hanya angka)">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">Kota Lokasi Usaha *</label>

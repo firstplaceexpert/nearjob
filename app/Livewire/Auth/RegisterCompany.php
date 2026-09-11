@@ -25,14 +25,33 @@ class RegisterCompany extends Component
     public string $contact_method = 'whatsapp';
     public string $nikError = '';
 
+    public function updatedNik($value): void
+    {
+        $this->nik = preg_replace('/[^0-9]/', '', (string)$value);
+    }
+
+    public function updatedWhatsapp($value): void
+    {
+        $this->whatsapp = preg_replace('/[^0-9]/', '', (string)$value);
+    }
+
+    public function updatedNib($value): void
+    {
+        $this->nib = preg_replace('/[^0-9]/', '', (string)$value);
+    }
+
     public function register(): void
     {
         $this->nikError = '';
+        $this->nik = preg_replace('/[^0-9]/', '', $this->nik);
+        $this->whatsapp = preg_replace('/[^0-9]/', '', $this->whatsapp);
+        $this->nib = preg_replace('/[^0-9]/', '', $this->nib);
 
         $this->validate([
             'owner_name'    => 'required|string|max:255',
             'nik'           => 'required|digits:16',
-            'whatsapp'      => 'required|min:10|max:15',
+            'whatsapp'      => 'required|regex:/^[0-9]+$/|min:10|max:15',
+            'nib'           => 'nullable|regex:/^[0-9]+$/',
             'email'         => 'required|email|unique:users,email',
             'password'      => 'required|min:6',
             'company_name'  => 'required|string|max:255',

@@ -132,11 +132,18 @@ class ProfileForm extends Component
         $this->skills = array_values($this->skills);
     }
 
+    public function updatedWhatsapp($value): void
+    {
+        $this->whatsapp = preg_replace('/[^0-9]/', '', (string)$value);
+    }
+
     public function save(): void
     {
+        $this->whatsapp = preg_replace('/[^0-9]/', '', $this->whatsapp);
+
         $this->validate([
             'name' => 'required|string|max:255',
-            'whatsapp' => 'required|string',
+            'whatsapp' => 'required|regex:/^[0-9]+$/|min:10|max:15',
             'city' => 'required|string',
             'education_level' => 'required|string',
             'education_institution' => 'required|string|max:255',

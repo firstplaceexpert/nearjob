@@ -36,7 +36,7 @@
                         Kuota Lowongan (Jumlah Kebutuhan) <span class="text-red-500">*</span>
                     </label>
                     <div class="relative">
-                        <input type="number" min="1" max="999" wire:model="quota" 
+                        <input type="number" min="1" max="999" wire:model="quota" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white font-bold" 
                                placeholder="Contoh: 2 atau 5">
                         <span class="absolute right-4 top-3 text-xs font-bold text-slate-400">Orang</span>
@@ -88,11 +88,11 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">Gaji Minimum (Rp)</label>
-                        <input type="number" wire:model="salary_min" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="Kosongkan jika nego">
+                        <input type="number" wire:model="salary_min" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="Kosongkan jika nego">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">Gaji Maksimum (Rp)</label>
-                        <input type="number" wire:model="salary_max" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="Opsional">
+                        <input type="number" wire:model="salary_max" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="Opsional">
                     </div>
                 </div>
 
@@ -150,7 +150,7 @@
                         <label class="block text-xs font-bold text-slate-700 mb-1">
                             <i class='bx bxl-whatsapp text-green-600 text-sm'></i> Nomor WhatsApp
                         </label>
-                        <input type="tel" wire:model="contact_whatsapp" 
+                        <input type="tel" wire:model="contact_whatsapp" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" 
                                placeholder="Contoh: 081234567890">
                         @error('contact_whatsapp') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror

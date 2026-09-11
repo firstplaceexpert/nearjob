@@ -38,6 +38,16 @@ class QuickAuthQuizModal extends Component
     public string $nik = '';
     public string $whatsapp = '';
 
+    public function updatedNik($value): void
+    {
+        $this->nik = preg_replace('/[^0-9]/', '', (string)$value);
+    }
+
+    public function updatedWhatsapp($value): void
+    {
+        $this->whatsapp = preg_replace('/[^0-9]/', '', (string)$value);
+    }
+
     public string $errorMessage = '';
 
     public function mount(): void

@@ -14,7 +14,7 @@
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp</label>
-                    <input type="tel" wire:model="whatsapp" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white">
+                    <input type="tel" wire:model="whatsapp" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="08xxxxxxxxxx">
                 </div>
 
                 <h3 class="text-xs font-extrabold uppercase tracking-widest pb-2 mt-6" style="color: #5680d8; border-bottom: 1px solid #e8edf5;">Data Usaha</h3>
@@ -35,7 +35,7 @@
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">NIB (opsional)</label>
-                    <input type="text" wire:model="nib" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white">
+                    <input type="text" wire:model="nib" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="Nomor Induk Berusaha (hanya angka)">
                 </div>
 
                 <div>

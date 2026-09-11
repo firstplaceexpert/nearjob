@@ -36,11 +36,25 @@ class CompanyProfile extends Component
         $this->contact_method = $this->company->contact_method ?? 'whatsapp';
     }
 
+    public function updatedWhatsapp($value): void
+    {
+        $this->whatsapp = preg_replace('/[^0-9]/', '', (string)$value);
+    }
+
+    public function updatedNib($value): void
+    {
+        $this->nib = preg_replace('/[^0-9]/', '', (string)$value);
+    }
+
     public function save()
     {
+        $this->whatsapp = preg_replace('/[^0-9]/', '', $this->whatsapp);
+        $this->nib = preg_replace('/[^0-9]/', '', $this->nib);
+
         $this->validate([
             'owner_name'    => 'required|string|max:255',
-            'whatsapp'      => 'required|string',
+            'whatsapp'      => 'required|regex:/^[0-9]+$/|min:10|max:15',
+            'nib'           => 'nullable|regex:/^[0-9]+$/',
             'company_name'  => 'required|string|max:255',
             'business_field'=> 'required|string',
             'city'          => 'required|string',

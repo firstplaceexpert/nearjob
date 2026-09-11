@@ -140,14 +140,16 @@
     </style>
     @livewireStyles
 
-    {{-- Midtrans Snap JS --}}
-    @php
-        $snapJsUrl = config('services.midtrans.is_production')
-            ? 'https://app.midtrans.com/snap/snap.js'
-            : 'https://app.sandbox.midtrans.com/snap/snap.js';
-        $clientKey = config('services.midtrans.client_key') ?: env('MIDTRANS_CLIENT_KEY', '');
-    @endphp
-    <script src="{{ $snapJsUrl }}" data-client-key="{{ $clientKey }}"></script>
+    {{-- Midtrans Snap JS (Only loaded on topup route with defer to eliminate delay on other pages) --}}
+    @if(request()->routeIs('applicant.topup'))
+        @php
+            $snapJsUrl = config('services.midtrans.is_production')
+                ? 'https://app.midtrans.com/snap/snap.js'
+                : 'https://app.sandbox.midtrans.com/snap/snap.js';
+            $clientKey = config('services.midtrans.client_key') ?: env('MIDTRANS_CLIENT_KEY', '');
+        @endphp
+        <script src="{{ $snapJsUrl }}" data-client-key="{{ $clientKey }}" defer></script>
+    @endif
     @stack('head')
 </head>
 <body class="min-h-screen flex flex-col" style="font-family: 'Plus Jakarta Sans', sans-serif;">

@@ -82,7 +82,7 @@
             </div>
 
             {{-- The CV Template --}}
-            <div id="cv-document" class="bg-white p-8 sm:p-12 shadow-md border border-slate-200 text-slate-800" style="font-family: 'Times New Roman', Times, serif; max-width: 21cm; margin: 0 auto; min-height: 29.7cm;">
+            <div id="cv-document" class="bg-white p-8 sm:p-12 shadow-md border border-slate-200 text-slate-800" style="font-family: 'Plus Jakarta Sans', sans-serif; max-width: 21cm; margin: 0 auto; min-height: 29.7cm;">
                 
                 {{-- Header --}}
                 <div class="text-center mb-6 border-b-2 border-slate-800 pb-4">

@@ -187,7 +187,7 @@
 
                             <div>
                                 <label class="block text-xs sm:text-sm font-extrabold text-slate-700 mb-2">Nomor WhatsApp (Aktif)</label>
-                                <input type="tel" wire:model="whatsapp"
+                                <input type="tel" wire:model="whatsapp" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                     class="w-full text-xs sm:text-sm transition-all focus:outline-none focus:ring-2"
                                     style="padding: 14px 18px; border-radius: 14px; border: 1.5px solid #e2e8f0; background: #f8faff;"
                                     placeholder="Contoh: 08123456789">

@@ -27,32 +27,59 @@
         ]) !!}
     </script>
 
-    {{-- ── SEARCH & FILTER BAR (TOP FLOATING) ── --}}
-    <div style="position:fixed;top:56px;left:0;right:0;z-index:400;background:linear-gradient(160deg,#24427b 0%,#5680d8 100%);padding:10px 14px;box-shadow:0 4px 20px rgba(37,67,155,.25);">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-            <div style="flex:1;display:flex;align-items:center;background:white;border-radius:12px;padding:6px 12px;gap:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
-                <i class='bx bx-search' style="color:#5680d8;font-size:18px;"></i>
+    {{-- ── FLOATING SEARCH & FILTER BAR (GOOGLE MAPS STYLE & MINIMIZABLE) ── --}}
+    <div id="njob-search-widget" style="position:fixed;top:66px;left:14px;right:14px;max-width:520px;margin:0 auto;z-index:420;pointer-events:none;transition:all .3s cubic-bezier(.16,1,.3,1);">
+        
+        {{-- Expanded State --}}
+        <div id="njob-search-expanded" style="pointer-events:auto;background:rgba(255,255,255,0.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:18px;padding:8px 12px;box-shadow:0 8px 30px rgba(15,23,42,0.16),0 1px 3px rgba(0,0,0,0.06);border:1px solid rgba(226,232,240,0.85);transition:all .25s ease;">
+            {{-- Search Bar Row --}}
+            <div style="display:flex;align-items:center;gap:8px;">
+                <div style="display:flex;align-items:center;justify-content:center;color:#5680d8;font-size:20px;width:24px;">
+                    <i class='bx bx-search'></i>
+                </div>
                 <input type="text" wire:model.live.debounce.300ms="searchQuery" 
-                       placeholder="Cari lowongan, posisi, atau kota..." 
-                       style="border:none;outline:none;font-size:12px;font-weight:700;color:#1e293b;width:100%;background:transparent;">
+                       placeholder="Cari lowongan, posisi, atau perusahaan..." 
+                       style="flex:1;border:none;outline:none;font-size:13px;font-weight:700;color:#1e293b;background:transparent;padding:6px 0;">
+                
                 @if($searchQuery)
-                    <button wire:click="$set('searchQuery', '')" style="border:none;background:none;color:#94a3b8;cursor:pointer;"><i class='bx bx-x-circle' style="font-size:16px;"></i></button>
+                    <button wire:click="$set('searchQuery', '')" style="border:none;background:none;color:#94a3b8;cursor:pointer;padding:4px;display:flex;align-items:center;">
+                        <i class='bx bx-x-circle' style="font-size:18px;"></i>
+                    </button>
                 @endif
-                <button onclick="njobPromptGPS()" title="Aktifkan Lokasi GPS" 
-                        style="border:none;background:#eef2fb;color:#5680d8;padding:4px 8px;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;">
-                    <i class='bx bx-target-lock' style="font-size:15px;color:#2a9d8f;"></i> GPS
+
+                {{-- Minimize Button: Makes map wide and uncluttered --}}
+                <button onclick="njobToggleSearchCard(false)" title="Kecilkan bar untuk luaskan peta"
+                        style="border:none;background:#f1f5f9;color:#475569;width:32px;height:32px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;flex-shrink:0;">
+                    <i class='bx bx-chevron-up' style="font-size:20px;"></i>
                 </button>
             </div>
+
+            {{-- Filter Chips Row --}}
+            <div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-top:8px;margin-top:4px;border-top:1px solid #f1f5f9;align-items:center;">
+                <button onclick="njobToggleFilter()" style="flex-shrink:0;display:flex;align-items:center;gap:5px;background:{{ ($filterCategory || $filterWorkType) ? '#5680d8' : '#f8fafc' }};color:{{ ($filterCategory || $filterWorkType) ? 'white' : '#334155' }};border:1.5px solid {{ ($filterCategory || $filterWorkType) ? '#5680d8' : '#e2e8f0' }};border-radius:16px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;">
+                    <i class='bx bx-filter-alt'></i> Filter
+                    @if($filterCategory || $filterWorkType)<span style="width:6px;height:6px;background:#fbbf24;border-radius:50%;"></span>@endif
+                </button>
+                <button onclick="njobSetWT('');njobSetCat('')" style="flex-shrink:0;background:{{ !$filterWorkType && !$filterCategory ? '#e0f2fe' : '#f8fafc' }};color:{{ !$filterWorkType && !$filterCategory ? '#0284c7' : '#64748b' }};border:1px solid {{ !$filterWorkType && !$filterCategory ? '#bae6fd' : '#e2e8f0' }};border-radius:16px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;">Semua</button>
+                <button onclick="njobSetWT('part_time')" style="flex-shrink:0;background:{{ $filterWorkType === 'part_time' ? '#e0f2fe' : '#f8fafc' }};color:{{ $filterWorkType === 'part_time' ? '#0284c7' : '#64748b' }};border:1px solid {{ $filterWorkType === 'part_time' ? '#bae6fd' : '#e2e8f0' }};border-radius:16px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;">Part Time</button>
+                <button onclick="njobSetWT('full_time')" style="flex-shrink:0;background:{{ $filterWorkType === 'full_time' ? '#e0f2fe' : '#f8fafc' }};color:{{ $filterWorkType === 'full_time' ? '#0284c7' : '#64748b' }};border:1px solid {{ $filterWorkType === 'full_time' ? '#bae6fd' : '#e2e8f0' }};border-radius:16px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;">Full Time</button>
+                <button onclick="njobSetRadius(5)" style="flex-shrink:0;background:{{ $filterRadius <= 5 ? '#e0f2fe' : '#f8fafc' }};color:{{ $filterRadius <= 5 ? '#0284c7' : '#64748b' }};border:1px solid {{ $filterRadius <= 5 ? '#bae6fd' : '#e2e8f0' }};border-radius:16px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;">&le; 5 km</button>
+            </div>
         </div>
-        <div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;">
-            <button onclick="njobToggleFilter()" style="flex-shrink:0;display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.2);color:white;border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;">
-                <i class='bx bx-filter-alt'></i> Filter
-                @if($filterCategory || $filterWorkType)<span style="width:6px;height:6px;background:#fbbf24;border-radius:50%;"></span>@endif
+
+        {{-- Minimized State: Sleek Floating Pill (Google Maps Vibe) --}}
+        <div id="njob-search-minimized" style="display:none;pointer-events:auto;justify-content:center;">
+            <button onclick="njobToggleSearchCard(true)"
+                    style="background:rgba(255,255,255,0.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(226,232,240,0.9);box-shadow:0 6px 24px rgba(15,23,42,0.14);border-radius:30px;padding:8px 16px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all .2s;color:#1e293b;">
+                <i class='bx bx-search' style="color:#5680d8;font-size:16px;"></i>
+                <span style="font-size:12px;font-weight:800;color:#334155;">
+                    {{ $searchQuery ? 'Cari: "'.$searchQuery.'"' : 'Cari & Filter Lowongan' }}
+                </span>
+                @if($filterCategory || $filterWorkType)
+                    <span style="background:#5680d8;color:white;font-size:9px;font-weight:800;padding:1px 6px;border-radius:10px;">Filter Aktif</span>
+                @endif
+                <i class='bx bx-chevron-down' style="color:#94a3b8;font-size:18px;"></i>
             </button>
-            <button onclick="njobSetWT('');njobSetCat('')" style="flex-shrink:0;background:{{ !$filterWorkType && !$filterCategory ? '#47bfae' : 'rgba(255,255,255,.15)' }};color:white;border:1.5px solid rgba(255,255,255,.25);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;">Untuk Anda</button>
-            <button onclick="njobSetWT('part_time')" style="flex-shrink:0;background:{{ $filterWorkType === 'part_time' ? '#47bfae' : 'rgba(255,255,255,.15)' }};color:white;border:1.5px solid rgba(255,255,255,.25);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;">Part Time</button>
-            <button onclick="njobSetWT('full_time')" style="flex-shrink:0;background:{{ $filterWorkType === 'full_time' ? '#47bfae' : 'rgba(255,255,255,.15)' }};color:white;border:1.5px solid rgba(255,255,255,.25);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;">Full Time</button>
-            <button onclick="njobSetRadius(5)" style="flex-shrink:0;background:{{ $filterRadius <= 5 ? '#47bfae' : 'rgba(255,255,255,.15)' }};color:white;border:1.5px solid rgba(255,255,255,.25);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;">Terdekat</button>
         </div>
     </div>
 
@@ -61,10 +88,18 @@
         <div id="njob-map" style="width:100%;height:100%;"></div>
     </div>
 
+    {{-- ── FLOATING CONTROLS (GOOGLE MAPS STYLE: MY LOCATION / GPS BUTTON) ── --}}
+    <div style="position:fixed;bottom:136px;right:16px;z-index:410;display:flex;flex-direction:column;gap:10px;">
+        <button id="njob-gps-floating-btn" onclick="njobCenterOnUserGPS()" title="Pusatkan ke Lokasi Saya (GPS)"
+                style="width:46px;height:46px;background:white;border:none;border-radius:50%;box-shadow:0 4px 18px rgba(15,23,42,0.18);display:flex;align-items:center;justify-content:center;color:#2563eb;cursor:pointer;transition:all .2s;">
+            <i class='bx bx-target-lock' style="font-size:24px;"></i>
+        </button>
+    </div>
+
     {{-- ── FLOATING BUTTON: "LIHAT DAFTAR LOWONGAN" (FIXED DI ATAS MENU NAV) ── --}}
     <div id="njob-btn-wrapper" style="position:fixed;bottom:78px;left:0;right:0;z-index:450;display:flex;justify-content:center;pointer-events:none;">
         <button id="njob-btn-toggle-list" onclick="njobToggleHorizontalCards(true)"
-            style="pointer-events:auto;background:#24427b;color:white;border:none;padding:12px 24px;border-radius:30px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 8px 24px rgba(37,67,155,.5);display:flex;align-items:center;gap:8px;white-space:nowrap;transition:all .25s;">
+            style="pointer-events:auto;background:#24427b;color:white;border:none;padding:12px 24px;border-radius:30px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 8px 24px rgba(37,67,155,.45);display:flex;align-items:center;gap:8px;white-space:nowrap;transition:all .25s;">
             <i class='bx bx-list-ul' style="font-size:18px;"></i> Lihat Daftar Lowongan ({{ $jobs->count() }})
         </button>
     </div>
@@ -163,14 +198,14 @@
     {{-- ===== GPS LOCATION NOTICE MODAL ===== --}}
     <div id="njob-gps-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:16px;">
         <div style="background:white;border-radius:24px;max-width:380px;width:100%;padding:24px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.3);">
-            <div style="width:64px;height:64px;background:#e6f8f6;color:#2a9d8f;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:32px;border:3px solid #99f6e4;">
+            <div style="width:64px;height:64px;background:#eff6ff;color:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:32px;border:3px solid #bfdbfe;">
                 <i class='bx bx-current-location'></i>
             </div>
             <h3 style="font-size:16px;font-weight:900;color:#1e293b;margin:0 0 8px;">Aktifkan Lokasi / GPS Anda</h3>
             <p style="font-size:12px;color:#64748b;line-height:1.6;margin:0 0 20px;font-weight:600;">
-                Aplikasi <b>NEAR JOB</b> memerlukan akses lokasi (GPS) untuk mendeteksi posisi Anda dan secara otomatis menampilkan lowongan pekerjaan terdekat di sekitar tempat tinggal Anda.
+                Aplikasi <b>NEAR JOB</b> menggunakan GPS untuk mendeteksi posisi Anda secara otomatis dan menyajikan lowongan kerja terdekat di sekitar lokasi Anda.
             </p>
-            <button onclick="njobRequestGPSLocation()" style="width:100%;padding:14px;background:#5680d8;color:white;border:none;border-radius:14px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(86,128,216,.4);display:flex;align-items:center;justify-content:center;gap:8px;">
+            <button onclick="njobRequestGPSLocation()" style="width:100%;padding:14px;background:#2563eb;color:white;border:none;border-radius:14px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(37,99,235,.4);display:flex;align-items:center;justify-content:center;gap:8px;">
                 <i class='bx bx-target-lock' style="font-size:18px;"></i> Izinkan Akses GPS Lokasi Saya
             </button>
             <button onclick="document.getElementById('njob-gps-modal').style.display='none'" style="margin-top:12px;background:none;border:none;color:#94a3b8;font-size:11px;font-weight:700;cursor:pointer;">Nanti Saja</button>
@@ -228,16 +263,50 @@
     <style>
     .njob-card-h:hover { box-shadow:0 12px 36px rgba(86,128,216,.25)!important; border-color:#5680d8!important; transform:translateY(-2px); }
     #njob-cards-carousel::-webkit-scrollbar { display: none; }
+    
+    /* Google Maps Blue Pulse User Marker */
+    .njob-gps-pulse-outer {
+        position: relative;
+        width: 22px;
+        height: 22px;
+    }
+    .njob-gps-pulse-core {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 18px;
+        height: 18px;
+        background: #2563eb;
+        border: 3px solid #ffffff;
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+        z-index: 2;
+    }
+    .njob-gps-pulse-wave {
+        position: absolute;
+        top: -6px;
+        left: -6px;
+        width: 34px;
+        height: 34px;
+        background: rgba(37,99,235,0.35);
+        border-radius: 50%;
+        animation: njobGpsWave 2s infinite ease-out;
+        z-index: 1;
+    }
+    @keyframes njobGpsWave {
+        0% { transform: scale(0.5); opacity: 1; }
+        100% { transform: scale(2.2); opacity: 0; }
+    }
     </style>
 
     @script
     <script>
     (function(){
         const D     = JSON.parse(document.getElementById('njob-map-data').textContent);
-        const ULAT  = D.userLat, ULON = D.userLon;
+        let ULAT    = D.userLat, ULON = D.userLon;
         const IS_AUTH = Boolean(D.isAuth);
         let JOBS = D.jobs, CARDS = D.jobCards, CRED = D.credits;
-        let map = null, markers = {}, selId = null, panelOpen = false;
+        let map = null, markers = {}, userMarker = null, selId = null, panelOpen = false;
 
         function boot(){
             if(typeof L==='undefined'){ setTimeout(boot,200); return; }
@@ -246,10 +315,65 @@
             map = L.map(el,{center:[ULAT,ULON],zoom:13,zoomControl:false});
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OSM'}).addTo(map);
             L.control.zoom({position:'bottomright'}).addTo(map);
-            const ui = L.divIcon({html:'<div style="width:14px;height:14px;background:#5680d8;border:3px solid white;border-radius:50%;box-shadow:0 0 0 6px rgba(86,128,216,.22),0 2px 8px rgba(86,128,216,.5);"></div>',className:'',iconSize:[14,14],iconAnchor:[7,7]});
-            L.marker([ULAT,ULON],{icon:ui,zIndexOffset:2000}).addTo(map);
+
+            renderUserMarker(ULAT, ULON);
             drawPins();
             setTimeout(()=>map.invalidateSize(),300);
+
+            // Check saved search card minimized preference
+            const isMin = localStorage.getItem('njob_search_minimized') === 'true';
+            if (isMin) {
+                const exp = document.getElementById('njob-search-expanded');
+                const min = document.getElementById('njob-search-minimized');
+                if (exp && min) {
+                    exp.style.display = 'none';
+                    min.style.display = 'flex';
+                }
+            }
+
+            // Automatic GPS detection on page load
+            autoDetectGPS();
+        }
+
+        function renderUserMarker(lat, lon){
+            if(!map) return;
+            if(userMarker) map.removeLayer(userMarker);
+            const ui = L.divIcon({
+                html: '<div class="njob-gps-pulse-outer"><div class="njob-gps-pulse-wave"></div><div class="njob-gps-pulse-core"></div></div>',
+                className: '',
+                iconSize: [22, 22],
+                iconAnchor: [11, 11]
+            });
+            userMarker = L.marker([lat, lon], {icon: ui, zIndexOffset: 2000}).addTo(map);
+        }
+
+        function autoDetectGPS(){
+            if(!navigator.geolocation) return;
+            navigator.geolocation.getCurrentPosition(
+                function(pos){
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    ULAT = lat;
+                    ULON = lon;
+                    renderUserMarker(lat, lon);
+                    if(map){
+                        map.panTo([lat, lon], {animate: true, duration: 0.8});
+                    }
+                    // Sync with Livewire
+                    const wid = document.querySelector('[wire\\:id]')?.getAttribute('wire:id');
+                    if(wid && window.Livewire){
+                        Livewire.find(wid).call('setLocation', lat, lon);
+                    }
+                },
+                function(err){
+                    // If not permitted yet and never notified, show notice
+                    if(!localStorage.getItem('njob_gps_notified')){
+                        setTimeout(window.njobPromptGPS, 1200);
+                        localStorage.setItem('njob_gps_notified', 'true');
+                    }
+                },
+                { enableHighAccuracy: true, timeout: 9000, maximumAge: 30000 }
+            );
         }
 
         function drawPins(){
@@ -281,6 +405,56 @@
                 if(a) c.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
             });
         }
+
+        window.njobToggleSearchCard = function(showExpanded){
+            const exp = document.getElementById('njob-search-expanded');
+            const min = document.getElementById('njob-search-minimized');
+            if(!exp || !min) return;
+
+            if(showExpanded){
+                min.style.display = 'none';
+                exp.style.display = 'block';
+                localStorage.setItem('njob_search_minimized', 'false');
+            } else {
+                exp.style.display = 'none';
+                min.style.display = 'flex';
+                localStorage.setItem('njob_search_minimized', 'true');
+            }
+            if(map) setTimeout(() => map.invalidateSize(), 200);
+        };
+
+        window.njobCenterOnUserGPS = function(){
+            const btn = document.getElementById('njob-gps-floating-btn');
+            if(btn){
+                btn.style.transform = 'scale(0.9)';
+                setTimeout(() => { btn.style.transform = 'scale(1)'; }, 150);
+            }
+
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(
+                    function(pos){
+                        const lat = pos.coords.latitude;
+                        const lon = pos.coords.longitude;
+                        ULAT = lat;
+                        ULON = lon;
+                        renderUserMarker(lat, lon);
+                        if(map){
+                            map.setView([lat, lon], 14, {animate: true});
+                        }
+                        const wid = document.querySelector('[wire\\:id]')?.getAttribute('wire:id');
+                        if(wid && window.Livewire){
+                            Livewire.find(wid).call('setLocation', lat, lon);
+                        }
+                    },
+                    function(err){
+                        window.njobPromptGPS();
+                    },
+                    { enableHighAccuracy: true }
+                );
+            } else {
+                alert('Browser Anda belum mendukung fitur GPS.');
+            }
+        };
 
         window.njobFocusCard=function(el){
             const id=Number(el.dataset.jobId), lat=parseFloat(el.dataset.lat), lon=parseFloat(el.dataset.lon);
@@ -377,29 +551,26 @@
                         const lat = pos.coords.latitude;
                         const lon = pos.coords.longitude;
                         document.getElementById('njob-gps-modal').style.display = 'none';
+                        ULAT = lat;
+                        ULON = lon;
+                        renderUserMarker(lat, lon);
                         if(map){
                             map.setView([lat, lon], 14, {animate:true});
-                            L.marker([lat, lon], {
-                                icon: L.divIcon({
-                                    html: '<div style="width:16px;height:16px;background:#2a9d8f;border:3px solid white;border-radius:50%;box-shadow:0 0 0 8px rgba(42,157,143,.3);"></div>',
-                                    className: '', iconSize: [16,16], iconAnchor: [8,8]
-                                })
-                            }).addTo(map);
+                        }
+                        const wid = document.querySelector('[wire\\:id]')?.getAttribute('wire:id');
+                        if(wid && window.Livewire){
+                            Livewire.find(wid).call('setLocation', lat, lon);
                         }
                     },
                     function(err){
-                        alert('Silakan aktifkan akses GPS lokasi pada browser/HP Anda.');
-                    }
+                        alert('Silakan aktifkan akses GPS lokasi pada pengaturan browser/HP Anda.');
+                    },
+                    { enableHighAccuracy: true }
                 );
             } else {
                 alert('Browser Anda belum mendukung fitur GPS.');
             }
         };
-
-        if(!localStorage.getItem('njob_gps_notified')){
-            setTimeout(window.njobPromptGPS, 1000);
-            localStorage.setItem('njob_gps_notified', 'true');
-        }
 
         function refreshDataAndPins(){
             try {

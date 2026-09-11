@@ -36,7 +36,7 @@
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">
                     NIK (Nomor Induk Kependudukan) <span class="text-red-500">*</span>
                 </label>
-                <input type="text" wire:model="nik" maxlength="16" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white font-mono" placeholder="16 digit NIK Anda">
+                <input type="text" wire:model="nik" maxlength="16" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white font-mono" placeholder="16 digit NIK Anda">
                 @error('nik') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 @if($nikError) <p class="text-xs text-red-500 mt-1">{{ $nikError }}</p> @endif
                 <p class="text-xs text-slate-400 mt-1">NIK digunakan hanya sebagai pengidentifikasi akun unik. Tidak ditampilkan secara publik.</p>
@@ -44,7 +44,7 @@
 
             <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">Nomor WhatsApp <span class="text-red-500">*</span></label>
-                <input type="tel" wire:model="whatsapp" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="08xxxxxxxxxx">
+                <input type="tel" wire:model="whatsapp" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 focus:bg-white" placeholder="08xxxxxxxxxx">
                 @error('whatsapp') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
             </div>
 
