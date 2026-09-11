@@ -51,14 +51,17 @@
             </a>
 
             <div class="flex items-start gap-4">
-                <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-black shrink-0 border shadow-sm" 
-                     style="background: #eef2fb; color: #5680d8; border-color: #c7d6f5;">
-                    {{ substr($job->company->company_name, 0, 1) }}
+                <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl font-black shrink-0 border shadow-sm" 
+                     style="background: {{ $job->category_bg }}; color: {{ $job->category_color }}; border-color: {{ $job->category_color }}44;">
+                    <i class='{{ $job->category_icon }}'></i>
                 </div>
                 <div class="min-w-0 flex-1">
                     <h1 class="text-xl sm:text-2xl font-black text-slate-800 leading-snug mb-2">{{ $job->position }}</h1>
                     <div class="flex items-center gap-2.5 flex-wrap mb-3">
                         <span class="text-sm font-extrabold text-slate-700">{{ $job->company->company_name }}</span>
+                        <span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-full" style="background: {{ $job->category_bg }}; color: {{ $job->category_color }};">
+                            <i class='{{ $job->category_icon }} text-sm'></i> {{ $job->category_name }}
+                        </span>
                         <span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-full" style="background: #e6f8f6; color: #2a9d8f;">
                             <i class='bx bx-check-circle text-sm'></i> Terverifikasi
                         </span>

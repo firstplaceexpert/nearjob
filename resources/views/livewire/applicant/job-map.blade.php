@@ -8,21 +8,26 @@
             'credits'  => $credits,
             'jobs'     => $jobsMapDataArray ?? [],
             'jobCards' => $jobs->map(fn($j) => [
-                'id'          => $j->id,
-                'position'    => $j->position,
-                'company'     => $j->company->company_name,
-                'initial'     => substr($j->company->company_name, 0, 1),
-                'city'        => $j->company->city,
-                'salary'      => $j->salary_range,
-                'quota'       => (int) ($j->quota ?: 1),
-                'distance'    => $j->distance,
-                'method'      => $j->contact_method,
-                'hasWa'       => !empty(trim($j->contact_whatsapp ?? '')),
-                'hasEmail'    => !empty(trim($j->contact_email ?? '')),
-                'education'   => strtoupper($j->min_education),
-                'workType'    => $j->work_type_label,
-                'applyRoute'  => route('applicant.job.detail', $j->id),
-                'topupRoute'  => route('applicant.topup'),
+                'id'            => $j->id,
+                'position'      => $j->position,
+                'company'       => $j->company->company_name,
+                'initial'       => substr($j->company->company_name, 0, 1),
+                'city'          => $j->company->city,
+                'category'      => $j->job_category,
+                'categoryIcon'  => $j->category_icon,
+                'categoryColor' => $j->category_color,
+                'categoryBg'    => $j->category_bg,
+                'categoryName'  => $j->category_name,
+                'salary'        => $j->salary_range,
+                'quota'         => (int) ($j->quota ?: 1),
+                'distance'      => $j->distance,
+                'method'        => $j->contact_method,
+                'hasWa'         => !empty(trim($j->contact_whatsapp ?? '')),
+                'hasEmail'      => !empty(trim($j->contact_email ?? '')),
+                'education'     => strtoupper($j->min_education),
+                'workType'      => $j->work_type_label,
+                'applyRoute'    => route('applicant.job.detail', $j->id),
+                'topupRoute'    => route('applicant.topup'),
             ])->values()->all(),
         ]) !!}
     </script>
@@ -124,17 +129,18 @@
                  onclick="njobFocusCard(this)"
                  style="flex:0 0 300px;scroll-snap-align:center;background:white;border-radius:18px;padding:15px;border:2px solid #e8edf5;box-shadow:0 8px 30px rgba(0,0,0,.18);cursor:pointer;transition:all .2s;position:relative;">
 
-                {{-- Row 1: Logo/Initial + Judul + Gaji --}}
+                {{-- Row 1: Category Icon + Judul + Perusahaan + Gaji --}}
                 <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;">
-                    <div style="width:46px;height:46px;flex-shrink:0;background:#eef2fb;color:#5680d8;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;border:1.5px solid #c7d6f5;">
-                        {{ substr($job->company->company_name, 0, 1) }}
+                    <div style="width:46px;height:46px;flex-shrink:0;background:{{ $job->category_bg }};color:{{ $job->category_color }};border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;border:1.5px solid {{ $job->category_color }}33;" title="{{ $job->category_name }}">
+                        <i class='{{ $job->category_icon }}'></i>
                     </div>
                     <div style="flex:1;min-width:0;">
                         <h3 style="font-size:13px;font-weight:800;color:#1e293b;line-height:1.3;margin:0 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                             {{ $job->position }}
                         </h3>
-                        <div style="font-size:11px;color:#5680d8;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                            {{ $job->company->company_name }}
+                        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#64748b;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                            <span style="color:#5680d8;overflow:hidden;text-overflow:ellipsis;">{{ $job->company->company_name }}</span>
+                            <span style="font-size:9.5px;font-weight:800;background:{{ $job->category_bg }};color:{{ $job->category_color }};padding:1px 6px;border-radius:5px;flex-shrink:0;">{{ $job->category_name }}</span>
                         </div>
                         <div style="font-size:12px;font-weight:800;color:#1e293b;margin-top:2px;">
                             {{ $job->salary_range }}
@@ -382,17 +388,36 @@
             markers={};
             JOBS.forEach(j=>{
                 if(!j.latitude||!j.longitude) return;
-                const sel=selId===j.id, sz=sel?44:36, col=sel?'#24427b':'#5680d8';
-                const quotaVal = (typeof j.quota !== 'undefined' && j.quota !== null) ? j.quota : 1;
-                const ico=L.divIcon({html:'<div style="display:flex;flex-direction:column;align-items:center;"><div style="width:'+sz+'px;height:'+sz+'px;background:'+col+';border:3px solid white;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(36,66,123,.4);"><span style="transform:rotate(45deg);color:white;font-size:'+(sel?13:11)+'px;font-weight:800;">'+quotaVal+'</span></div></div>',className:'',iconSize:[sz,sz+6],iconAnchor:[sz/2,sz+6]});
-                const m=L.marker([j.latitude,j.longitude],{icon:ico}).on('click',()=>{ 
-                    selId=j.id; 
+                const sel = selId === j.id;
+                const sz = sel ? 44 : 36;
+                const catCol = j.categoryColor || '#5680d8';
+                const catIco = j.categoryIcon || 'bx bx-briefcase';
+                const borderCol = sel ? '#1e293b' : 'white';
+                const borderWidth = sel ? '3px' : '2.5px';
+                const quotaVal = (typeof j.quota !== 'undefined' && j.quota !== null) ? Number(j.quota) : 1;
+
+                const pinHtml = '<div style="position:relative;display:flex;flex-direction:column;align-items:center;cursor:pointer;">'
+                    + '<div style="width:'+sz+'px;height:'+sz+'px;background:'+catCol+';border:'+borderWidth+' solid '+borderCol+';border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.3);transition:transform .2s;">'
+                    + '<i class=\"'+catIco+'\" style="transform:rotate(45deg);color:white;font-size:'+(sel?18:14)+'px;line-height:1;"></i>'
+                    + '</div>'
+                    + (quotaVal > 1 ? '<span style="position:absolute;top:-4px;right:-4px;background:#1e293b;color:#f8fafc;font-size:9px;font-weight:900;padding:1px 4px;border-radius:8px;border:1.5px solid white;line-height:1;box-shadow:0 2px 4px rgba(0,0,0,.2);">'+quotaVal+'</span>' : '')
+                    + '</div>';
+
+                const ico = L.divIcon({
+                    html: pinHtml,
+                    className: '',
+                    iconSize: [sz, sz + 6],
+                    iconAnchor: [sz / 2, sz + 6]
+                });
+
+                const m = L.marker([j.latitude, j.longitude], {icon: ico}).on('click', () => { 
+                    selId = j.id; 
                     drawPins(); 
-                    map.panTo([j.latitude,j.longitude],{animate:true,duration:.4}); 
+                    map.panTo([j.latitude, j.longitude], {animate: true, duration: .4}); 
                     highlightCard(j.id);
                     njobOpenSheet(j.id);
                 }).addTo(map);
-                markers[j.id]=m;
+                markers[j.id] = m;
             });
         }
 
@@ -492,8 +517,8 @@
         window.njobOpenSheet=function(jobId){
             const j=CARDS.find(c=>String(c.id)===String(jobId)); if(!j) return;
             const html='<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">'
-                +'<div style="width:56px;height:56px;background:#eef2fb;color:#5680d8;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;border:1.5px solid #c7d6f5;flex-shrink:0;">'+j.initial+'</div>'
-                +'<div><div style="font-size:16px;font-weight:800;color:#1e293b;line-height:1.3;">'+j.position+'</div><div style="font-size:12px;color:#5680d8;font-weight:700;margin-top:3px;">'+j.company+' <span style=\"color:#47bfae;\">✓</span></div></div>'
+                +'<div style="width:56px;height:56px;background:'+(j.categoryBg||'#eef2fb')+';color:'+(j.categoryColor||'#5680d8')+';border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1.5px solid '+(j.categoryColor||'#5680d8')+'33;flex-shrink:0;"><i class=\"'+(j.categoryIcon||'bx bx-briefcase')+'\"></i></div>'
+                +'<div><div style="font-size:16px;font-weight:800;color:#1e293b;line-height:1.3;">'+j.position+'</div><div style="display:flex;align-items:center;gap:6px;margin-top:4px;"><span style="font-size:12px;color:#5680d8;font-weight:700;">'+j.company+' <span style=\"color:#47bfae;\">✓</span></span><span style=\"font-size:9.5px;font-weight:800;background:'+(j.categoryBg||'#eef2fb')+';color:'+(j.categoryColor||'#5680d8')+';padding:1px 6px;border-radius:5px;\">'+(j.categoryName||'Lowongan')+'</span></div></div>'
                 +'</div>'
                 +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#f8faff;border-radius:14px;padding:14px;margin-bottom:16px;border:1px solid #e8edf5;">'
                 +'<div style="font-size:12px;color:#475569;font-weight:600;">📍 '+j.distance+' km dari Anda</div>'

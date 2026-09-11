@@ -253,6 +253,11 @@ class JobMap extends Component
                 'latitude' => (float) $j->latitude,
                 'longitude' => (float) $j->longitude,
                 'quota' => (int) ($j->quota ?: 1),
+                'category' => $j->job_category,
+                'categoryIcon' => $j->category_icon,
+                'categoryColor' => $j->category_color,
+                'categoryBg' => $j->category_bg,
+                'categoryName' => $j->category_name,
             ];
         })->values()->all();
 

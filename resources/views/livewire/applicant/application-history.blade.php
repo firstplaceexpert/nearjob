@@ -63,8 +63,8 @@
                         {{-- Company & Position --}}
                         <div class="flex items-start gap-4" style="margin-bottom: 24px;">
                             <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-black shrink-0 border shadow-sm"
-                                 style="background: #eef2fb; color: #5680d8; border-color: #c7d6f5;">
-                                {{ substr($app->jobListing->company->company_name, 0, 1) }}
+                                 style="background: {{ $app->jobListing->category_bg }}; color: {{ $app->jobListing->category_color }}; border-color: {{ $app->jobListing->category_color }}44;">
+                                <i class='{{ $app->jobListing->category_icon }} text-2xl'></i>
                             </div>
                             <div class="min-w-0 flex-1">
                                 <h3 class="font-black text-base text-slate-800 leading-snug mb-1.5 truncate">
