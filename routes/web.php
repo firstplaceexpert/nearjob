@@ -25,6 +25,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/masuk', App\Livewire\Auth\Login::class)->name('login');
     Route::get('/daftar/pelamar', App\Livewire\Auth\RegisterApplicant::class)->name('register.applicant');
     Route::get('/daftar/pemberi-kerja', App\Livewire\Auth\RegisterCompany::class)->name('register.company');
+    Route::get('/masuk/pemberi-kerja', App\Livewire\Auth\RegisterCompany::class)->name('login.company');
     
     // Google OAuth redirect (only guest can initiate)
     Route::get('/auth/google', [App\Http\Controllers\GoogleAuthController::class, 'redirectToGoogle'])->name('auth.google');

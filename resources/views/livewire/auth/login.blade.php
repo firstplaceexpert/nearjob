@@ -73,6 +73,10 @@
                     <a href="{{ route('register.applicant') }}" style="font-weight: 900; color: #2563eb; text-decoration: underline;">
                         Daftar
                     </a>
+                    ·
+                    <a href="{{ route('register.company') }}" style="font-weight: 800; color: #e60067; text-decoration: underline;">
+                        Untuk Perusahaan
+                    </a>
                 </div>
                 <div>
                     <a href="{{ route('home') }}" style="font-size: 12.5px; color: #64748b; font-weight: 700; text-decoration: underline;">

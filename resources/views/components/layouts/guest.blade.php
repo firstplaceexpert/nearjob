@@ -19,6 +19,7 @@
 </head>
 <body class="min-h-screen bg-slate-50 flex flex-col">
 
+    @unless($hideHeader ?? false)
     <header class="bg-white border-b border-slate-100 px-4 h-14 flex items-center justify-between">
         <a href="{{ route('home') }}" class="flex items-center gap-2">
             <div class="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -30,6 +31,7 @@
             <a href="{{ route('login') }}" class="font-semibold hover:text-blue-600 transition-colors">Masuk</a>
         </div>
     </header>
+    @endunless
 
     <main class="flex-grow">
         {{ $slot }}

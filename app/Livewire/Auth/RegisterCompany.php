@@ -2,94 +2,120 @@
 
 namespace App\Livewire\Auth;
 
+use App\Models\City;
 use App\Models\Company;
+use App\Models\JobListing;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('components.layouts.guest')]
+#[Layout('components.layouts.guest', ['hideHeader' => true])]
 class RegisterCompany extends Component
 {
-    public string $owner_name = '';
-    public string $nik = '';
-    public string $whatsapp = '';
-    public string $email = '';
-    public string $password = '';
+    public string $mode = 'register'; // 'register' atau 'login'
+
+    // Form Buat Akun Perusahaan (SEEK style)
     public string $company_name = '';
-    public string $business_field = 'fnb';
-    public string $nib = '';
-    public string $address = '';
-    public string $city = '';
-    public string $contact_method = 'whatsapp';
-    public string $nikError = '';
+    public string $country = 'Indonesia';
+    public string $city = 'Yogyakarta';
+    public string $phone_code = '+62';
+    public string $phone_number = '';
+    public string $email = '';
+    public string $first_name = '';
+    public string $last_name = '';
+    public string $password = '';
+    public string $business_field = 'retail';
+    public bool $showPassword = false;
 
-    public function updatedNik($value): void
+    // Form Masuk Perusahaan (SEEK style)
+    public string $login_email = '';
+    public string $login_password = '';
+    public bool $login_show_password = false;
+    public string $login_error = '';
+
+    public function mount(): void
     {
-        $this->nik = preg_replace('/[^0-9]/', '', (string)$value);
+        if (request()->query('mode') === 'login' || request()->routeIs('login.company')) {
+            $this->mode = 'login';
+        } else {
+            $this->mode = 'register';
+        }
     }
 
-    public function updatedWhatsapp($value): void
+    public function setMode(string $newMode): void
     {
-        $this->whatsapp = preg_replace('/[^0-9]/', '', (string)$value);
+        $this->mode = $newMode;
+        $this->resetErrorBag();
+        $this->login_error = '';
     }
 
-    public function updatedNib($value): void
+    public function togglePassword(): void
     {
-        $this->nib = preg_replace('/[^0-9]/', '', (string)$value);
+        $this->showPassword = !$this->showPassword;
+    }
+
+    public function toggleLoginPassword(): void
+    {
+        $this->login_show_password = !$this->login_show_password;
+    }
+
+    public function updatedPhoneNumber($value): void
+    {
+        $this->phone_number = preg_replace('/[^0-9]/', '', (string)$value);
     }
 
     public function register(): void
     {
-        $this->nikError = '';
-        $this->nik = preg_replace('/[^0-9]/', '', $this->nik);
-        $this->whatsapp = preg_replace('/[^0-9]/', '', $this->whatsapp);
-        $this->nib = preg_replace('/[^0-9]/', '', $this->nib);
-
-        $this->validate([
-            'owner_name'    => 'required|string|max:255',
-            'nik'           => 'required|digits:16',
-            'whatsapp'      => 'required|regex:/^[0-9]+$/|min:10|max:15',
-            'nib'           => 'nullable|regex:/^[0-9]+$/',
-            'email'         => 'required|email|unique:users,email',
-            'password'      => 'required|min:6',
-            'company_name'  => 'required|string|max:255',
-            'business_field'=> 'required|string',
-            'city'          => 'required|string',
-            'contact_method'=> 'required|in:whatsapp,email',
-        ], [
-            'nik.digits'    => 'NIK harus 16 digit.',
-            'email.unique'  => 'Email ini sudah digunakan.',
-            'city.required' => 'Kota wajib diisi.',
-        ]);
-
-        if (User::where('nik', $this->nik)->exists()) {
-            $this->nikError = 'NIK ini sudah terdaftar. Silakan masuk menggunakan akun yang sudah ada.';
-            return;
+        $this->phone_number = preg_replace('/[^0-9]/', '', (string)$this->phone_number);
+        if (str_starts_with($this->phone_number, '0')) {
+            $this->phone_number = substr($this->phone_number, 1);
         }
 
+        $this->validate([
+            'company_name'   => 'required|string|max:255',
+            'country'        => 'required|string',
+            'city'           => 'required|string',
+            'phone_number'   => 'required|numeric|min_digits:8|max_digits:14',
+            'email'          => 'required|email|unique:users,email',
+            'first_name'     => 'required|string|max:100',
+            'last_name'      => 'nullable|string|max:100',
+            'password'       => 'required|min:6',
+            'business_field' => 'nullable|string',
+        ], [
+            'company_name.required'   => 'Wajib diisi',
+            'phone_number.required'   => 'Wajib diisi',
+            'phone_number.min_digits' => 'Nomor telepon minimal 8 digit.',
+            'email.required'          => 'Wajib diisi',
+            'email.email'             => 'Format alamat email tidak valid.',
+            'email.unique'            => 'Email ini sudah terdaftar sebagai akun perusahaan.',
+            'first_name.required'     => 'Wajib diisi',
+            'password.required'       => 'Wajib diisi',
+            'password.min'            => 'Kata sandi minimal 6 karakter.',
+        ]);
+
+        $fullName = trim($this->first_name . ' ' . $this->last_name);
+        $fullPhone = '0' . $this->phone_number;
+
         $user = User::create([
-            'name'     => $this->owner_name,
+            'name'     => $fullName,
             'email'    => $this->email,
             'password' => Hash::make($this->password),
             'role'     => 'company',
-            'nik'      => $this->nik,
-            'whatsapp' => $this->whatsapp,
+            'whatsapp' => $fullPhone,
         ]);
 
         Company::create([
             'user_id'        => $user->id,
-            'owner_name'     => $this->owner_name,
-            'nik'            => $this->nik,
-            'whatsapp'       => $this->whatsapp,
+            'owner_name'     => $fullName,
+            'whatsapp'       => $fullPhone,
             'company_name'   => $this->company_name,
-            'business_field' => $this->business_field,
-            'nib'            => $this->nib,
-            'address'        => $this->address,
-            'city'           => $this->city,
+            'business_field' => $this->business_field ?: 'retail',
+            'address'        => $this->city . ', ' . $this->country,
+            'city'           => $this->city ?: 'Yogyakarta',
             'contact_email'  => $this->email,
-            'contact_method' => $this->contact_method,
+            'contact_method' => 'whatsapp',
             'agreed_to_terms'=> true,
         ]);
 
@@ -98,11 +124,37 @@ class RegisterCompany extends Component
         $this->redirect(route('company.dashboard'), navigate: true);
     }
 
+    public function companyLogin(): void
+    {
+        $this->login_error = '';
+        $this->validate([
+            'login_email'    => 'required|email',
+            'login_password' => 'required',
+        ], [
+            'login_email.required'    => 'Wajib diisi',
+            'login_email.email'       => 'Format alamat email tidak valid.',
+            'login_password.required' => 'Wajib diisi',
+        ]);
+
+        if (Auth::attempt(['email' => $this->login_email, 'password' => $this->login_password])) {
+            session()->regenerate();
+            $user = Auth::user();
+            if ($user->isCompany()) {
+                $this->redirect(route('company.dashboard'), navigate: true);
+            } else {
+                $this->redirect(route('applicant.map'), navigate: true);
+            }
+            return;
+        }
+
+        $this->login_error = 'Permintaan login tidak valid dan tidak dapat diselesaikan demi keamanan Anda. Silakan coba lagi.';
+    }
+
     public function render()
     {
         return view('livewire.auth.register-company', [
-            'cities'     => \App\Models\City::orderBy('name')->get(),
-            'categories' => \App\Models\JobListing::jobCategories(),
-        ])->title('Daftar Pemberi Kerja — NEAR JOB');
+            'cities'     => City::orderBy('name')->get(),
+            'categories' => JobListing::jobCategories(),
+        ])->title($this->mode === 'login' ? 'Masuk Perusahaan — NEAR JOB' : 'Buat Akun Perusahaan — NEAR JOB');
     }
 }
