@@ -201,7 +201,7 @@
                     @endif
 
                     @php
-                        $hasWa = !empty(trim($job->contact_whatsapp ?? ''));
+                        $hasWa = !empty(trim($job->contact_whatsapp ?? '')) && $job->contact_method !== 'email';
                         $hasMail = !empty(trim($job->contact_email ?? ''));
                     @endphp
 

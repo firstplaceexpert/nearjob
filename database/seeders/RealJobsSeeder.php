@@ -1169,6 +1169,25 @@ class RealJobsSeeder extends Seeder
                 ]
             );
 
+            $isEmailOnly = in_array($item['company_name'], [
+                'Rumah Sakit Prasetya Husada',
+                'HokBen Soehat Malang',
+                'PT. Tiga Kru Kita',
+                'Bedding Depo Cendrawasih',
+                'Tianlala Demangan Baru Yogyakarta',
+                'Nagapasa Real Estate',
+                'PT. Jogja Tugu Trans',
+                'Toko Aster Malang (Kosmetik & Retail)',
+                'PT. Cahaya Unggul Abadi Nawasena',
+                'Alfa Media Pratama (AMP)',
+                'Rumah Katun',
+                'Joffi Ramen Prawirotaman (Dikwaa Group)',
+                'Adira Finance Malang 2 CAR',
+                'Haven Light Clinic',
+            ]);
+
+            $method = $isEmailOnly ? 'email' : 'whatsapp';
+
             $company = Company::create([
                 'user_id'         => $companyUser->id,
                 'owner_name'      => $item['owner_name'],
@@ -1181,7 +1200,7 @@ class RealJobsSeeder extends Seeder
                 'latitude'        => $item['latitude'],
                 'longitude'       => $item['longitude'],
                 'contact_email'   => $item['contact_email'],
-                'contact_method'  => 'whatsapp',
+                'contact_method'  => $method,
                 'agreed_to_terms' => true,
             ]);
 
@@ -1201,9 +1220,9 @@ class RealJobsSeeder extends Seeder
                 'salary_min'       => $item['salary_min'],
                 'salary_max'       => $item['salary_max'],
                 'quota'            => $item['quota'],
-                'contact_whatsapp' => $item['whatsapp'],
+                'contact_whatsapp' => $isEmailOnly ? null : $item['whatsapp'],
                 'contact_email'    => $item['contact_email'],
-                'contact_method'   => 'whatsapp',
+                'contact_method'   => $method,
             ]);
         }
     }

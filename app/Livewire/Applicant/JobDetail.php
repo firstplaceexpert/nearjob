@@ -62,10 +62,11 @@ class JobDetail extends Component
             return;
         }
 
-        // Tentukan metode kontak direct (prioritas WhatsApp jika tersedia, atau Email jika hanya ada email)
-        $hasWhatsapp = !empty(trim($this->job->contact_whatsapp ?? ''));
+        // Tentukan metode kontak direct (prioritas WhatsApp jika metodenya whatsapp, atau Email jika metodenya email)
+        $isEmailMethod = $this->job->contact_method === 'email' || (empty(trim($this->job->contact_whatsapp ?? '')) && !empty(trim($this->job->contact_email ?? '')));
+        $appliedVia = $isEmailMethod ? 'email' : 'whatsapp';
+        $hasWhatsapp = !empty(trim($this->job->contact_whatsapp ?? '')) && !$isEmailMethod;
         $hasEmail = !empty(trim($this->job->contact_email ?? ''));
-        $appliedVia = $hasWhatsapp ? 'whatsapp' : ($hasEmail ? 'email' : 'whatsapp');
 
         // Kurangi kredit & buat lamaran secara atomik
         \Illuminate\Support\Facades\DB::transaction(function () use ($profile, $user, $appliedVia) {

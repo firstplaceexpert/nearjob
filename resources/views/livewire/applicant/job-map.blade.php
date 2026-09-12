@@ -22,7 +22,7 @@
                 'quota'         => (int) ($j->quota ?: 1),
                 'distance'      => $j->distance,
                 'method'        => $j->contact_method,
-                'hasWa'         => !empty(trim($j->contact_whatsapp ?? '')),
+                'hasWa'         => !empty(trim($j->contact_whatsapp ?? '')) && $j->contact_method !== 'email',
                 'hasEmail'      => !empty(trim($j->contact_email ?? '')),
                 'education'     => strtoupper($j->min_education),
                 'workType'      => $j->work_type_label,
@@ -159,7 +159,7 @@
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
                     <div>
                         @php
-                            $cardHasWa = !empty(trim($job->contact_whatsapp ?? ''));
+                            $cardHasWa = !empty(trim($job->contact_whatsapp ?? '')) && $job->contact_method !== 'email';
                             $cardHasMail = !empty(trim($job->contact_email ?? ''));
                         @endphp
                         @if($cardHasWa && $cardHasMail)
