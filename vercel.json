@@ -13,8 +13,12 @@
       "dest": "/build/$1"
     },
     {
-      "src": "/img/(.*)",
-      "dest": "/img/$1"
+      "src": "/images/(.*)",
+      "dest": "/images/$1"
+    },
+    {
+      "src": "/logo.png",
+      "dest": "/logo.png"
     },
     {
       "src": "/vendor/(.*)",
