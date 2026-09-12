@@ -91,7 +91,7 @@
                             <a href="https://wa.me/{{ preg_replace('/^0/', '62', preg_replace('/[^0-9]/', '', $app->user->whatsapp)) }}"
                                target="_blank"
                                class="flex-1 py-2.5 text-center text-xs font-extrabold rounded-xl transition-all text-white shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"
-                               style="background: #5680d8; box-shadow: 0 4px 12px rgba(86,128,216,.3);">
+                               style="background: #25D366; box-shadow: 0 4px 12px rgba(37,211,102,.3);">
                                 <i class='bx bxl-whatsapp text-sm'></i> Hubungi WA
                             </a>
                         @else

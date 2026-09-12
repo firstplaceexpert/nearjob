@@ -251,7 +251,7 @@
                 @endphp
                 <button wire:click="applyForJob"
                     class="w-full py-4 text-white font-black rounded-2xl text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:opacity-95 cursor-pointer"
-                    style="{{ $canApply ? ($hasWa ? 'background: #5680d8; box-shadow: 0 6px 25px rgba(86,128,216,.35);' : 'background: #5680d8; box-shadow: 0 6px 25px rgba(86,128,216,.35);') : 'background: #cbd5e1; cursor: not-allowed;' }}">
+                    style="{{ $canApply ? ($hasWa ? 'background: #25D366; box-shadow: 0 6px 25px rgba(37,211,102,.35);' : 'background: #5680d8; box-shadow: 0 6px 25px rgba(86,128,216,.35);') : 'background: #cbd5e1; cursor: not-allowed;' }}">
                     @if($canApply)
                         <i class='bx {{ $hasWa ? "bxl-whatsapp" : "bx-envelope" }} text-xl'></i>
                         {{ $hasWa ? 'LAMAR VIA WHATSAPP' : 'LAMAR VIA EMAIL' }}

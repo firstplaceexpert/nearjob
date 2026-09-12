@@ -296,7 +296,7 @@
                                 </div>
                                 <div style="display:flex;justify-content:space-between;align-items:center;">
                                     <span style="font-size:9px;font-weight:800;padding:3px 8px;border-radius:6px;background:#ffffff;color:#000000;border:1px solid #000000;">F&B</span>
-                                    <button style="padding:6px 14px;background:var(--primary);color:#fff;border-radius:8px;font-size:9.5px;font-weight:800;border:none;">Lamar via WA</button>
+                                    <button style="padding:6px 14px;background:#25D366;color:#fff;border-radius:8px;font-size:9.5px;font-weight:800;border:none;box-shadow:0 2px 8px rgba(37,211,102,.3);display:inline-flex;align-items:center;gap:4px;"><i class='bx bxl-whatsapp text-xs'></i> Lamar via WA</button>
                                 </div>
                             </div>
                         </div>
@@ -412,9 +412,15 @@
                 </div>
 
                 <div style="padding-top:4px;">
-                    <span style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;padding:10px 18px;border-radius:12px;background:#ffffff;color:#000000;border:1px solid #000000;">
-                        {!! $contact==='whatsapp' ? "<i class='bx bxl-whatsapp' style='font-size:16px;'></i> Lamar via WhatsApp" : "<i class='bx bx-envelope' style='font-size:16px;'></i> Lamar via Email" !!}
+                    @if($contact === 'whatsapp')
+                    <span style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;padding:10px 18px;border-radius:12px;background:#25D366;color:#ffffff;border:1px solid #20ba5a;box-shadow:0 4px 14px rgba(37,211,102,.3);">
+                        <i class='bx bxl-whatsapp' style='font-size:18px;'></i> Lamar via WhatsApp
                     </span>
+                    @else
+                    <span style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;padding:10px 18px;border-radius:12px;background:#ffffff;color:#000000;border:1px solid #000000;">
+                        <i class='bx bx-envelope' style='font-size:16px;'></i> Lamar via Email
+                    </span>
+                    @endif
                 </div>
             </div>
             @endforeach
