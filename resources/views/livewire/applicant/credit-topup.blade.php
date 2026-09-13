@@ -21,9 +21,9 @@
                 <p class="text-black text-sm mt-1">Pilih paket kuota sesuai kebutuhan pencarian kerja Anda.</p>
             </div>
             <div class="bg-slate-900 text-white rounded-xl p-4 sm:p-5 text-center sm:text-right shrink-0">
-                <span class="text-xs text-black font-medium block">Sisa Kuota Aktif</span>
-                <span class="text-3xl font-black">{{ $profile->application_credits ?? 0 }}</span>
-                <span class="text-xs text-black block mt-0.5">Kesempatan Melamar</span>
+                <span class="text-xs text-slate-300 font-medium block">Sisa Kuota Aktif</span>
+                <span class="text-3xl font-black text-white">{{ $profile->application_credits ?? 0 }}</span>
+                <span class="text-xs text-slate-300 block mt-0.5">Kesempatan Melamar</span>
             </div>
         </div>
 
@@ -160,7 +160,7 @@
 
                     <button wire:click="buyPackage('{{ $popular['key'] }}')"
                             wire:loading.attr="disabled"
-                            class="w-full py-2.5 rounded-xl text-white active:scale-95 text-white font-semibold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5">
+                            class="w-full py-2.5 rounded-xl bg-[#5680d8] hover:bg-[#466ec2] text-white active:scale-95 font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer">
                         <span wire:loading.remove wire:target="buyPackage('{{ $popular['key'] }}')">Pilih Paket 5 Kuota</span>
                         <span wire:loading wire:target="buyPackage('{{ $popular['key'] }}')"><i class='bx bx-loader-alt animate-spin'></i></span>
                     </button>

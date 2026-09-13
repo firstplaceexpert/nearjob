@@ -31,7 +31,7 @@
                             <span class="text-2xl font-bold text-black">Rp14.999</span>
                         </div>
                         <button wire:click="buyCv" wire:loading.attr="disabled"
-                                class="px-5 py-2.5 text-white active:scale-95 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5">
+                                class="px-5 py-2.5 bg-[#5680d8] hover:bg-[#466ec2] text-white active:scale-95 font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5 cursor-pointer">
                             <span wire:loading.remove wire:target="buyCv">Beli CV Saja</span>
                             <span wire:loading wire:target="buyCv"><i class='bx bx-loader-alt animate-spin'></i></span>
                         </button>
