@@ -58,7 +58,11 @@
                     </span>
                 </div>
                 <p class="text-[11px] text-black/65 font-normal mb-2">Unggah foto KTP bersifat <strong>opsional</strong> jika Anda ingin profil memiliki tanda verifikasi resmi (Verify). Sistem otomatis memberi <strong>watermark permanen "NEAR JOB"</strong> sebelum disimpan di database demi keamanan data Anda.</p>
-                <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-black file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:text-white cursor-pointer" style="--tw-file-bg: #5680d8;">
+                <label for="ktp-upload-reg-applicant" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white cursor-pointer transition-all hover:opacity-90 select-none" style="background: #5680d8;">
+                    <i class='bx bx-upload text-sm'></i>
+                    <span>Pilih Foto KTP</span>
+                </label>
+                <input id="ktp-upload-reg-applicant" type="file" wire:model="ktp_file" accept="image/*" class="sr-only">
                 <div wire:loading wire:target="ktp_file" class="text-xs text-black font-bold mt-1.5">
                     <i class='bx bx-loader-alt bx-spin'></i> Memproses KTP & watermark...
                 </div>

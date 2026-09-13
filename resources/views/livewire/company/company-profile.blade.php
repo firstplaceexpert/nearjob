@@ -46,12 +46,16 @@
                     @endif
 
                     <div class="pt-1">
-                        <label class="block text-[11px] font-bold text-black mb-1">
+                        <label class="block text-[11px] font-bold text-black mb-2">
                             {{ $company->ktp_path ? 'Perbarui Foto KTP Pemilik Usaha:' : 'Unggah Foto KTP Pemilik Usaha:' }}
                         </label>
-                        <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-black file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:text-white cursor-pointer" style="--tw-file-bg: #5680d8;">
-                        <p class="text-[10px] text-black mt-1">Foto otomatis diberi watermark pengaman "NEAR JOB" sebelum disimpan.</p>
-                        
+                        <label for="ktp-upload-company" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white cursor-pointer transition-all hover:opacity-90 select-none" style="background: #5680d8;">
+                            <i class='bx bx-upload text-sm'></i>
+                            <span>Pilih Foto KTP</span>
+                        </label>
+                        <input id="ktp-upload-company" type="file" wire:model="ktp_file" accept="image/*" class="sr-only">
+                        <p class="text-[10px] text-black mt-2">Foto otomatis diberi watermark pengaman "NEAR JOB" sebelum disimpan.</p>
+
                         <div wire:loading wire:target="ktp_file" class="text-xs text-black font-medium mt-1">
                             <i class='bx bx-loader-alt bx-spin text-black'></i> Memproses watermark & menyimpan KTP...
                         </div>

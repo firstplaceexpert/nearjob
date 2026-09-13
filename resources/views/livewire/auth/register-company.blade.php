@@ -264,8 +264,11 @@
                                     Unggah foto KTP bersifat <strong>opsional</strong>. Unggah jika Anda ingin profil perusahaan memiliki tanda verifikasi resmi (Verify). Foto yang diunggah otomatis distempel watermark permanen "NEAR JOB" agar aman dari penyalahgunaan.
                                 </p>
 
-                                <input type="file" wire:model="ktp_file" accept="image/*"
-                                    class="block w-full text-xs text-black file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-black file:text-white hover:file:bg-black/80 cursor-pointer">
+                                <label for="ktp-upload-reg-company" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white cursor-pointer transition-all hover:opacity-90 select-none" style="background: #5680d8;">
+                                    <i class='bx bx-upload text-sm'></i>
+                                    <span>Pilih Foto KTP</span>
+                                </label>
+                                <input id="ktp-upload-reg-company" type="file" wire:model="ktp_file" accept="image/*" class="sr-only">
 
                                 <div wire:loading wire:target="ktp_file" class="text-xs text-black font-bold mt-2">
                                     <i class='bx bx-loader-alt bx-spin text-black'></i> Memproses KTP & watermark otomatis...

@@ -231,7 +231,11 @@
                                     <label class="block text-xs font-bold text-black mb-1.5">
                                         {{ $profile->ktp_path ? 'Perbarui Foto KTP:' : 'Pilih Foto KTP Anda:' }}
                                     </label>
-                                    <input type="file" wire:model="ktp_file" accept="image/*" class="block w-full text-xs text-black file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:text-white cursor-pointer" style="--tw-file-bg: #5680d8;">
+                                    <label for="ktp-upload-applicant" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-extrabold text-white cursor-pointer transition-all hover:opacity-90 select-none" style="background: #5680d8;">
+                                        <i class='bx bx-upload text-sm'></i>
+                                        <span>Pilih Foto KTP</span>
+                                    </label>
+                                    <input id="ktp-upload-applicant" type="file" wire:model="ktp_file" accept="image/*" class="sr-only">
                                     <div wire:loading wire:target="ktp_file" class="text-xs text-black font-bold mt-2">
                                         <i class='bx bx-loader-alt bx-spin text-sm text-black'></i> Memproses watermark "NEAR JOB" & menyimpan KTP...
                                     </div>
