@@ -1,5 +1,9 @@
 {{-- Detail Lowongan Pekerjaan --}}
 @push('head')
+@php
+    $validThrough = date('c', strtotime('+3 months'));
+    $companyProvince = $job->company?->city ?? $job->city ?? 'Indonesia';
+@endphp
 <script type="application/ld+json">
 {
   "@context": "https://schema.org/",
@@ -7,7 +11,7 @@
   "title": "{{ addslashes($job->position) }}",
   "description": "{{ addslashes(strip_tags($job->description ?: $job->position . ' di ' . ($job->company?->company_name ?? 'Perusahaan'))) }}",
   "datePosted": "{{ $job->created_at ? $job->created_at->toIso8601String() : date('c') }}",
-  "validThrough": "{{ $job->expires_at ? $job->expires_at->toIso8601String() : date('c', strtotime('+3 months')) }}",
+  "validThrough": "{{ $validThrough }}",
   "employmentType": "{{ strtoupper($job->work_type ?? 'FULL_TIME') }}",
   "hiringOrganization": {
     "@type": "Organization",
@@ -20,7 +24,7 @@
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "{{ addslashes($job->company?->city ?? $job->city ?? 'Indonesia') }}",
-      "addressRegion": "{{ addslashes($job->company?->province ?? 'Indonesia') }}",
+      "addressRegion": "{{ addslashes($companyProvince) }}",
       "addressCountry": "ID"
     }
   },
@@ -92,7 +96,7 @@
                     <i class='bx bx-map-pin'></i>
                 </div>
                 <span class="text-[10px] font-extrabold uppercase tracking-widest text-black mb-1.5">JARAK LOKASI</span>
-                <span class="text-xs font-extrabold text-black">{{ $job->distance }} km dari Anda</span>
+                <span class="text-xs font-extrabold text-black">{{ $distance }} km dari Anda</span>
             </div>
 
             <div class="bg-white rounded-2xl flex flex-col items-center text-center border shadow-sm" style="border-color: #e2e8f0; padding: 22px 16px; border-radius: 20px;">
@@ -144,7 +148,7 @@
             </div>
 
             {{-- ===== REQUIRED SKILLS ===== --}}
-            @if($job->required_skills && count($job->required_skills) > 0)
+            @if(!empty($job->required_skills) && is_array($job->required_skills) && count($job->required_skills) > 0)
             <div class="bg-white rounded-3xl border shadow-sm" style="border-color: #e2e8f0; padding: 28px 24px;">
                 <div class="flex items-center gap-2.5 mb-4 pb-3 border-b" style="border-color: #f1f5f9;">
                     <i class='bx bx-wrench text-xl' style="color: #5680d8;"></i>

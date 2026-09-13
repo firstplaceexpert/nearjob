@@ -12,6 +12,7 @@ use Livewire\Component;
 class JobDetail extends Component
 {
     public JobListing $job;
+    public float $distance = 0;
 
     public function mount(JobListing $jobListing)
     {
@@ -20,7 +21,7 @@ class JobDetail extends Component
         // Calculate distance from user profile or default Yogyakarta center
         $userLat = (float) (Auth::user()?->applicantProfile?->latitude ?: -7.7956);
         $userLon = (float) (Auth::user()?->applicantProfile?->longitude ?: 110.3695);
-        $this->job->distance = $this->calculateDistance($userLat, $userLon, (float) ($this->job->latitude ?? 0), (float) ($this->job->longitude ?? 0));
+        $this->distance = $this->calculateDistance($userLat, $userLon, (float) ($this->job->latitude ?? 0), (float) ($this->job->longitude ?? 0));
     }
 
     public function applyForJob(): void
@@ -142,7 +143,10 @@ class JobDetail extends Component
         $hasApplied = Auth::check() ? Application::where('user_id', Auth::id())->where('job_listing_id', $this->job->id)->exists() : false;
         $credits = Auth::user()?->applicantProfile?->application_credits ?? 0;
         
-        return view('livewire.applicant.job-detail', compact('hasApplied', 'credits'))
-            ->title($this->job->position . ' — ' . ($this->job->company?->company_name ?? 'NEAR JOB'));
+        return view('livewire.applicant.job-detail', [
+            'hasApplied' => $hasApplied,
+            'credits'    => $credits,
+            'distance'   => $this->distance,
+        ])->title($this->job->position . ' — ' . ($this->job->company?->company_name ?? 'NEAR JOB'));
     }
 }
