@@ -60,24 +60,24 @@
                         {{-- Company & Position --}}
                         <div class="flex items-start gap-4" style="margin-bottom: 24px;">
                             <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-black shrink-0 border shadow-sm"
-                                 style="background: {{ $app->jobListing->category_bg }}; color: {{ $app->jobListing->category_color }}; border-color: {{ $app->jobListing->category_color }}44;">
-                                <i class='{{ $app->jobListing->category_icon }} text-2xl'></i>
+                                 style="background: {{ $app->jobListing?->category_bg ?? '#eef2fb' }}; color: {{ $app->jobListing?->category_color ?? '#5680d8' }}; border-color: {{ ($app->jobListing?->category_color ?? '#5680d8') }}44;">
+                                <i class='{{ $app->jobListing?->category_icon ?? "bx bx-briefcase" }} text-2xl'></i>
                             </div>
                             <div class="min-w-0 flex-1">
                                 <h3 class="font-black text-base text-black leading-snug mb-1.5 truncate">
                                     <a href="{{ route('applicant.job.detail', $app->job_listing_id) }}" class="hover:underline text-black">
-                                        {{ $app->jobListing->position }}
+                                        {{ $app->jobListing?->position ?? 'Lowongan Pekerjaan' }}
                                     </a>
                                 </h3>
-                                <p class="text-xs text-black font-extrabold mb-2 truncate">{{ $app->jobListing->company->company_name }}</p>
+                                <p class="text-xs text-black font-extrabold mb-2 truncate">{{ $app->jobListing?->company?->company_name ?? 'Perusahaan' }}</p>
                                 
                                 {{-- Kota & Gaji Wrap Garis Hitam & Tulisan Hitam --}}
                                 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 6px;">
                                     <span style="display: inline-flex; align-items: center; gap: 5px; background: #ffffff; color: #000000; padding: 4px 12px; border-radius: 8px; font-size: 11.5px; font-weight: 700; border: 1px solid rgba(0,0,0,0.25);">
-                                        <i class='bx bx-map-pin text-[#5680d8]'></i> {{ $app->jobListing->company->city }}
+                                        <i class='bx bx-map-pin text-[#5680d8]'></i> {{ $app->jobListing?->company?->city ?? ($app->jobListing?->city ?? 'Lokasi') }}
                                     </span>
                                     <span style="display: inline-flex; align-items: center; gap: 5px; background: #ffffff; color: #000000; padding: 4px 12px; border-radius: 8px; font-size: 11.5px; font-weight: 800; border: 1px solid rgba(0,0,0,0.25);">
-                                        <i class='bx bx-wallet text-[#5680d8]'></i> {{ $app->jobListing->salary_range }}
+                                        <i class='bx bx-wallet text-[#5680d8]'></i> {{ $app->jobListing?->salary_range ?? 'Negosiasi' }}
                                     </span>
                                 </div>
                             </div>
@@ -88,7 +88,7 @@
                              style="background: #ffffff; border: 1px solid rgba(0,0,0,0.15); padding: 18px 20px; margin-bottom: 20px;">
                             <div>
                                 <span class="text-[10px] font-extrabold uppercase tracking-widest text-black/60 block mb-1">JENIS KERJA</span>
-                                <span class="font-black text-black text-xs sm:text-sm">{{ $app->jobListing->work_type_label }}</span>
+                                <span class="font-black text-black text-xs sm:text-sm">{{ $app->jobListing?->work_type_label ?? 'Penuh Waktu' }}</span>
                             </div>
                             <div>
                                 <span class="text-[10px] font-extrabold uppercase tracking-widest text-black/60 block mb-1">KONTAK LAMAR</span>

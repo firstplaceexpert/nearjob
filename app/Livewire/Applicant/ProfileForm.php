@@ -42,7 +42,7 @@ class ProfileForm extends Component
     public function mount()
     {
         $user = Auth::user();
-        $this->profile = $user->applicantProfile ?? new ApplicantProfile();
+        $this->profile = $user->applicantProfile ?? $user->applicantProfile()->firstOrCreate(['user_id' => $user->id]);
 
         $this->name = $user->name;
         $this->masked_nik = $user->masked_nik ?? '-';

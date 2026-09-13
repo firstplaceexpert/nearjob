@@ -1,12 +1,16 @@
 <?php
 
 // Check if debug mode is explicitly enabled
-$isDebug = true; // Temporary for diagnosis
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-putenv('APP_DEBUG=true');
-$_ENV['APP_DEBUG'] = 'true';
+$isDebug = (getenv('APP_DEBUG') === 'true' || ($_ENV['APP_DEBUG'] ?? '') === 'true');
+if ($isDebug) {
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    error_reporting(E_ALL);
+} else {
+    ini_set('display_errors', '0');
+    ini_set('display_startup_errors', '0');
+    error_reporting(0);
+}
 
 // 1. Ensure required storage directories exist in /tmp (the only writable directory in Vercel)
 $storageDirs = [

@@ -15,17 +15,20 @@ class JobDetail extends Component
 
     public function mount(JobListing $jobListing)
     {
-        $this->job = $jobListing;
+        $this->job = $jobListing->load('company');
         
-        // Calculate distance from default Banyuwangi center
-        $this->job->distance = $this->calculateDistance(-8.2192, 114.3692, $this->job->latitude, $this->job->longitude);
+        // Calculate distance from user profile or default Yogyakarta center
+        $userLat = (float) (Auth::user()?->applicantProfile?->latitude ?: -7.7956);
+        $userLon = (float) (Auth::user()?->applicantProfile?->longitude ?: 110.3695);
+        $this->job->distance = $this->calculateDistance($userLat, $userLon, (float) ($this->job->latitude ?? 0), (float) ($this->job->longitude ?? 0));
     }
 
     public function applyForJob(): void
     {
+        $companyName = $this->job->company?->company_name ?? 'Perusahaan';
+
         if (!Auth::check()) {
-            $companyName = $this->job->company->company_name ?? 'perusahaan';
-            $this->dispatch('open-auth-modal', [
+            $this->dispatch('open-quick-auth-modal', [
                 'title' => 'Masuk / Daftar untuk Melamar',
                 'subtitle' => 'Masuk atau jawab kuis singkat untuk langsung melamar ke ' . $companyName . '.',
                 'jobId' => $this->job->id,
@@ -48,7 +51,7 @@ class JobDetail extends Component
 
         // Cek apakah sudah pernah melamar
         if (Application::where('user_id', $user->id)->where('job_listing_id', $this->job->id)->exists()) {
-            $this->dispatch('notify', 'Anda sudah melamar pekerjaan ini.');
+            $this->dispatch('notify', ['message' => 'Anda sudah melamar pekerjaan ini.', 'type' => 'info']);
             return;
         }
 
@@ -85,8 +88,7 @@ class JobDetail extends Component
 
         $edu = strtoupper($profile->education_level ?? 'SMA/SMK');
         $city = $profile->city ?? 'Area Sekitar';
-        $companyName = $this->job->company->company_name;
-        $ownerName = $this->job->company->owner_name ?: 'Bapak/Ibu HRD';
+        $ownerName = $this->job->company?->owner_name ?: 'Bapak/Ibu HRD';
 
         // Generate pesan WhatsApp / Email yang terstruktur & profesional
         if ($appliedVia === 'whatsapp' && $hasWhatsapp) {
@@ -94,7 +96,7 @@ class JobDetail extends Component
                      . "Perkenalkan saya *{$user->name}* (Domisili: {$city}, Pend. Terakhir: {$edu}).\n"
                      . "Saya menemukan informasi lowongan *{$this->job->position}* melalui platform *Near Job*.\n\n"
                      . "Saya memiliki minat dan kualifikasi yang sesuai untuk posisi ini. Apakah lowongan masih terbuka untuk proses interview?\n\n"
-                     . "Terima kasih atas perhatian dan kesempatannya.\n"
+                     . "Terima kasih atas perhatian dan kesempatannya.\n\n"
                      . "Salam hormat,\n"
                      . "{$user->name}";
 
@@ -103,7 +105,8 @@ class JobDetail extends Component
                 $waNumber = '62' . substr($waNumber, 1);
             }
             $url = "https://wa.me/{$waNumber}?text=" . urlencode($message);
-            $this->redirect($url);
+            $this->dispatch('notify', ['message' => 'Lamaran tercatat! Mengarahkan ke WhatsApp...', 'type' => 'success']);
+            $this->js("window.open(" . json_encode($url) . ", '_blank');");
             return;
         } else {
             $subject = "Lamaran Pekerjaan: {$this->job->position} - {$user->name}";
@@ -115,7 +118,8 @@ class JobDetail extends Component
                   . "Hormat saya,\n"
                   . "{$user->name}";
             $url = "mailto:{$this->job->contact_email}?subject=" . rawurlencode($subject) . "&body=" . rawurlencode($body);
-            $this->redirect($url);
+            $this->dispatch('notify', ['message' => 'Lamaran tercatat! Mengarahkan ke Email...', 'type' => 'success']);
+            $this->js("window.location.href = " . json_encode($url) . ";");
             return;
         }
     }
@@ -139,6 +143,6 @@ class JobDetail extends Component
         $credits = Auth::user()?->applicantProfile?->application_credits ?? 0;
         
         return view('livewire.applicant.job-detail', compact('hasApplied', 'credits'))
-            ->title($this->job->position . ' — ' . $this->job->company->company_name);
+            ->title($this->job->position . ' — ' . ($this->job->company?->company_name ?? 'NEAR JOB'));
     }
 }

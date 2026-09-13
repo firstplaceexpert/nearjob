@@ -1,3 +1,8 @@
+@push('head')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+@endpush
+
 <div>
     {{-- Data embed via hidden script tags --}}
     <script id="njob-map-data" type="application/json">
@@ -10,9 +15,9 @@
             'jobCards' => $jobs->map(fn($j) => [
                 'id'            => $j->id,
                 'position'      => $j->position,
-                'company'       => $j->company->company_name,
-                'initial'       => substr($j->company->company_name, 0, 1),
-                'city'          => $j->company->city,
+                'company'       => $j->company?->company_name ?? 'Perusahaan',
+                'initial'       => substr($j->company?->company_name ?? 'P', 0, 1),
+                'city'          => $j->company?->city ?? $j->city ?? 'Lokasi',
                 'category'      => $j->job_category,
                 'categoryIcon'  => $j->category_icon,
                 'categoryColor' => $j->category_color,
@@ -137,7 +142,7 @@
                             {{ $job->position }}
                         </h3>
                         <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#64748b;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                            <span style="color:#5680d8;overflow:hidden;text-overflow:ellipsis;">{{ $job->company->company_name }}</span>
+                            <span style="color:#5680d8;overflow:hidden;text-overflow:ellipsis;">{{ $job->company?->company_name ?? 'Perusahaan' }}</span>
                             <span style="font-size:9.5px;font-weight:800;background:{{ $job->category_bg }};color:{{ $job->category_color }};padding:1px 6px;border-radius:5px;flex-shrink:0;">{{ $job->category_name }}</span>
                         </div>
                         <div style="font-size:12px;font-weight:800;color:#000000;margin-top:2px;">

@@ -5,13 +5,13 @@
   "@context": "https://schema.org/",
   "@type": "JobPosting",
   "title": "{{ addslashes($job->position) }}",
-  "description": "{{ addslashes(strip_tags($job->description ?: $job->position . ' di ' . $job->company->company_name)) }}",
+  "description": "{{ addslashes(strip_tags($job->description ?: $job->position . ' di ' . ($job->company?->company_name ?? 'Perusahaan'))) }}",
   "datePosted": "{{ $job->created_at ? $job->created_at->toIso8601String() : date('c') }}",
   "validThrough": "{{ $job->expires_at ? $job->expires_at->toIso8601String() : date('c', strtotime('+3 months')) }}",
   "employmentType": "{{ strtoupper($job->work_type ?? 'FULL_TIME') }}",
   "hiringOrganization": {
     "@type": "Organization",
-    "name": "{{ addslashes($job->company->company_name) }}",
+    "name": "{{ addslashes($job->company?->company_name ?? 'Perusahaan') }}",
     "sameAs": "{{ url('/') }}",
     "logo": "{{ asset('img/logo.png') }}"
   },
@@ -19,8 +19,8 @@
     "@type": "Place",
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "{{ addslashes($job->company->city ?? 'Yogyakarta') }}",
-      "addressRegion": "{{ addslashes($job->company->province ?? 'DI Yogyakarta') }}",
+      "addressLocality": "{{ addslashes($job->company?->city ?? $job->city ?? 'Indonesia') }}",
+      "addressRegion": "{{ addslashes($job->company?->province ?? 'Indonesia') }}",
       "addressCountry": "ID"
     }
   },
@@ -58,11 +58,11 @@
                 <div class="min-w-0 flex-1">
                     <h1 class="text-xl sm:text-2xl font-black text-black leading-snug mb-2">{{ $job->position }}</h1>
                     <div class="flex items-center gap-2.5 flex-wrap mb-3">
-                        <span class="text-sm font-extrabold text-black">{{ $job->company->company_name }}</span>
+                        <span class="text-sm font-extrabold text-black">{{ $job->company?->company_name ?? 'Perusahaan' }}</span>
                         <span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-full" style="background: {{ $job->category_bg }}; color: {{ $job->category_color }};">
                             <i class='{{ $job->category_icon }} text-sm'></i> {{ $job->category_name }}
                         </span>
-                        @if($job->company->is_verified || $job->company->ktp_path)
+                        @if($job->company?->is_verified || $job->company?->ktp_path)
                         <span class="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded border border-black text-black bg-white">
                             <i class='bx bxs-badge-check text-sm text-black'></i> Terverifikasi
                         </span>
@@ -72,10 +72,10 @@
                     {{-- Badges Lokasi, Kategori & Kuota Lowongan (Wrap Garis Hitam & Tulisan Hitam) --}}
                     <div class="flex items-center gap-2 flex-wrap text-xs font-bold text-black">
                         <span class="inline-flex items-center gap-1.5 bg-white border border-black/25 px-2.5 py-1 rounded-md text-black">
-                            <i class='bx bx-map-pin text-[#5680d8]'></i> {{ $job->company->city }}
+                            <i class='bx bx-map-pin text-[#5680d8]'></i> {{ $job->company?->city ?? $job->city ?? 'Lokasi' }}
                         </span>
                         <span class="inline-flex items-center gap-1.5 bg-white border border-black/25 px-2.5 py-1 rounded-md text-black">
-                            <i class='bx bx-buildings text-[#5680d8]'></i> {{ $job->company->business_field ?? 'Usaha Lokal' }}
+                            <i class='bx bx-buildings text-[#5680d8]'></i> {{ $job->company?->business_field ?? 'Usaha Lokal' }}
                         </span>
                         <span class="inline-flex items-center gap-1.5 bg-white border border-black/25 px-2.5 py-1 rounded-md text-black font-extrabold">
                             <i class='bx bx-target-lock text-black'></i> Kuota: {{ $job->quota ?? 1 }} Orang Dibutuhkan
@@ -174,7 +174,7 @@
                         </div>
                         <div>
                             <span class="text-[10px] font-extrabold uppercase tracking-widest text-black block mb-1">ALAMAT TEMPAT KERJA</span>
-                            <p class="text-black font-extrabold text-xs sm:text-sm leading-relaxed">{{ $job->company->address }}, {{ $job->company->city }}</p>
+                            <p class="text-black font-extrabold text-xs sm:text-sm leading-relaxed">{{ $job->company?->address ?? ($job->company?->city ?? $job->city ?? 'Lokasi Usaha') }}, {{ $job->company?->city ?? $job->city ?? '' }}</p>
                         </div>
                     </div>
 

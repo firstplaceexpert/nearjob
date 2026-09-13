@@ -68,10 +68,13 @@ class JobMap extends Component
     {
         if (!$this->selectedJobId) return;
 
+        $job = JobListing::with('company')->find($this->selectedJobId);
+        if (!$job) return;
+
+        $companyName = $job->company?->company_name ?? 'Perusahaan';
+
         if (!Auth::check()) {
-            $job = JobListing::find($this->selectedJobId);
-            $companyName = $job?->company->company_name ?? 'perusahaan';
-            $this->dispatch('open-auth-modal', [
+            $this->dispatch('open-quick-auth-modal', [
                 'title' => 'Masuk / Daftar untuk Melamar',
                 'subtitle' => 'Masuk atau jawab kuis singkat untuk langsung melamar ke ' . $companyName . '.',
                 'jobId' => $this->selectedJobId,
@@ -86,10 +89,6 @@ class JobMap extends Component
         }
 
         $profile = $user->applicantProfile;
-        $job = JobListing::find($this->selectedJobId);
-
-        if (!$job) return;
-
         if (!$profile) {
             $this->dispatch('notify', ['message' => 'Lengkapi data profil Anda terlebih dahulu.', 'type' => 'info']);
             $this->redirect(route('applicant.profile'), navigate: true);
@@ -98,7 +97,7 @@ class JobMap extends Component
 
         // Cek apakah sudah pernah melamar
         if (Application::where('user_id', $user->id)->where('job_listing_id', $job->id)->exists()) {
-            $this->dispatch('notify', 'Anda sudah melamar pekerjaan ini.');
+            $this->dispatch('notify', ['message' => 'Anda sudah melamar pekerjaan ini.', 'type' => 'info']);
             return;
         }
 
@@ -135,8 +134,7 @@ class JobMap extends Component
 
         $edu = strtoupper($profile->education_level ?? 'SMA/SMK');
         $city = $profile->city ?? 'Area Sekitar';
-        $companyName = $job->company->company_name;
-        $ownerName = $job->company->owner_name ?: 'Bapak/Ibu HRD';
+        $ownerName = $job->company?->owner_name ?: 'Bapak/Ibu HRD';
 
         // Generate pesan WhatsApp / Email yang terstruktur & profesional
         if ($appliedVia === 'whatsapp' && $hasWhatsapp) {
@@ -144,7 +142,7 @@ class JobMap extends Component
                      . "Perkenalkan saya *{$user->name}* (Domisili: {$city}, Pend. Terakhir: {$edu}).\n"
                      . "Saya menemukan informasi lowongan *{$job->position}* melalui platform *Near Job*.\n\n"
                      . "Saya memiliki minat dan kualifikasi yang sesuai untuk posisi ini. Apakah lowongan masih terbuka untuk proses interview?\n\n"
-                     . "Terima kasih atas perhatian dan kesempatannya.\n"
+                     . "Terima kasih atas perhatian dan kesempatannya.\n\n"
                      . "Salam hormat,\n"
                      . "{$user->name}";
 
@@ -153,7 +151,8 @@ class JobMap extends Component
                 $waNumber = '62' . substr($waNumber, 1);
             }
             $url = "https://wa.me/{$waNumber}?text=" . urlencode($message);
-            $this->redirect($url);
+            $this->dispatch('notify', ['message' => 'Lamaran tercatat! Mengarahkan ke WhatsApp...', 'type' => 'success']);
+            $this->js("window.open(" . json_encode($url) . ", '_blank');");
             return;
         } else {
             $subject = "Lamaran Pekerjaan: {$job->position} - {$user->name}";
@@ -165,7 +164,8 @@ class JobMap extends Component
                   . "Hormat saya,\n"
                   . "{$user->name}";
             $url = "mailto:{$job->contact_email}?subject=" . rawurlencode($subject) . "&body=" . rawurlencode($body);
-            $this->redirect($url);
+            $this->dispatch('notify', ['message' => 'Lamaran tercatat! Mengarahkan ke Email...', 'type' => 'success']);
+            $this->js("window.location.href = " . json_encode($url) . ";");
             return;
         }
     }
