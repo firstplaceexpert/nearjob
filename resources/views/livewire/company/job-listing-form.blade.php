@@ -168,7 +168,7 @@
                 </div>
 
                 <div class="pt-4">
-                    <button type="submit" class="w-full py-3.5 text-white text-white font-bold rounded-xl text-sm shadow-lg shadow-blue-600/20 transition-colors">
+                    <button type="submit" class="w-full py-3.5 text-white font-bold rounded-xl text-sm transition-all cursor-pointer" style="background: #5680d8; box-shadow: 0 4px 16px rgba(86,128,216,.35);">
                         {{ $isEdit ? 'Simpan Perubahan' : 'Pasang Lowongan' }}
                     </button>
                 </div>
