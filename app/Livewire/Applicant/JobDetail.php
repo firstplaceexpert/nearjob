@@ -144,6 +144,7 @@ class JobDetail extends Component
         $credits = Auth::user()?->applicantProfile?->application_credits ?? 0;
         
         return view('livewire.applicant.job-detail', [
+            'job'        => $this->job,
             'hasApplied' => $hasApplied,
             'credits'    => $credits,
             'distance'   => $this->distance,

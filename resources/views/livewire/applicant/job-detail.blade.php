@@ -3,43 +3,44 @@
 @php
     $validThrough = date('c', strtotime('+3 months'));
     $companyProvince = $job->company?->city ?? $job->city ?? 'Indonesia';
+    $schemaJson = json_encode([
+        "@context" => "https://schema.org/",
+        "@type" => "JobPosting",
+        "title" => $job->position,
+        "description" => strip_tags($job->description ?: ($job->position . ' di ' . ($job->company?->company_name ?? 'Perusahaan'))),
+        "datePosted" => $job->created_at ? $job->created_at->toIso8601String() : date('c'),
+        "validThrough" => $validThrough,
+        "employmentType" => strtoupper($job->work_type ?? 'FULL_TIME'),
+        "hiringOrganization" => [
+            "@type" => "Organization",
+            "name" => $job->company?->company_name ?? 'Perusahaan',
+            "sameAs" => url('/'),
+            "logo" => asset('img/logo.png'),
+        ],
+        "jobLocation" => [
+            "@type" => "Place",
+            "address" => [
+                "@type" => "PostalAddress",
+                "addressLocality" => $job->company?->city ?? $job->city ?? 'Indonesia',
+                "addressRegion" => $companyProvince,
+                "addressCountry" => "ID",
+            ],
+        ],
+        "baseSalary" => [
+            "@type" => "MonetaryAmount",
+            "currency" => "IDR",
+            "value" => [
+                "@type" => "QuantitativeValue",
+                "value" => (int) ($job->salary_min ?: 2000000),
+                "minValue" => (int) ($job->salary_min ?: 2000000),
+                "maxValue" => (int) ($job->salary_max ?: 5000000),
+                "unitText" => "MONTH",
+            ],
+        ],
+    ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 @endphp
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org/",
-  "@type": "JobPosting",
-  "title": "{{ addslashes($job->position) }}",
-  "description": "{{ addslashes(strip_tags($job->description ?: $job->position . ' di ' . ($job->company?->company_name ?? 'Perusahaan'))) }}",
-  "datePosted": "{{ $job->created_at ? $job->created_at->toIso8601String() : date('c') }}",
-  "validThrough": "{{ $validThrough }}",
-  "employmentType": "{{ strtoupper($job->work_type ?? 'FULL_TIME') }}",
-  "hiringOrganization": {
-    "@type": "Organization",
-    "name": "{{ addslashes($job->company?->company_name ?? 'Perusahaan') }}",
-    "sameAs": "{{ url('/') }}",
-    "logo": "{{ asset('img/logo.png') }}"
-  },
-  "jobLocation": {
-    "@type": "Place",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "{{ addslashes($job->company?->city ?? $job->city ?? 'Indonesia') }}",
-      "addressRegion": "{{ addslashes($companyProvince) }}",
-      "addressCountry": "ID"
-    }
-  },
-  "baseSalary": {
-    "@type": "MonetaryAmount",
-    "currency": "IDR",
-    "value": {
-      "@type": "QuantitativeValue",
-      "value": {{ $job->salary_min ?: 2000000 }},
-      "minValue": {{ $job->salary_min ?: 2000000 }},
-      "maxValue": {{ $job->salary_max ?: 5000000 }},
-      "unitText": "MONTH"
-    }
-  }
-}
+{!! $schemaJson !!}
 </script>
 @endpush
 
