@@ -118,7 +118,7 @@
 
             <div class="bg-white rounded-2xl flex flex-col items-center text-center border shadow-sm" style="border-color: #e2e8f0; padding: 22px 16px; border-radius: 20px;">
                 <div class="w-12 h-12 rounded-xl mb-3 flex items-center justify-center text-xl shadow-xs" style="background: #eef2fb; color: #5680d8;">
-                    <i class='bx bx-graduation'></i>
+                    <i class='bx bxs-graduation'></i>
                 </div>
                 <span class="text-[10px] font-extrabold uppercase tracking-widest text-black mb-1.5">PENDIDIKAN</span>
                 <span class="text-xs font-extrabold text-black">Min. {{ strtoupper($job->min_education) }}</span>
